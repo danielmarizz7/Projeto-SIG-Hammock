@@ -1,10 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <windows.h> //serve para importar a biblioteca da API do windows para rodar alguma funçoes(como Usar o console do Windows)
+
 
 void tela_principal(void);
 void tela_sobre_projeto(void);
 void tela_de_equipe(void);
 void tela_final(void);
+void tela_de_clientes(void);
+void tela_de_funcionarios(void);
+void tela_de_produtos(void);
+void tela_de_estoque(void);
 
 
 int main(void){
@@ -12,10 +18,19 @@ int main(void){
     tela_sobre_projeto();
     tela_de_equipe();
     tela_final();
+    tela_de_clientes();
+    tela_de_funcionarios();
+    tela_de_produtos();
+    tela_de_estoque();
     return 0;
 }
 
 void tela_principal(void){
+    // os dois setconsole em C servem para configurar o console do Windows para usar UTF-8, 
+    // permitindo que ele exiba e receba corretamente caracteres acentuados e simbolos
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    
     char op_prin;
     system("clear || cls");
     printf("╔═══════════════════════════════════════════════════════════════════════╗\n");
@@ -106,4 +121,79 @@ void tela_final(void){
     printf("\n");
     printf("Pressione ENTER para voltar à tela inicial...");
     getchar();
+}
+
+
+void tela_de_clientes(void){
+    char op_cliente;
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Módulo De Clientes                ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║ 1 - Cadastrar Cliente                           ║\n");
+    printf("║ 2 - Exibir Clientes                             ║\n");
+    printf("║ 3 - Editar Cliente                              ║\n");
+    printf("║ 4 - Excluir Cliente                             ║\n");
+    printf("║                                                 ║\n");
+    printf("║ 0 - Voltar                                      ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("Pressione 0 para voltar à tela inicial: ");
+    scanf(" %c", &op_cliente);
+}
+
+
+void tela_de_funcionarios(void){
+    char op_funcionarios;
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║              Módulo De Funcionários             ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║ 1 - Cadastrar Funcionário                       ║\n");
+    printf("║ 2 - Exibir Funcionário                          ║\n");
+    printf("║ 3 - Editar Funcionário                          ║\n");
+    printf("║ 4 - Excluir Funcionário                         ║\n");
+    printf("║                                                 ║\n");
+    printf("║ 0 - Voltar                                      ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("Pressione 0 para voltar à tela inicial: ");
+    scanf(" %c", &op_funcionarios);
+}
+
+
+void tela_de_produtos(void){
+    char op_produtos;
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║              Módulo De Produtos                 ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║ 1 - Cadastrar Produto                           ║\n");
+    printf("║ 2 - exibir Produto                              ║\n");
+    printf("║ 3 - Editar Produto                              ║\n");
+    printf("║ 4 - Excluir Produto                             ║\n");
+    printf("║                                                 ║\n");
+    printf("║ 0 - Voltar                                      ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("Pressione 0 para voltar à tela inicial: ");
+    scanf(" %c", &op_produtos);
+}
+
+
+void tela_de_estoque(void){
+    char op_estoque;
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║              Módulo De Estoque                  ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║ 1 - Consultar Estoque                           ║\n");
+    printf("║ 2 - Registrar produto                           ║\n");
+    printf("║ 4 - Remover Produto                             ║\n");
+    printf("║                                                 ║\n");
+    printf("║ 0 - Voltar                                      ║\n");    
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("Pressione 0 para voltar à tela inicial: ");
+    scanf(" %c", &op_estoque);
 }
