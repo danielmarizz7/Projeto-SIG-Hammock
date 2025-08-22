@@ -1,17 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
-// #include <windows.h> //serve para importar a biblioteca da API do windows para rodar alguma funçoes(como Usar o console do Windows)
-
-
 
 void tela_principal(void);
 void tela_sobre_projeto(void);
 void tela_de_equipe(void);
 void tela_final(void);
-void tela_de_clientes(void);
-void tela_de_funcionarios(void);
-void tela_de_produtos(void);
-void tela_de_estoque(void);
 
 
 int main(void){
@@ -19,15 +12,10 @@ int main(void){
     tela_sobre_projeto();
     tela_de_equipe();
     tela_final();
-    tela_de_clientes();
-    tela_de_funcionarios();
-    tela_de_produtos();
-    tela_de_estoque();
     return 0;
 }
 
 void tela_principal(void){
-    
     char op_prin;
     system("clear || cls");
     printf("╔═══════════════════════════════════════════════════════════════════════╗\n");
