@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+// #include <windows.h> //serve para importar a biblioteca da API do windows para rodar alguma funçoes(como Usar o console do Windows)
+
 
 
 void tela_principal(void);
