@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h> //serve para importar a biblioteca da API do windows para rodar alguma funçoes(como Usar o console do Windows)
 
 
 void tela_principal(void);
@@ -26,10 +25,6 @@ int main(void){
 }
 
 void tela_principal(void){
-    // os dois setconsole em C servem para configurar o console do Windows para usar UTF-8, 
-    // permitindo que ele exiba e receba corretamente caracteres acentuados e simbolos
-    SetConsoleOutputCP(CP_UTF8);
-    SetConsoleCP(CP_UTF8);
     
     char op_prin;
     system("clear || cls");
@@ -141,7 +136,6 @@ void tela_de_clientes(void){
     printf("Pressione 0 para voltar à tela inicial: ");
     scanf(" %c", &op_cliente);
 }
-
 
 void tela_de_funcionarios(void){
     char op_funcionarios;
