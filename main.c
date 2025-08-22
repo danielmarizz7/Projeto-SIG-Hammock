@@ -7,6 +7,7 @@ void tela_de_equipe(void);
 void tela_final(void);
 
 
+
 int main(void){
     tela_principal();
     tela_sobre_projeto();
