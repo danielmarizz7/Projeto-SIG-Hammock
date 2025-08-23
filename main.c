@@ -1,10 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "clientes.h"
+
 
 void tela_principal(void);
 void tela_sobre_projeto(void);
 void tela_de_equipe(void);
 void tela_final(void);
+void tela_de_clientes(void);
+void tela_de_funcionarios(void);
+void tela_de_produtos(void);
+void tela_de_estoque(void);
 
 
 
