@@ -5,8 +5,7 @@
 void tela_de_clientes(void);
 void cadastrar_clientes(void);
 void exibir_clientes(void);
-
-
+void alterar_cliente(void);
 
 
 
@@ -14,6 +13,7 @@ int main(void){
     tela_de_clientes();
     cadastrar_clientes();
     exibir_clientes();
+    alterar_cliente();
     return 0;
 }
 
@@ -69,5 +69,16 @@ void exibir_clientes(void){
     printf("Digite o CPF do cliente que deseja buscar: ");
     scanf(" %s", cpf);
     
+    // esta tela ainda vai receber atualizações ao longo do projeto
+}
+
+void alterar_cliente(void){
+    char cpf[12];
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║                Alterar Clientes                 ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o CPF do cliente que deseja alterar: ");
+    scanf(" %s", cpf);
     // esta tela ainda vai receber atualizações ao longo do projeto
 }
