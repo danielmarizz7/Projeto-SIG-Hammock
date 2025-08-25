@@ -4,11 +4,14 @@
 //ASSINATURAS 
 void tela_de_funcionarios(void);
 void cadastrar_funcionarios(void);
+void exibir_funcionarios(void);
+ 
 
 
 int main(void){
     tela_de_funcionarios();
     cadastrar_funcionarios();
+    exibir_funcionarios();
     return 0;
 }
 
@@ -53,5 +56,18 @@ void cadastrar_funcionarios(void){
     printf("Email: %s\n", email);
     printf("Telefone: %s\n", telefone);
 }
+
+void exibir_funcionarios(void){
+    char cpf[12];
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Pesquisar Funcionários            ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o CPF do Funcionário que deseja buscar: ");
+    scanf(" %s", cpf);
+    
+    // esta tela ainda vai receber atualizações ao longo do projeto
+}
+
 
 
