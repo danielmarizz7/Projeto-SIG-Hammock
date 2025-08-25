@@ -6,6 +6,7 @@ void tela_de_clientes(void);
 void cadastrar_clientes(void);
 void exibir_clientes(void);
 void alterar_cliente(void);
+void excluir_cliente(void);
 
 
 
@@ -14,6 +15,7 @@ int main(void){
     cadastrar_clientes();
     exibir_clientes();
     alterar_cliente();
+    excluir_cliente();
     return 0;
 }
 
@@ -79,6 +81,17 @@ void alterar_cliente(void){
     printf("║                Alterar Clientes                 ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o CPF do cliente que deseja alterar: ");
+    scanf(" %s", cpf);
+    // esta tela ainda vai receber atualizações ao longo do projeto
+}
+
+void excluir_cliente(void){
+    char cpf[12];
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║                Excluir Clientes                 ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o CPF do cliente que deseja excluir: ");
     scanf(" %s", cpf);
     // esta tela ainda vai receber atualizações ao longo do projeto
 }
