@@ -28,4 +28,26 @@ void tela_de_funcionarios(void){
     scanf(" %c", &op_funcionario);
 }
 
-
+void cadastrar_funcionarios(void){
+    char nome[51];
+    char cpf[12];
+    char email[26];
+    char telefone[12];
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║              Cadastrar Funcionarios             ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o nome do funcionario: ");
+    scanf(" %s", nome);
+    printf("Digite o CPF do funcionario: ");
+    scanf(" %s", cpf);
+    printf("Digite o email do funcionario: ");
+    scanf(" %s", email);
+    printf("Digite o telefone do funcionario: ");
+    scanf(" %s", telefone);
+    printf("funcionario cadastrado com sucesso!\n");
+    printf("Nome: %s\n", nome);
+    printf("CPF: %s\n", cpf);
+    printf("Email: %s\n", email);
+    printf("Telefone: %s\n", telefone);
+}
