@@ -5,6 +5,8 @@
 void tela_de_funcionarios(void);
 void cadastrar_funcionarios(void);
 void exibir_funcionarios(void);
+void alterar_funcionarios(void);
+void excluir_funcionarios(void);
  
 
 
@@ -12,6 +14,8 @@ int main(void){
     tela_de_funcionarios();
     cadastrar_funcionarios();
     exibir_funcionarios();
+    alterar_funcionarios();
+    excluir_funcionarios();
     return 0;
 }
 
@@ -70,4 +74,24 @@ void exibir_funcionarios(void){
 }
 
 
+void alterar_funcionarios(void){
+    char cpf[12];
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║                Alterar Funcionários             ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o CPF do Funcionário que deseja alterar: ");
+    scanf(" %s", cpf);
+    // esta tela ainda vai receber atualizações ao longo do projeto
+}
 
+void excluir_funcionarios(void){
+    char cpf[12];
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║                Excluir funcionários             ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o CPF do funcionário que deseja excluir: ");
+    scanf(" %s", cpf);
+    // esta tela ainda vai receber atualizações ao longo do projeto
+}
