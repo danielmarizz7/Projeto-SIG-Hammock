@@ -3,10 +3,12 @@
 
 //ASSINATURAS 
 void tela_de_funcionarios(void);
+void cadastrar_funcionarios(void);
 
 
 int main(void){
     tela_de_funcionarios();
+    cadastrar_funcionarios();
     return 0;
 }
 
@@ -51,3 +53,5 @@ void cadastrar_funcionarios(void){
     printf("Email: %s\n", email);
     printf("Telefone: %s\n", telefone);
 }
+
+
