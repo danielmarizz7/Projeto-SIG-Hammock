@@ -4,6 +4,8 @@
 //assinaturas do módulo clientes
 void tela_de_clientes(void);
 void cadastrar_clientes(void);
+void exibir_clientes(void);
+
 
 
 
@@ -11,6 +13,7 @@ void cadastrar_clientes(void);
 int main(void){
     tela_de_clientes();
     cadastrar_clientes();
+    exibir_clientes();
     return 0;
 }
 
@@ -55,4 +58,16 @@ void cadastrar_clientes(void){
     printf("CPF: %s\n", cpf);
     printf("Email: %s\n", email);
     printf("Telefone: %s\n", telefone);
+}
+
+void exibir_clientes(void){
+    char cpf[12];
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Pesquisar Clientes                ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o CPF do cliente que deseja buscar: ");
+    scanf(" %s", cpf);
+    
+    // esta tela ainda vai receber atualizações ao longo do projeto
 }
