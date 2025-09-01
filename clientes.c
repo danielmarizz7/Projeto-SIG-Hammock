@@ -49,16 +49,12 @@ void cadastrar_clientes(void){
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do cliente: ");
     fgets(nome, sizeof(nome), stdin);
-    getchar();
     printf("Digite o CPF do cliente: ");
     fgets(cpf, sizeof(cpf), stdin); 
-    getchar();   
     printf("Digite o email do cliente: ");
-    fgets(email, sizeof(email), stdin);
-    getchar();   
+    fgets(email, sizeof(email), stdin);  
     printf("Digite o telefone do cliente: ");
     fgets(telefone, sizeof(telefone), stdin);
-    getchar();
     printf("\n");
     printf("Cliente cadastrado com sucesso!\n");
     printf("Nome: %s\n", nome);
