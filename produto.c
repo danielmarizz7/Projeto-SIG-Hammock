@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-// #include <windows.h>
 
 void tela_de_produto(void);
 void cadastrar_produto(void);
@@ -20,8 +19,6 @@ int main(void){
 }
 
 void tela_de_produto(void){
-    // SetConsoleOutputCP(CP_UTF8);
-    // SetConsoleCP(CP_UTF8);
     char op_produtos;
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -32,39 +29,39 @@ void tela_de_produto(void){
     printf("║ 3 - Editar Produto                              ║\n");
     printf("║ 4 - Excluir Produto                             ║\n");
     printf("║                                                 ║\n");
-    printf("║ 0 - Voltar                                      ║\n");
+    printf("║ 0 - Para voltar à tela inicial                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf("Pressione 0 para voltar à tela inicial: ");
+    printf("Selecione uma opção: ");
     scanf(" %c", &op_produtos);
+    getchar();
 }
 
 void cadastrar_produto(void){
-    char id_produto[12];
     char nome_produto[55];
+    char id_produto[4];
     char valor_produto[10];
     char cor_produto[15];
-    char material_produto[30];
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Cadastrar Produto                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do produto: ");
-    scanf(" %s", nome_produto);
-    printf("Digite o ID do produto ");
-    scanf(" %s", id_produto);
+    fgets(nome_produto, sizeof(nome_produto), stdin);
+    printf("Digite o ID do produto: ");
+    fgets(id_produto, sizeof(id_produto), stdin);
     printf("Digite um valor para o produto: ");
-    scanf(" %s", valor_produto);
+    fgets(valor_produto, sizeof(valor_produto), stdin);
     printf("Digite a cor do produto: ");
-    scanf(" %s", cor_produto);
-    printf("Digite o material que o produto foi feito: ");
-    scanf(" %s", material_produto);
+    fgets(cor_produto, sizeof(cor_produto), stdin);
+    printf("\n");
     printf("Produto cadastrado com sucesso!\n");
+    printf("\n");
     printf("nome: %s\n", nome_produto);
     printf("id: %s\n", id_produto);
     printf("valor: %s\n", valor_produto);
     printf("cor: %s\n", cor_produto);
-    printf("material: %s\n", material_produto);
+    getchar();
 }
 
 void exibir_produto(void){
@@ -75,8 +72,8 @@ void exibir_produto(void){
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do produto que deseja buscar: ");
     scanf(" %s", id_produto);
+    getchar();
     
-  
 }
 
 
@@ -88,6 +85,7 @@ void alterar_produto(void){
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do produto que deseja alterar: ");
     scanf(" %s", id_produto);
+    getchar();
  
 }
 
@@ -97,7 +95,8 @@ void excluir_produto(void){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Excluir Produto                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Digite o ID do produto que deseja alterar: ");
+    printf("Digite o ID do produto que deseja Excluir: ");
     scanf(" %s", id_produto);
+    getchar();
  
 }
