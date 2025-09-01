@@ -57,10 +57,12 @@ void cadastrar_clientes(void){
     fgets(telefone, sizeof(telefone), stdin);
     printf("\n");
     printf("Cliente cadastrado com sucesso!\n");
+    printf("\n");
     printf("Nome: %s\n", nome);
     printf("CPF: %s\n", cpf);
     printf("Email: %s\n", email);
     printf("Telefone: %s\n", telefone);
+    getchar();
 }
 
 
