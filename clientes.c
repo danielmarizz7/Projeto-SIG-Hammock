@@ -36,8 +36,8 @@ void tela_de_clientes(void){
     printf("\n");
     printf("Pressione 0 para voltar à tela inicial: ");
     scanf(" %c", &op_cliente);
+    getchar();
 }
-
 void cadastrar_clientes(void){
     char nome[51];
     char cpf[12];
@@ -48,19 +48,25 @@ void cadastrar_clientes(void){
     printf("║               Cadastrar Clientes                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do cliente: ");
-    scanf(" %s", nome);
+    gets(nome, sizeof(nome), stdin);
+    getchar();
     printf("Digite o CPF do cliente: ");
-    scanf(" %s", cpf);
+    fgets(cpf, sizeof(cpf), stdin); 
+    getchar();   
     printf("Digite o email do cliente: ");
-    scanf(" %s", email);
+    fgets(email, sizeof(email), stdin);
+    getchar();   
     printf("Digite o telefone do cliente: ");
-    scanf(" %s", telefone);
+    fgets(telefone, sizeof(telefone), stdin);
+    getchar();
+    printf("\n");
     printf("Cliente cadastrado com sucesso!\n");
     printf("Nome: %s\n", nome);
     printf("CPF: %s\n", cpf);
     printf("Email: %s\n", email);
     printf("Telefone: %s\n", telefone);
 }
+
 
 void exibir_clientes(void){
     char cpf[12];
