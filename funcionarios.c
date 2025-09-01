@@ -47,18 +47,21 @@ void cadastrar_funcionarios(void){
     printf("║              Cadastrar Funcionarios             ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do funcionario: ");
-    scanf(" %s", nome);
+    fgets(nome, sizeof(nome), stdin);
     printf("Digite o CPF do funcionario: ");
-    scanf(" %s", cpf);
+    fgets(cpf, sizeof(cpf), stdin);
     printf("Digite o email do funcionario: ");
-    scanf(" %s", email);
+    fgets(email, sizeof(email), stdin);
     printf("Digite o telefone do funcionario: ");
-    scanf(" %s", telefone);
-    printf("funcionario cadastrado com sucesso!\n");
+    fgets(telefone, sizeof(telefone), stdin);
+    printf("\n");
+    printf("Funcionário cadastrado com sucesso!\n");
+    printf("\n");
     printf("Nome: %s\n", nome);
     printf("CPF: %s\n", cpf);
     printf("Email: %s\n", email);
     printf("Telefone: %s\n", telefone);
+    getchar();
 }
 
 void exibir_funcionarios(void){
