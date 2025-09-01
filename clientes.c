@@ -48,7 +48,7 @@ void cadastrar_clientes(void){
     printf("║               Cadastrar Clientes                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do cliente: ");
-    gets(nome, sizeof(nome), stdin);
+    fgets(nome, sizeof(nome), stdin);
     getchar();
     printf("Digite o CPF do cliente: ");
     fgets(cpf, sizeof(cpf), stdin); 
