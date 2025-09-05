@@ -1,26 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "estoque.h"
 // #include <windows.h>
 
-void tela_de_estoque(void);
-void consultar_estoque(void);
-void pesquisa_estoque(void);
-void remove_estoque(void);
+
  
 
 
-int main(void){
-    tela_de_estoque();
-    consultar_estoque();
-    pesquisa_estoque();
-    remove_estoque();
-    return 0;
+void modulo_estoque(void){
+    char opcao;
+
+    do {
+        opcao = tela_de_estoque();
+        switch(opcao){
+            case '1':   consultar_estoque();
+                        break;
+            case '2':   registrar_estoque();
+                        break;
+            case '3':   remove_estoque();
+                        break;
+
+        }
+    } while (opcao != '0');
 }
 
 
-void tela_de_estoque(void){
+
+
+char tela_de_estoque(void){
+
     // SetConsoleOutputCP(CP_UTF8);
     // SetConsoleCP(CP_UTF8);
+    
     char op_estoque;
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -35,6 +46,7 @@ void tela_de_estoque(void){
     printf("\n");
     printf("Pressione 0 para voltar à tela inicial: ");
     scanf(" %c", &op_estoque);
+    return op_estoque;
 }
 
     void consultar_estoque(void){
@@ -49,20 +61,21 @@ void tela_de_estoque(void){
 
 }
 
-    void pesquisa_estoque(void){
-    char pesquisa_estoque[12];
+    void registrar_estoque(void){
+    char registrar_estoque[12];
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║            Registrar Produto no estoque         ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do produto que deseja cadastrar no estoque: ");
-    scanf(" %s", pesquisa_estoque);
+    scanf(" %s", registrar_estoque);
     
   
 }
 
 
     void remove_estoque(void){
+    char remove_estoque[12];
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║            Remover produto do estoque           ║\n");

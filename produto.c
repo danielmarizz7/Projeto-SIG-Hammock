@@ -1,24 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include "produto.h"
+// #include <windows.h>
 
-void tela_de_produto(void);
-void cadastrar_produto(void);
-void exibir_produto(void);
-void alterar_produto(void);
-void excluir_produto(void);
  
 
 
-int main(void){
-    tela_de_produto();
-    cadastrar_produto();
-    exibir_produto();
-    alterar_produto();
-    excluir_produto();
-    return 0;
+void modulo_produto(void){
+    char opcao;
+
+    do {
+        opcao = tela_de_produto();
+        switch(opcao){
+            case '1':   cadastrar_produto();
+                        break;
+            case '2':   exibir_produto();
+                        break;
+            case '3':   alterar_produto();
+                        break;
+            case '4':   excluir_produto();
+                        break;
+
+        }
+    } while (opcao != '0');
 }
 
-void tela_de_produto(void){
+
+char tela_de_produto(void){
+    // SetConsoleOutputCP(CP_UTF8);
+    // SetConsoleCP(CP_UTF8);
+
     char op_produtos;
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -34,7 +46,7 @@ void tela_de_produto(void){
     printf("\n");
     printf("Selecione uma opção: ");
     scanf(" %c", &op_produtos);
-    getchar();
+    return op_produtos;
 }
 
 void cadastrar_produto(void){

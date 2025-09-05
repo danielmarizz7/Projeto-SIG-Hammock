@@ -1,26 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-//assinaturas do módulo clientes
-void tela_de_clientes(void);
-void cadastrar_clientes(void);
-void exibir_clientes(void);
-void alterar_cliente(void);
-void excluir_cliente(void);
+#include <unistd.h>
+#include "clientes.h"
+// #include <windows.h>
 
 
 
-int main(void){
-    tela_de_clientes();
-    cadastrar_clientes();
-    exibir_clientes();
-    alterar_cliente();
-    excluir_cliente();
-    return 0;
+
+void modulo_clientes(void){
+    char opcao;
+
+    do {
+        opcao = tela_de_clientes();
+        switch(opcao){
+            case '1':   cadastrar_clientes();
+                        break;
+            case '2':   exibir_clientes();
+                        break;
+            case '3':   alterar_cliente();
+                        break;
+            case '4':   excluir_cliente();
+                        break;
+
+        }
+    } while (opcao != '0');
 }
 
 
-void tela_de_clientes(void){
+
+char tela_de_clientes(void){
+    // SetConsoleOutputCP(CP_UTF8);
+    // SetConsoleCP(CP_UTF8);
+
     char op_cliente;
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -36,8 +47,12 @@ void tela_de_clientes(void){
     printf("\n");
     printf("Pressione 0 para voltar à tela inicial: ");
     scanf(" %c", &op_cliente);
-    getchar();
+    return op_cliente;
 }
+
+
+
+
 void cadastrar_clientes(void){
     char nome[51];
     char cpf[12];
@@ -66,6 +81,9 @@ void cadastrar_clientes(void){
 }
 
 
+
+
+
 void exibir_clientes(void){
     char cpf[12];
     system("clear || cls");
@@ -78,6 +96,10 @@ void exibir_clientes(void){
     // esta tela ainda vai receber atualizações ao longo do projeto
 }
 
+
+
+
+
 void alterar_cliente(void){
     char cpf[12];
     system("clear || cls");
@@ -88,6 +110,10 @@ void alterar_cliente(void){
     scanf(" %s", cpf);
     // esta tela ainda vai receber atualizações ao longo do projeto
 }
+
+
+
+
 
 void excluir_cliente(void){
     char cpf[12];

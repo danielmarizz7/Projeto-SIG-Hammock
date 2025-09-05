@@ -1,25 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-//ASSINATURAS 
-void tela_de_funcionarios(void);
-void cadastrar_funcionarios(void);
-void exibir_funcionarios(void);
-void alterar_funcionarios(void);
-void excluir_funcionarios(void);
- 
+#include "funcionarios.h"
+#include <unistd.h>
+// #include <windows.h>
 
 
-int main(void){
-    tela_de_funcionarios();
-    cadastrar_funcionarios();
-    exibir_funcionarios();
-    alterar_funcionarios();
-    excluir_funcionarios();
-    return 0;
+
+
+void modulo_funcionarios(void) {
+    char opcao;
+
+    do {
+        opcao = tela_de_funcionarios();
+        switch(opcao) {
+            case '1':   cadastrar_funcionarios();
+                        break;
+            case '2': 	exibir_funcionarios();
+                        break;
+            case '3': 	alterar_funcionarios();
+                        break;
+            case '4': 	excluir_funcionarios();
+                        break;
+        } 		
+    } while (opcao != '0');
 }
 
-void tela_de_funcionarios(void){
+char tela_de_funcionarios(void){
+    // SetConsoleOutputCP(CP_UTF8);
+    // SetConsoleCP(CP_UTF8);
+    
     char op_funcionario;
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -33,8 +42,9 @@ void tela_de_funcionarios(void){
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf("Pressione 0 para voltar à tela inicial: ");
+    printf("Escolhar uma Opção desejada: ");
     scanf(" %c", &op_funcionario);
+    return op_funcionario;
 }
 
 void cadastrar_funcionarios(void){
@@ -42,6 +52,7 @@ void cadastrar_funcionarios(void){
     char cpf[12];
     char email[26];
     char telefone[12];
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║              Cadastrar Funcionarios             ║\n");
