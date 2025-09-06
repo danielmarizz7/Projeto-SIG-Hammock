@@ -39,5 +39,8 @@ char tela_relatorio(void){
     printf("Pressione 0 para voltar à tela inicial: ");
     scanf(" %c", op_relat);
     getchar();
+
+    //IDEIAS DE RELATÓRIO COM FILTROS :BUSCA POR SEXO
+    //
 }
 
