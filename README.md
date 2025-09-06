@@ -33,14 +33,14 @@ cd sig-hammock
 
 ## Status do Desenvolvimento
 
-| Módulo           | Status               | Descrição                     |
-|------------------|----------------------|-------------------------------|
-| **🏠 Menu Principal** | ✅ Concluído          | Interface de navegação |
-| **👥 Clientes**       | 🚧 Em desenvolvimento | Gestão de clientes     |
-| **💆 Funcionarios**   | 🚧 Em desenvolvimento | Gestão de Funcionários |
-| **📅 produtos**       | 🚧 Em desenvolvimento | Gestão de produtos     |
-| **📅 estoque**        | 🚧 Em desenvolvimento | Gestão de Estoque      |
-| **📈 Relatórios**     | 🚧 Em desenvolvimento | Analises               |
+| Módulo                | Status                | Descrição                     |
+|-----------------------|-----------------------|-------------------------------|
+| **🏠 Menu Principal** | ✅ Concluído          | Interface de navegação        |
+| **👥 Clientes**       | 🚧 Em desenvolvimento | Gestão de clientes            |
+| **💆 Funcionarios**   | 🚧 Em desenvolvimento | Gestão de Funcionários        |
+| **📅 produtos**       | 🚧 Em desenvolvimento | Gestão de produtos            |
+| **📅 estoque**        | 🚧 Em desenvolvimento | Gestão de Estoque             |
+| **📈 Relatórios**     | 🚧 Em desenvolvimento | Analises                      |
 
 ### Legenda:
 - ✅ Concluído  
