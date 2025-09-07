@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "relatorio.h"
 
 
 
@@ -9,13 +10,13 @@
 //     do {
 //         opcao = tela_de_rel();
 //         switch(opcao){
-//             case '1':   cadastrar_clientes();
+//             case '1':   relatorio_clientes();
 //                         break;
-//             case '2':   exibir_clientes();
+//             case '2':   relatorio_funcionarios();
 //                         break;
-//             case '3':   alterar_cliente();
+//             case '3':   relatorio_produtos();
 //                         break;
-//             case '4':   excluir_cliente();
+//             case '4':   quadro_estoque();
 //                         break;
 
 //         }
