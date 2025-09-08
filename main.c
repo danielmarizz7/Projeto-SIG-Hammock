@@ -72,7 +72,7 @@ char tela_principal(void){
     printf("║                          0- Encerrar Sistema                          ║\n");
     printf("║                                                                       ║\n");
     printf("╚═══════════════════════════════════════════════════════════════════════╝\n");
-    printf("Escolha uma opção: \n");
-    scanf("%c", &op_prin);
+    printf("Escolha uma opção: ");
+    scanf(" %c", &op_prin);
     return op_prin;
 }
