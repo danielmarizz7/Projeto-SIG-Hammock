@@ -5,6 +5,7 @@
 #include "produto.h"
 #include "estoque.h"
 #include "equipe.h"
+#include "sobre.h"
 
 // #include <windows.h>
 
