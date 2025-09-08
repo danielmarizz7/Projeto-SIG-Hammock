@@ -32,6 +32,8 @@ int main(void) {
 //                      break;
             case '6':   modulo_equipe();
                         break;
+            case '7':   modulo_sobre();
+                        break;
 
 
         } 	
