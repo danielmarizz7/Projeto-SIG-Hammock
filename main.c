@@ -6,6 +6,7 @@
 #include "estoque.h"
 #include "equipe.h"
 #include "sobre.h"
+#include "final.h"
 
 // #include <windows.h>
 
@@ -73,26 +74,6 @@ char tela_principal(void){
     return op_prin;
 }
 
-// void tela_sobre_projeto(void){
-//     char op_sobre;
-//     system("clear || cls");
-//     printf("╔═══════════════════════════════════════════════════════════════════════╗\n");
-//     printf("║                           SOBRE O PROJETO                             ║\n");
-//     printf("╠═══════════════════════════════════════════════════════════════════════╣\n");
-//     printf("║   Este sistema auxilia a gestão de uma fábrica de redes de dormir.    ║\n");
-//     printf("║   Funcionalidades:                                                    ║\n");
-//     printf("║                                                                       ║\n");
-//     printf("║   • Cadastro de clientes e funcionários                               ║\n");
-//     printf("║   • Controle e monitoramento do estoque                               ║\n");
-//     printf("║   • Gerenciamento do fluxo de produtos                                ║\n");
-//     printf("║                                                                       ║\n");
-//     printf("║                                                                       ║\n");
-//     printf("║   Com isso, otimiza processos, organiza rotinas e apoia decisões.     ║\n");
-//     printf("╚═══════════════════════════════════════════════════════════════════════╝\n");
-//     printf("\n");
-//     printf("Pressione 0 para voltar à tela inicial: ");
-//     scanf(" %c", &op_sobre);
-// }
 
 
 
