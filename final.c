@@ -43,7 +43,7 @@ char tela_final(void){
     printf("╚═══════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
     printf("Pressione 0 para voltar à tela inicial...");
-    getchar();
+    scanf(" %c", &op_final);
     return op_final;
 }
 
