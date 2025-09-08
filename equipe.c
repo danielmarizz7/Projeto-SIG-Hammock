@@ -1,11 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+char tela_de_equipe(void);
 
+void modulo_equipe(void) {
+    char opcao;
+    do {
+        opcao = tela_de_equipe();
+        switch(opcao) {
+            case '0':   
+                break;
+            default:
+                printf("Opção inválida! Tente novamente.\n");
+                getchar();
+        }
+    } while (opcao != '0');
+}
 
-
-
-void tela_de_equipe (void){
+char tela_de_equipe(void) {
     char op_equipe;
     system("clear || cls");
     printf("╔═══════════════════════════════════════════════════════════════════════╗\n");
@@ -25,6 +37,7 @@ void tela_de_equipe (void){
     printf("║                                                                       ║\n");
     printf("╚═══════════════════════════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf("Pressione enter para voltar à tela inicial: ");
+    printf("Digite 0 para voltar à tela inicial: ");
     scanf(" %c", &op_equipe);
+    return op_equipe;
 }
