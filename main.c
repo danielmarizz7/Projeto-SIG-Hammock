@@ -27,7 +27,9 @@ int main(void) {
                         break;
             case '4':   modulo_estoque();
                         break;
-            case '5':   modulo_equipe();
+//          case '5':   modulo_relatorio();
+//                      break;
+            case '6':   modulo_equipe();
                         break;
 
 
@@ -57,7 +59,7 @@ char tela_principal(void){
     printf("║                          2- Módulo Funcionários                       ║\n");
     printf("║                          3- Módulo Produtos                           ║\n");
     printf("║                          4- Módulo Estoque                            ║\n");
-    printf("║                          5- Módulo Relatório                          ║\n");
+    printf("║                          5- Relatórios                                ║\n");
     printf("║                          6- Equipe                                    ║\n");
     printf("║                          7- Sobre                                     ║\n");
     printf("║                          0- Encerrar Sistema                          ║\n");
