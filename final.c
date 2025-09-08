@@ -1,9 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+char tela_final(void);
 
 
-void tela_final(void){
+void modulo_final(void) {
+    char opcao;
+    do {
+        opcao = tela_final();
+        switch(opcao) {
+            case '0':   
+                break;
+            default:
+                printf("Opção inválida! Tente novamente.\n");
+                getchar();
+        }
+    } while (opcao != '0');
+}
+
+
+
+char tela_final(void){
     system("clear || cls");
     char op_final;
     printf("╔═══════════════════════════════════════════════════════════════════════╗\n");
