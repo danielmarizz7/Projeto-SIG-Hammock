@@ -21,8 +21,8 @@ void modulo_final(void) {
 
 
 char tela_final(void){
-    system("clear || cls");
     char op_final;
+    system("clear || cls");
     printf("╔═══════════════════════════════════════════════════════════════════════╗\n");
     printf("║                      TELA FINAL E AGRADECIMENTOS                      ║\n");
     printf("╠═══════════════════════════════════════════════════════════════════════╣\n");
