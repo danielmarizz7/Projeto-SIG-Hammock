@@ -35,6 +35,8 @@ int main(void) {
                         break;
             case '7':   modulo_sobre();
                         break;
+            case '8':   modulo_final();
+                        break;
 
 
         } 	
