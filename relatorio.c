@@ -16,6 +16,7 @@ void modulo_relatorio(void) {
             break;
         default:
             printf("Opção inválida! Tente novamente.\n");
+            printf("Pressione Enter para voltar a tela incial...");
             getchar();
     }
 }
