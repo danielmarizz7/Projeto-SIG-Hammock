@@ -4,10 +4,10 @@
 #include "funcionarios.h"
 #include "produto.h"
 #include "estoque.h"
+#include "relatorio.h"
 #include "equipe.h"
 #include "sobre.h"
 #include "final.h"
-
 // #include <windows.h>
 
 
@@ -29,8 +29,8 @@ int main(void) {
                         break;
             case '4':   modulo_estoque();
                         break;
-//          case '5':   modulo_relatorio();
-//                      break;
+            case '5':   modulo_relatorio();
+                        break;
             case '6':   modulo_equipe();
                         break;
             case '7':   modulo_sobre();
@@ -44,11 +44,6 @@ int main(void) {
 
     return 0;
 }
-
-
-
-
-
 
 char tela_principal(void){
     // SetConsoleOutputCP(CP_UTF8);
