@@ -1,2 +1,2 @@
-// void modulo_relatorio(void);
-//char tela_relatorio(void);
+void modulo_relatorio(void);
+char tela_relatorio(void);
