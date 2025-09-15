@@ -6,13 +6,13 @@ char tela_relatorio(void);
 
 
 
-void modulo_final(void) {
+void modulo_relatorio(void) {
     char opcao;
 
-    opcao = tela_final();
+    opcao = tela_relatorio();
     switch(opcao) {
         case '0':   
-            printf("Voltando ao menu inicial...\n");
+            printf("Voltando ao menu inicial\n");
             break;
         default:
             printf("Opção inválida! Tente novamente.\n");
