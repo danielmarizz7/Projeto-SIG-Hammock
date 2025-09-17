@@ -52,33 +52,34 @@ char tela_de_clientes(void){
 
 
 
-
 void cadastrar_clientes(void){
     char nome[51];
     char cpf[12];
     char email[26];
     char telefone[12];
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Cadastrar Clientes                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do cliente: ");
-    fgets(nome, sizeof(nome), stdin);
+    scanf("%50s\n", nome);
     printf("Digite o CPF do cliente: ");
-    fgets(cpf, sizeof(cpf), stdin); 
+    scanf("%11s\n", cpf);
     printf("Digite o email do cliente: ");
-    fgets(email, sizeof(email), stdin);  
+    scanf("%25s\n", email);
     printf("Digite o telefone do cliente: ");
-    fgets(telefone, sizeof(telefone), stdin);
+    scanf("%11s\n", telefone);
     printf("\n");
     printf("Cliente cadastrado com sucesso!\n");
-    printf("\n");
     printf("Nome: %s\n", nome);
     printf("CPF: %s\n", cpf);
     printf("Email: %s\n", email);
     printf("Telefone: %s\n", telefone);
-    getchar();
+
+    getchar();  // Apenas para pausar antes de sair
 }
+
 
 
 
