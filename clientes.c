@@ -2,10 +2,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "clientes.h"
+#include <locale.h>
 // #include <windows.h>
 
+char nome[51];
+char cpf[12];
+char email[26];
+char telefone[12];
 
+FILE * arquivo; //Apontador do arquivo
 
+void limpar_buffer(void) {
+    int c;
+    c = getchar();
+    while ((c != '\n' && c != EOF)) {
+        c = getchar();
+    };
+}
 
 void modulo_clientes(void){
     char opcao;
@@ -53,12 +66,6 @@ char tela_de_clientes(void){
 
 
 void cadastrar_clientes(void){
-    char nome[51];
-    char cpf[12];
-    char email[26];
-    char telefone[12];
-
-    FILE * arquivo; //Apontador do arquivo
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -111,12 +118,24 @@ void cadastrar_clientes(void){
 
 void exibir_clientes(void){
     char cpf[12];
+    char linha[256];
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
-    printf("║               Pesquisar Clientes                ║\n");
+    printf("║               Pequisar Clientes                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o CPF do cliente que deseja buscar: ");
     scanf(" %s", cpf);
+
+    arquivo = fopen("clientes.txt", "rt");
+
+    while (fscanf(arquivo,"%[^\n]",linha) == 1) {
+        printf("%s\n",linha);
+        fgetc(arquivo); 
+    }
+    limpar_buffer();
+    getchar();
+    fclose(arquivo);
+    
     
     // esta tela ainda vai receber atualizações ao longo do projeto
 }
