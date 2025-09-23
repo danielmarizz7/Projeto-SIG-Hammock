@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "funcionarios.h"
 #include <unistd.h>
-// #include <windows.h>
 
 
 
@@ -26,9 +25,7 @@ void modulo_funcionarios(void) {
 }
 
 char tela_de_funcionarios(void){
-    // SetConsoleOutputCP(CP_UTF8);
-    // SetConsoleCP(CP_UTF8);
-    
+
     char op_funcionario;
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
