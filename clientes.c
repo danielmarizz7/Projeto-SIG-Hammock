@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "clientes.h"
-// #include <windows.h>
 
 
 
@@ -29,8 +28,6 @@ void modulo_clientes(void){
 
 
 char tela_de_clientes(void){
-    // SetConsoleOutputCP(CP_UTF8);
-    // SetConsoleCP(CP_UTF8);
 
     char op_cliente;
     system("clear || cls");
