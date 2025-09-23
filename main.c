@@ -8,7 +8,6 @@
 #include "equipe.h"
 #include "sobre.h"
 #include "final.h"
-// #include <windows.h>
 
 
 char tela_principal(void);
@@ -46,8 +45,7 @@ int main(void) {
 }
 
 char tela_principal(void){
-    // SetConsoleOutputCP(CP_UTF8);
-    // SetConsoleCP(CP_UTF8);
+
 
     char op_prin;
     system("clear || cls");
