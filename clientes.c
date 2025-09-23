@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "clientes.h"
+// #include <windows.h>
 
 
 
@@ -28,6 +29,8 @@ void modulo_clientes(void){
 
 
 char tela_de_clientes(void){
+    // SetConsoleOutputCP(CP_UTF8);
+    // SetConsoleCP(CP_UTF8);
 
     char op_cliente;
     system("clear || cls");
@@ -55,6 +58,8 @@ void cadastrar_clientes(void){
     char email[26];
     char telefone[12];
 
+    FILE * arquivo; //Apontador do arquivo
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Cadastrar Clientes                ║\n");
@@ -77,6 +82,24 @@ void cadastrar_clientes(void){
     printf("CPF: %s\n", cpf);
     printf("Email: %s\n", email);
     printf("Telefone: %s\n", telefone);
+
+    
+    arquivo = fopen("clientes.txt", "at"); //Cria o arquivo
+    if (arquivo == NULL) {
+        printf("\nO arquivo nao foi criado.");
+        getchar();
+    }
+    else
+    {
+        //Escreve coisas no arquivo
+        fprintf(arquivo, "%s\n", nome);
+        fprintf(arquivo, "%s\n", cpf);
+        fprintf(arquivo, "%s\n", email);
+        fprintf(arquivo, "%s\n", telefone);
+        fclose(arquivo);
+    }
+    
+    
 
     getchar();  // Apenas para pausar antes de sair
 }
