@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> //usar o "strcmp"
 #include <unistd.h>
 #include "clientes.h"
 #include <locale.h>
@@ -66,23 +67,20 @@ char tela_de_clientes(void){
 
 
 void cadastrar_clientes(void){
-
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Cadastrar Clientes                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do cliente: ");
     scanf("%50s\n", nome);
-    getchar();
     printf("Digite o CPF do cliente: ");
     scanf("%11s\n", cpf);
-    getchar();
     printf("Digite o email do cliente: ");
     scanf("%25s\n", email);
-    getchar();
     printf("Digite o telefone do cliente: ");
     scanf("%11s\n", telefone);
-    getchar();
+
+    limpar_buffer();
     printf("\n");
     printf("Cliente cadastrado com sucesso!\n");
     printf("Nome: %s\n", nome);
@@ -91,7 +89,7 @@ void cadastrar_clientes(void){
     printf("Telefone: %s\n", telefone);
 
     
-    arquivo = fopen("clientes.txt", "at"); //Cria o arquivo
+    arquivo = fopen("clientes.csv", "at"); //Cria o arquivo
     if (arquivo == NULL) {
         printf("\nO arquivo nao foi criado.");
         getchar();
@@ -99,11 +97,13 @@ void cadastrar_clientes(void){
     else
     {
         //Escreve coisas no arquivo
-        fprintf(arquivo, "%s\n", nome);
-        fprintf(arquivo, "%s\n", cpf);
-        fprintf(arquivo, "%s\n", email);
+        fprintf(arquivo, "%s;", nome);
+        fprintf(arquivo, "%s;", cpf);
+        fprintf(arquivo, "%s;", email);
         fprintf(arquivo, "%s\n", telefone);
         fclose(arquivo);
+        printf("\nCliente %s cadastrado com sucesso!", nome);
+        printf("\nPressione ENTER para continuar.");
     }
     
     
@@ -117,25 +117,52 @@ void cadastrar_clientes(void){
 
 
 void exibir_clientes(void){
-    char cpf[12];
-    char linha[256];
+    char cpf_comparar[12];
     system("clear || cls");
+    limpar_buffer();
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Pequisar Clientes                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o CPF do cliente que deseja buscar: ");
-    scanf(" %s", cpf);
+    scanf(" %s", cpf_comparar);
 
-    arquivo = fopen("clientes.txt", "rt");
+    arquivo = fopen("clientes.csv", "rt");
 
-    while (fscanf(arquivo,"%[^\n]",linha) == 1) {
-        printf("%s\n",linha);
-        fgetc(arquivo); 
+    if (arquivo == NULL) {
+        printf("\nO arquivo nao existe.");
+        getchar();
     }
-    limpar_buffer();
-    getchar();
+
+    while (!feof(arquivo)){
+        fscanf(arquivo, "%[^;]", nome);
+        fgetc(arquivo);
+        fscanf(arquivo, "%[^;]", cpf);
+        fgetc(arquivo);
+        fscanf(arquivo, "%[^;]", email);
+        fgetc(arquivo);
+        fscanf(arquivo, "%[^;]", telefone);
+        fgetc(arquivo);
+
+        if (strcmp(cpf, cpf_comparar) == 0)
+        {
+            printf("\nNome do cliente: %s", nome);
+            printf("\nCPF do cliente: %s", cpf);
+            printf("\nEmail do cliente: %s", email);
+            printf("\nTelefone do cliente: %s", telefone);
+
+            fclose(arquivo);
+            limpar_buffer();
+            getchar();
+            return;
+            
+        }
+        
+    }
     fclose(arquivo);
     
+    printf("\nNenhum cliente com esse cpf foi encontrado.");
+    limpar_buffer();
+    getchar();
     
     // esta tela ainda vai receber atualizações ao longo do projeto
 }
