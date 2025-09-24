@@ -60,25 +60,27 @@ void cadastrar_clientes(void){
     printf("║               Cadastrar Clientes                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do cliente: ");
-    scanf("%50s\n", nome);
+    scanf("%50s", nome);
     getchar();
     printf("Digite o CPF do cliente: ");
-    scanf("%11s\n", cpf);
+    scanf("%11s", cpf);
     getchar();
     printf("Digite o email do cliente: ");
-    scanf("%25s\n", email);
+    scanf("%25s", email);
     getchar();
     printf("Digite o telefone do cliente: ");
-    scanf("%11s\n", telefone);
+    scanf("%11s", telefone);
     getchar();
     printf("\n");
+    printf("════════════════════════════════════\n");
     printf("Cliente cadastrado com sucesso!\n");
+    printf("════════════════════════════════════\n");
     printf("Nome: %s\n", nome);
     printf("CPF: %s\n", cpf);
     printf("Email: %s\n", email);
     printf("Telefone: %s\n", telefone);
-
-    getchar();  // Apenas para pausar antes de sair
+    printf("════════════════════════════════════\n");
+    getchar();
 }
 
 
