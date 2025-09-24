@@ -65,6 +65,7 @@ void cadastrar_funcionarios(void){
     getchar();
     printf("Digite o telefone do funcionario: ");
     scanf("%s11", telefone);
+    getchar();
     printf("\n");
     printf("Funcionário cadastrado com sucesso!\n");
     printf("\n");
