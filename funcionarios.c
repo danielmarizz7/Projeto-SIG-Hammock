@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "funcionarios.h"
-#include <unistd.h>
 
 
 
@@ -55,13 +55,16 @@ void cadastrar_funcionarios(void){
     printf("║              Cadastrar Funcionarios             ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do funcionario: ");
-    fgets(nome, sizeof(nome), stdin);
+    scanf("%s50",nome);
+    getchar();
     printf("Digite o CPF do funcionario: ");
-    fgets(cpf, sizeof(cpf), stdin);
+    scanf("%s11", cpf);
+    getchar();
     printf("Digite o email do funcionario: ");
-    fgets(email, sizeof(email), stdin);
+    scanf("%s25", email);
+    getchar();
     printf("Digite o telefone do funcionario: ");
-    fgets(telefone, sizeof(telefone), stdin);
+    scanf("%s11", telefone);
     printf("\n");
     printf("Funcionário cadastrado com sucesso!\n");
     printf("\n");
