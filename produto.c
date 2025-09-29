@@ -1,8 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
+#include "utilidades.h"
 #include "produto.h"
-// #include <windows.h>
+#include <locale.h>
+
+
 
  
 
