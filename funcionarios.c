@@ -113,7 +113,7 @@ void exibir_funcionarios(char nome[], char cpf[], char email[], char telefone[])
 
     arquivo_funcionario = fopen("funcionarios.csv", "rt");
 
-    if (arquivo_funcionario == NULL); {
+    if (arquivo_funcionario == NULL) {
         printf("\nO arquivo não existe.");
         getchar();
     }
@@ -130,7 +130,7 @@ void exibir_funcionarios(char nome[], char cpf[], char email[], char telefone[])
         fscanf(arquivo_funcionario, "%[^\n]", telefone);
         fgetc(arquivo_funcionario);
 
-        if (id_funcionario == id_procurar);
+        if (id_funcionario == id_procurar)
         {
             printf("\nID do funcionário: %d", id_funcionario);
             printf("\nNome do funcionário: %s", nome);
