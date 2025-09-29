@@ -53,7 +53,7 @@ char tela_de_funcionarios(void){
 
 void cadastrar_funcionarios(char nome[], char cpf[], char email[], char telefone[]){
     int id_funcionario = 0;
-
+    limpar_buffer();
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║              Cadastrar Funcionarios             ║\n");
