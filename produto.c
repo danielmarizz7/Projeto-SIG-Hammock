@@ -23,7 +23,7 @@ void modulo_produto(void){
         switch(opcao){
             case '1':   cadastrar_produto(nome, valor_produto, tipo_produto, cor_produto);
                         break;
-            case '2':   exibir_produto();
+            case '2':   exibir_produto(nome, valor_produto, tipo_produto, cor_produto);
                         break;
             case '3':   alterar_produto();
                         break;
@@ -106,17 +106,61 @@ void cadastrar_produto(char nome[], char valor_produto[], char tipo_produto[], c
 }
 
 
-void exibir_produto(void){
-    char id_produto[12];
+void exibir_produto(char nome[], char valor_produto[], char tipo_produto[], char cor_produto[]){
+    int id_procurar = 0;
+    int id_produto = 0;
+
     system("clear || cls");
+    limpar_buffer();
     printf("╔═════════════════════════════════════════════════╗\n");
-    printf("║                 Pesquisar Produto               ║\n");
+    printf("║               Pequisar Produto                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Digite o ID do produto que deseja buscar: ");
-    scanf(" %s", id_produto);
+    printf("Digite o ID do Produto que deseja buscar: ");
+    scanf(" %d", &id_procurar);
+
+    arquivo_produto = fopen("produto.csv", "rt");
+
+    if (arquivo_produto == NULL) {
+        printf("\nO arquivo nao existe.");
+        getchar();
+    }
+
+    while (!feof(arquivo_produto)){
+        fscanf(arquivo_produto, "%d", &id_produto);
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^;]", nome);
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^;]", valor_produto);
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^;]", tipo_produto);
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^\n]", cor_produto);
+        fgetc(arquivo_produto);
+
+        if (arquivo_produto == id_procurar)
+        {
+            printf("\nID do Produto: %d", id_produto);
+            printf("\nNome do Produto: %s", nome);
+            printf("\nValor do Produto: %s", valor_produto);
+            printf("\nTipo do Produto: %s", tipo_produto);
+            printf("\nCor do Produto: %s", cor_produto);
+
+            fclose(arquivo_produto);
+            limpar_buffer();
+            getchar();
+            return;
+            
+        }
+        
+    }
+    fclose(arquivo_produto);
+    
+    limpar_buffer();
+    printf("\nNenhum Produto com esse id foi encontrado.");
     getchar();
     
 }
+
 
 
 void alterar_produto(void){
