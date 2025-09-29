@@ -8,7 +8,7 @@
 #include "sobre.h"
 #include "final.h"
 #include "utilidades.h"
-
+#include "pedidos.h"
 
 char tela_principal(void);
 
