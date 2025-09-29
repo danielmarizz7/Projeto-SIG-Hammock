@@ -3,11 +3,11 @@
 #include "clientes.h"
 #include "funcionarios.h"
 #include "produto.h"
-#include "estoque.h"
 #include "relatorio.h"
 #include "equipe.h"
 #include "sobre.h"
 #include "final.h"
+#include "utilidades.h"
 
 
 char tela_principal(void);
@@ -25,8 +25,6 @@ int main(void) {
             case '2':   modulo_funcionarios();
                         break;
             case '3':   modulo_produto();
-                        break;
-            case '4':   modulo_estoque();
                         break;
             case '5':   modulo_relatorio();
                         break;
