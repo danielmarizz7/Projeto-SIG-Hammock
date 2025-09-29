@@ -123,7 +123,7 @@ void exibir_clientes(char nome[], char cpf[], char email[], char telefone[]){
     system("clear || cls");
     limpar_buffer();
     printf("╔═════════════════════════════════════════════════╗\n");
-    printf("║               Pequisar Clientes                ║\n");
+    printf("║               Pequisar Clientes                 ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do cliente que deseja buscar: ");
     scanf(" %d", &id_procurar);

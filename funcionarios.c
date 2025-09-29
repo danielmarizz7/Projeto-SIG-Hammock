@@ -97,6 +97,8 @@ void cadastrar_funcionarios(char nome[], char cpf[], char email[], char telefone
         printf("\nFuncionário %s cadastrado com sucesso!", nome);
         printf("\nPressione ENTER para continuar.");
     }
+
+    getchar();
 }
 
 void exibir_funcionarios(char nome[], char cpf[], char email[], char telefone[]){
@@ -139,8 +141,16 @@ void exibir_funcionarios(char nome[], char cpf[], char email[], char telefone[])
             printf("\nTelefone do funcionário: %s", telefone);
 
             fclose(arquivo_funcionario);
+            limpar_buffer();
+            getchar();
+            return;
         }
     }
+    fclose(arquivo_funcionario);
+    
+    limpar_buffer();
+    printf("\nNenhum funcionário com esse id foi encontrado.");
+    getchar();
     
 }
 
