@@ -13,17 +13,17 @@ FILE * arquivo_produto;
 void modulo_produto(void){
 
     char opcao;
-    char nome[31];
-    char valor_produto[11];
-    char tipo_produto[15]; 
-    char cor_produto [26];
+    char modelo_rede[31];
+    char valor_rede[11];
+    char tipo_rede[15]; 
+    char cor_rede [26];
 
     do {
         opcao = tela_de_produto();
         switch(opcao){
-            case '1':   cadastrar_produto(nome, valor_produto, tipo_produto, cor_produto);
+            case '1':   cadastrar_produto(modelo_rede, valor_rede, tipo_rede, cor_rede);
                         break;
-            case '2':   exibir_produto(nome, valor_produto, tipo_produto, cor_produto);
+            case '2':   exibir_produto(modelo_rede, valor_rede, tipo_rede, cor_rede);
                         break;
             case '3':   alterar_produto();
                         break;
@@ -57,7 +57,7 @@ char tela_de_produto(void){
     return op_produtos;
 }
 
-void cadastrar_produto(char nome[], char valor_produto[], char tipo_produto[], char cor_produto[]){
+void cadastrar_produto(char modelo_rede[], char valor_rede[], char tipo_rede[], char cor_rede[]){
     int id_produto = 0;
     limpar_buffer();
     system("clear || cls");
@@ -65,23 +65,31 @@ void cadastrar_produto(char nome[], char valor_produto[], char tipo_produto[], c
     printf("║                Cadastrar Produto                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
 
-    printf("Digite o nome do Produto: ");
-    scanf("%[^\n]", nome);
+    printf("Digite o modelo da rede: ");
+    scanf("%[^\n]", modelo_rede);
     limpar_buffer();
 
-    printf("Digite o Valor: ");
-    scanf("%[^\n]", valor_produto);
+    printf("Digite o valor da rede: ");
+    scanf("%[^\n]", valor_rede);
     limpar_buffer();
 
-    printf("Digite o Tipo: ");
-    scanf("%[^\n]", tipo_produto);
+    printf("Digite o tipo da rede: ");
+    scanf("%[^\n]", tipo_rede);
     limpar_buffer();
 
-    printf("Digite a Cor: ");
-    scanf("%[^\n]", cor_produto);
+    printf("Digite a cor da rede: ");
+    scanf("%[^\n]", cor_rede);
     limpar_buffer();
 
     arquivo_produto = fopen("produtos.csv", "rt");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_produto == NULL) {
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.csv", "wt");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.csv", "rt");
+    }
 
     id_produto = gerar_id(arquivo_produto);
 
@@ -94,19 +102,19 @@ void cadastrar_produto(char nome[], char valor_produto[], char tipo_produto[], c
         fclose(arquivo_produto);
     } else {
         fprintf(arquivo_produto, "%d;", id_produto);
-        fprintf(arquivo_produto, "%s;", nome);
-        fprintf(arquivo_produto, "%s;", valor_produto);
-        fprintf(arquivo_produto, "%s;", tipo_produto);
-        fprintf(arquivo_produto, "%s\n", cor_produto);
+        fprintf(arquivo_produto, "%s;", modelo_rede);
+        fprintf(arquivo_produto, "%s;", valor_rede);
+        fprintf(arquivo_produto, "%s;", tipo_rede);
+        fprintf(arquivo_produto, "%s\n", cor_rede);
         fclose(arquivo_produto);
-        printf("\n%s cadastrado com sucesso!", nome);
+        printf("\nA rede de modelo %s foi cadastrada com sucesso!", modelo_rede);
         printf("\nPressione ENTER para continuar.");
     }
     getchar();  // Apenas para pausar antes de sair
 }
 
 
-void exibir_produto(char nome[], char valor_produto[], char tipo_produto[], char cor_produto[]){
+void exibir_produto(char modelo_rede[], char valor_rede[], char tipo_rede[], char cor_rede[]){
     int id_procurar = 0;
     int id_produto = 0;
 
@@ -118,32 +126,35 @@ void exibir_produto(char nome[], char valor_produto[], char tipo_produto[], char
     printf("Digite o ID do Produto que deseja buscar: ");
     scanf(" %d", &id_procurar);
 
-    arquivo_produto = fopen("produto.csv", "rt");
+    arquivo_produto = fopen("produtos.csv", "rt");
 
+    //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_produto == NULL) {
-        printf("\nO arquivo nao existe.");
-        getchar();
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.csv", "wt");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.csv", "rt");
     }
 
     while (!feof(arquivo_produto)){
         fscanf(arquivo_produto, "%d", &id_produto);
         fgetc(arquivo_produto);
-        fscanf(arquivo_produto, "%[^;]", nome);
+        fscanf(arquivo_produto, "%[^;]", modelo_rede);
         fgetc(arquivo_produto);
-        fscanf(arquivo_produto, "%[^;]", valor_produto);
+        fscanf(arquivo_produto, "%[^;]", valor_rede);
         fgetc(arquivo_produto);
-        fscanf(arquivo_produto, "%[^;]", tipo_produto);
+        fscanf(arquivo_produto, "%[^;]", tipo_rede);
         fgetc(arquivo_produto);
-        fscanf(arquivo_produto, "%[^\n]", cor_produto);
+        fscanf(arquivo_produto, "%[^\n]", cor_rede);
         fgetc(arquivo_produto);
 
-        if (arquivo_produto == id_procurar)
+        if (id_produto == id_procurar)
         {
             printf("\nID do Produto: %d", id_produto);
-            printf("\nNome do Produto: %s", nome);
-            printf("\nValor do Produto: %s", valor_produto);
-            printf("\nTipo do Produto: %s", tipo_produto);
-            printf("\nCor do Produto: %s", cor_produto);
+            printf("\nmodelo do Produto: %s", modelo_rede);
+            printf("\nValor do Produto: %s", valor_rede);
+            printf("\nTipo do Produto: %s", tipo_rede);
+            printf("\nCor do Produto: %s", cor_rede);
 
             fclose(arquivo_produto);
             limpar_buffer();
@@ -156,7 +167,7 @@ void exibir_produto(char nome[], char valor_produto[], char tipo_produto[], char
     fclose(arquivo_produto);
     
     limpar_buffer();
-    printf("\nNenhum Produto com esse id foi encontrado.");
+    printf("\nNenhuma rede com esse id foi encontrado.");
     getchar();
     
 }

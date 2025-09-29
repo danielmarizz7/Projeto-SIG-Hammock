@@ -83,6 +83,13 @@ void cadastrar_clientes(char nome[], char cpf[], char email[], char telefone[]){
 
     arquivo_cliente = fopen("clientes.csv", "rt");
 
+    if (arquivo_cliente == NULL) {
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.csv", "wt");
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.csv", "rt");
+    }
+
     id_cliente = gerar_id(arquivo_cliente);
 
     fclose(arquivo_cliente);
