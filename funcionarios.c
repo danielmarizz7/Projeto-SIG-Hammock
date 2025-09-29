@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include "utilidades.h"
 #include "funcionarios.h"
-
+#include <locale.h>
 
 FILE * arquivo_funcionário; //Apontador para o arquivo
 
