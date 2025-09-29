@@ -99,16 +99,49 @@ void cadastrar_funcionarios(char nome[], char cpf[], char email[], char telefone
     }
 }
 
-void exibir_funcionarios(void){
-    char cpf[12];
+void exibir_funcionarios(char nome[], char cpf[], char email[], char telefone[]){
+    int id_procurar = 0;
+    int id_funcionario = 0;
+
     system("clear || cls");
+    limpar_buffer();
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Pesquisar Funcionários            ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Digite o CPF do Funcionário que deseja buscar: ");
-    scanf(" %s", cpf);
+    printf("Digite o id do Funcionário que deseja buscar: ");
+    scanf(" %d", &id_procurar);
+
+    arquivo_funcionario = fopen("funcionarios.csv", "rt");
+
+    if (arquivo_funcionario == NULL); {
+        printf("\nO arquivo não existe.");
+        getchar();
+    }
+
+    while (!feof(arquivo_funcionario)){
+        fscanf(arquivo_funcionario, "%d", &id_funcionario);
+        fgetc(arquivo_funcionario);
+        fscanf(arquivo_funcionario, "%[^;]", nome);
+        fgetc(arquivo_funcionario);
+        fscanf(arquivo_funcionario, "%[^;]", cpf);
+        fgetc(arquivo_funcionario);
+        fscanf(arquivo_funcionario, "%[^;]", email);
+        fgetc(arquivo_funcionario);
+        fscanf(arquivo_funcionario, "%[^\n]", telefone);
+        fgetc(arquivo_funcionario);
+
+        if (id_funcionario == id_procurar);
+        {
+            printf("\nID do funcionário: %d", id_funcionario);
+            printf("\nNome do funcionário: %s", nome);
+            printf("\nCPF do funcionário: %s", cpf);
+            printf("\nEmail do funcionário: %s", email);
+            printf("\nTelefone do funcionário: %s", telefone);
+
+            fclose(arquivo_funcionario);
+        }
+    }
     
-    // esta tela ainda vai receber atualizações ao longo do projeto
 }
 
 
