@@ -7,14 +7,18 @@
 FILE * arquivo_funcionário; //Apontador para o arquivo
 
 void modulo_funcionarios(void) {
+    char opcao;
+    char nome[51];
+    char cpf[12];
+    char email[26];
+    char telefone[12];
     
-
     do {
         opcao = tela_de_funcionarios();
         switch(opcao) {
-            case '1':   cadastrar_funcionarios();
+            case '1':   cadastrar_funcionarios(nome, cpf, email, telefone);
                         break;
-            case '2': 	exibir_funcionarios();
+            case '2': 	exibir_funcionarios(nome, cpf, email, telefone);
                         break;
             case '3': 	alterar_funcionarios();
                         break;
