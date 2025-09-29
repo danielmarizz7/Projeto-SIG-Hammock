@@ -6,6 +6,7 @@
 #include "funcionarios.h"
 #include <locale.h>
 
+
 FILE * arquivo_funcionário; //Apontador para o arquivo
 
 void modulo_funcionarios(void) {
