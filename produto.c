@@ -7,12 +7,19 @@
 #include <locale.h>
 
 
+FILE * arquivo_produto;
+
 
  
 
 
 void modulo_produto(void){
+
     char opcao;
+    char nome[31];
+    char valor_produto[11];
+    char tipo_produto[15]; 
+    char cor_produto [26];
 
     do {
         opcao = tela_de_produto();
