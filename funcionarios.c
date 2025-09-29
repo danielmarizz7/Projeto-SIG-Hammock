@@ -4,10 +4,10 @@
 #include "funcionarios.h"
 
 
-
+FILE * arquivo_funcionário; //Apontador para o arquivo
 
 void modulo_funcionarios(void) {
-    char opcao;
+    
 
     do {
         opcao = tela_de_funcionarios();
