@@ -226,7 +226,7 @@ void alterar_cliente(void){
         arquivo_cliente = fopen("clientes.csv", "rt");
     }
 
-    while (fscanf(arquivo_cliente, "%d", &id_cliente) != EOF){
+    while (fscanf(arquivo_cliente, "%d", &id_cliente) == 1){
         fgetc(arquivo_cliente);
         fscanf(arquivo_cliente, "%[^;]", nome);
         fgetc(arquivo_cliente);
@@ -307,7 +307,7 @@ void excluir_cliente(void){
         arquivo_cliente = fopen("clientes.csv", "rt");
     }
 
-    while (fscanf(arquivo_cliente, "%d", &id_cliente) != EOF){
+    while (fscanf(arquivo_cliente, "%d", &id_cliente) == 1){
         fgetc(arquivo_cliente);
         fscanf(arquivo_cliente, "%[^;]", nome);
         fgetc(arquivo_cliente);
