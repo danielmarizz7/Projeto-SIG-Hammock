@@ -189,18 +189,94 @@ void exibir_clientes(char nome[], char cpf[], char email[], char telefone[]){
 
 void alterar_cliente(void){
     int id_procurar = 0;
+    int id_cliente = 0;
+    char opc_alterar;
+    char nome[51];
+    char cpf[12];
+    char email[26];
+    char telefone[12];
+    FILE * arquivo_temporario;
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Alterar Clientes                 ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Digite o CPF do cliente que deseja alterar: ");
+    printf("Digite o ID do cliente que deseja alterar: ");
     scanf(" %d", &id_procurar);
+    limpar_buffer();
     // esta tela ainda vai receber atualizações ao longo do projeto
+
+    printf("\nO que deseja alterar desse cliente? ");
+    printf("\n1 - nome");
+    printf("\n2 - cpf");
+    printf("\n3 - email");
+    printf("\n4 - telefone\n");
+    scanf("%c", &opc_alterar);
+    limpar_buffer();
+
+    arquivo_cliente = fopen("clientes.csv", "rt");
+
+    arquivo_temporario = fopen("clientes_temp.csv", "wt");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_cliente == NULL) {
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.csv", "wt");
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.csv", "rt");
+    }
+
+    while (fscanf(arquivo_cliente, "%d", &id_cliente) != EOF){
+        fgetc(arquivo_cliente);
+        fscanf(arquivo_cliente, "%[^;]", nome);
+        fgetc(arquivo_cliente);
+        fscanf(arquivo_cliente, "%[^;]", cpf);
+        fgetc(arquivo_cliente);
+        fscanf(arquivo_cliente, "%[^;]", email);
+        fgetc(arquivo_cliente);
+        fscanf(arquivo_cliente, "%[^\n]", telefone);
+        fgetc(arquivo_cliente);
+
+        if (id_cliente == id_procurar){
+            switch (opc_alterar)
+                        {
+                        case '1':
+                            printf("\nDigite o novo nome: ");
+                            scanf("%[^\n]", nome);
+                            limpar_buffer();
+                            break;
+                        case  '2':
+                            printf("\nDigite o novo cpf: ");
+                            scanf("%[^\n]", cpf);
+                            limpar_buffer();
+                            break;
+                        case  '3':
+                            printf("\nDigite o novo email: ");
+                            scanf("%[^\n]", email);
+                            limpar_buffer();
+                            break;
+                        case  '4':
+                            printf("\nDigite o novo telefone: ");
+                            scanf("%[^\n]", telefone);
+                            limpar_buffer();
+                            break;
+                        default:
+                            break;
+            }
+        }
+        fprintf(arquivo_temporario, "%d;", id_cliente);
+        fprintf(arquivo_temporario, "%s;", nome);
+        fprintf(arquivo_temporario, "%s;", cpf);
+        fprintf(arquivo_temporario, "%s;", email);
+        fprintf(arquivo_temporario, "%s\n", telefone);              
+    }
+    fclose(arquivo_temporario);
+    fclose(arquivo_cliente);
+    remove("clientes.csv");
+    rename("clientes_temp.csv", "clientes.csv");
+    printf("\nCliente com o ID %d alterado com sucesso!", id_procurar);
+    getchar();
 }
-
-
-
-
 
 void excluir_cliente(void){
     int id_procurar = 0;
@@ -258,50 +334,5 @@ void excluir_cliente(void){
     rename("clientes_temp.csv", "clientes.csv");
     printf("\nCliente com o ID %d excluido com sucesso!", id_procurar);
     getchar();
-    getchar();
-
     // esta tela ainda vai receber atualizações ao longo do projeto
 }
-
-
-
-
-
-// printf("\nO que deseja excluir desse cliente? ");
-// printf("\n1 - nome");
-// printf("\n2 - cpf");
-// printf("\n3 - email");
-// printf("\n3 - telefone\n");
-// scanf("%s", opc_excluir);
-
-
-// switch (opc_excluir)
-//             {
-//             case '1':
-//                 fprintf(arquivo_temporario, "%d;", id_cliente);
-//                 fprintf(arquivo_temporario, "%s;", '');
-//                 fprintf(arquivo_temporario, "%s;", cpf);
-//                 fprintf(arquivo_temporario, "%s;", email);
-//                 fprintf(arquivo_temporario, "%s\n", telefone); 
-//                 break;
-//             case  '2':
-//                 fprintf(arquivo_temporario, "%d;", id_cliente);
-//                 fprintf(arquivo_temporario, "%s;", nome);
-//                 fprintf(arquivo_temporario, "%s;", '');
-//                 fprintf(arquivo_temporario, "%s;", email);
-//                 fprintf(arquivo_temporario, "%s\n", telefone); 
-//             case  '3':
-//                 fprintf(arquivo_temporario, "%d;", id_cliente);
-//                 fprintf(arquivo_temporario, "%s;", nome);
-//                 fprintf(arquivo_temporario, "%s;", cpf);
-//                 fprintf(arquivo_temporario, "%s;", '');
-//                 fprintf(arquivo_temporario, "%s\n", telefone); 
-//             case  '4':
-//                 fprintf(arquivo_temporario, "%d;", id_cliente);
-//                 fprintf(arquivo_temporario, "%s;", nome);
-//                 fprintf(arquivo_temporario, "%s;", cpf);
-//                 fprintf(arquivo_temporario, "%s;", email);
-//                 fprintf(arquivo_temporario, "%s\n", ''); 
-//             default:
-//                 break;
-// }
