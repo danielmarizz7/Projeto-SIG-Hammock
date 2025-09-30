@@ -76,6 +76,12 @@ void cadastrar_funcionarios(char nome[], char cpf[], char email[], char telefone
     
     arquivo_funcionario = fopen("funcionarios.csv", "rt");
 
+    if (arquivo_funcionario == NULL) {
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.csv", "wt");
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.csv", "rt");
+    }
     id_funcionario = gerar_id(arquivo_funcionario);
 
     fclose(arquivo_funcionario);
@@ -116,8 +122,10 @@ void exibir_funcionarios(char nome[], char cpf[], char email[], char telefone[])
     arquivo_funcionario = fopen("funcionarios.csv", "rt");
 
     if (arquivo_funcionario == NULL) {
-        printf("\nO arquivo não existe.");
-        getchar();
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.csv", "wt");
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.csv", "rt");
     }
 
     while (!feof(arquivo_funcionario)){

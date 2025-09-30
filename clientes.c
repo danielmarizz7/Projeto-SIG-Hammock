@@ -138,8 +138,10 @@ void exibir_clientes(char nome[], char cpf[], char email[], char telefone[]){
     arquivo_cliente = fopen("clientes.csv", "rt");
 
     if (arquivo_cliente == NULL) {
-        printf("\nO arquivo nao existe.");
-        getchar();
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.csv", "wt");
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.csv", "rt");
     }
 
     while (!feof(arquivo_cliente)){

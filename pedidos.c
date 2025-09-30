@@ -86,6 +86,12 @@ void cadastrar_pedidos(int id_cliente, int id_produto, int id_funcionario, float
 
     arquivo_pedido = fopen("pedidos.csv", "rt");
 
+    if (arquivo_pedido == NULL) {
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.csv", "wt");
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.csv", "rt");
+    }
     id_pedido = gerar_id(arquivo_pedido);
 
     fclose(arquivo_pedido);
@@ -135,8 +141,10 @@ void exibir_pedidos(int id_cliente, int id_produto, int id_funcionario, float pr
     arquivo_pedido = fopen("pedidos.csv", "rt");
 
     if (arquivo_pedido == NULL) {
-        printf("\nO arquivo nao existe.");
-        getchar();
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.csv", "wt");
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.csv", "rt");
     }
 
     while (!feof(arquivo_pedido)){
