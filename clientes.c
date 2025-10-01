@@ -11,27 +11,23 @@ FILE * arquivo_cliente; //Apontador do arquivo
 
 void modulo_clientes(void){
     char opcao;
-    char nome[51];
-    char cpf[12];
-    char email[26];
-    char telefone[12];
+    Cliente cli;
 
     do {
         opcao = tela_de_clientes();
         switch(opcao){
-            case '1':   cadastrar_clientes(nome, cpf, email, telefone);
+            case '1':   cadastrar_clientes(&cli);
                         break;
-            case '2':   exibir_clientes(nome, cpf, email, telefone);
+            case '2':   exibir_clientes(&cli);
                         break;
-            case '3':   alterar_cliente();
+            case '3':   alterar_cliente(&cli);
                         break;
-            case '4':   excluir_cliente();
+            case '4':   excluir_cliente(&cli);
                         break;
 
         }
     } while (opcao != '0');
 }
-
 
 
 char tela_de_clientes(void){
@@ -58,27 +54,27 @@ char tela_de_clientes(void){
 
 
 
-void cadastrar_clientes(char nome[], char cpf[], char email[], char telefone[]){
-    int id_cliente = 0;
+void cadastrar_clientes(Cliente* cli){
+
     limpar_buffer();
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Cadastrar Clientes                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do cliente: ");
-    scanf("%[^\n]", nome);
+    scanf("%[^\n]", cli->nome);
     limpar_buffer();
 
     printf("Digite o CPF do cliente: ");
-    scanf("%[^\n]", cpf);
+    scanf("%[^\n]", cli->cpf);
     limpar_buffer();
 
     printf("Digite o email do cliente: ");
-    scanf("%[^\n]", email);
+    scanf("%[^\n]", cli->email);
     limpar_buffer();
 
     printf("Digite o telefone do cliente: ");
-    scanf("%[^\n]", telefone);
+    scanf("%[^\n]", cli->telefone);
     limpar_buffer();
 
     arquivo_cliente = fopen("clientes.csv", "rt");
@@ -91,7 +87,7 @@ void cadastrar_clientes(char nome[], char cpf[], char email[], char telefone[]){
         arquivo_cliente = fopen("clientes.csv", "rt");
     }
 
-    id_cliente = gerar_id(arquivo_cliente);
+    cli->id = gerar_id(arquivo_cliente);
 
     fclose(arquivo_cliente);
     
@@ -104,13 +100,13 @@ void cadastrar_clientes(char nome[], char cpf[], char email[], char telefone[]){
     else
     {
         //Escreve coisas no arquivo
-        fprintf(arquivo_cliente, "%d;", id_cliente);
-        fprintf(arquivo_cliente, "%s;", nome);
-        fprintf(arquivo_cliente, "%s;", cpf);
-        fprintf(arquivo_cliente, "%s;", email);
-        fprintf(arquivo_cliente, "%s\n", telefone);
+        fprintf(arquivo_cliente, "%d;", cli->id);
+        fprintf(arquivo_cliente, "%s;", cli->nome);
+        fprintf(arquivo_cliente, "%s;", cli->cpf);
+        fprintf(arquivo_cliente, "%s;", cli->email);
+        fprintf(arquivo_cliente, "%s\n", cli->telefone);
         fclose(arquivo_cliente);
-        printf("\nCliente %s cadastrado com sucesso!", nome);
+        printf("\nCliente %s cadastrado com sucesso!", cli->nome);
         printf("\nPressione ENTER para continuar.");
     }
     
@@ -124,9 +120,8 @@ void cadastrar_clientes(char nome[], char cpf[], char email[], char telefone[]){
 
 
 
-void exibir_clientes(char nome[], char cpf[], char email[], char telefone[]){
+void exibir_clientes(Cliente* cli){
     int id_procurar = 0;
-    int id_cliente = 0;
 
     system("clear || cls");
     limpar_buffer();
@@ -146,25 +141,24 @@ void exibir_clientes(char nome[], char cpf[], char email[], char telefone[]){
         arquivo_cliente = fopen("clientes.csv", "rt");
     }
 
-    while (!feof(arquivo_cliente)){
-        fscanf(arquivo_cliente, "%d", &id_cliente);
+    while (fscanf(arquivo_cliente, "%d", &cli->id) == 1){
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", nome);
+        fscanf(arquivo_cliente, "%[^;]", cli->nome);
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cpf);
+        fscanf(arquivo_cliente, "%[^;]", cli->cpf);
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", email);
+        fscanf(arquivo_cliente, "%[^;]", cli->email);
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^\n]", telefone);
+        fscanf(arquivo_cliente, "%[^\n]", cli->telefone);
         fgetc(arquivo_cliente);
 
-        if (id_cliente == id_procurar)
+        if (cli->id == id_procurar)
         {
-            printf("\nID do cliente: %d", id_cliente);
-            printf("\nNome do cliente: %s", nome);
-            printf("\nCPF do cliente: %s", cpf);
-            printf("\nEmail do cliente: %s", email);
-            printf("\nTelefone do cliente: %s", telefone);
+            printf("\nID do cliente: %d", cli->id);
+            printf("\nNome do cliente: %s", cli->nome);
+            printf("\nCPF do cliente: %s", cli->cpf);
+            printf("\nEmail do cliente: %s", cli->email);
+            printf("\nTelefone do cliente: %s", cli->telefone);
 
             fclose(arquivo_cliente);
             limpar_buffer();
@@ -187,14 +181,9 @@ void exibir_clientes(char nome[], char cpf[], char email[], char telefone[]){
 
 
 
-void alterar_cliente(void){
+void alterar_cliente(Cliente* cli){
     int id_procurar = 0;
-    int id_cliente = 0;
     char opc_alterar;
-    char nome[51];
-    char cpf[12];
-    char email[26];
-    char telefone[12];
     FILE * arquivo_temporario;
 
     system("clear || cls");
@@ -226,49 +215,49 @@ void alterar_cliente(void){
         arquivo_cliente = fopen("clientes.csv", "rt");
     }
 
-    while (fscanf(arquivo_cliente, "%d", &id_cliente) == 1){
+    while (fscanf(arquivo_cliente, "%d", &cli->id) == 1){
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", nome);
+        fscanf(arquivo_cliente, "%[^;]", cli->nome);
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cpf);
+        fscanf(arquivo_cliente, "%[^;]", cli->cpf);
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", email);
+        fscanf(arquivo_cliente, "%[^;]", cli->email);
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^\n]", telefone);
+        fscanf(arquivo_cliente, "%[^\n]", cli->telefone);
         fgetc(arquivo_cliente);
 
-        if (id_cliente == id_procurar){
+        if (cli->id == id_procurar){
             switch (opc_alterar)
                         {
                         case '1':
                             printf("\nDigite o novo nome: ");
-                            scanf("%[^\n]", nome);
+                            scanf("%[^\n]", cli->nome);
                             limpar_buffer();
                             break;
                         case  '2':
                             printf("\nDigite o novo cpf: ");
-                            scanf("%[^\n]", cpf);
+                            scanf("%[^\n]", cli->cpf);
                             limpar_buffer();
                             break;
                         case  '3':
                             printf("\nDigite o novo email: ");
-                            scanf("%[^\n]", email);
+                            scanf("%[^\n]", cli->email);
                             limpar_buffer();
                             break;
                         case  '4':
                             printf("\nDigite o novo telefone: ");
-                            scanf("%[^\n]", telefone);
+                            scanf("%[^\n]", cli->telefone);
                             limpar_buffer();
                             break;
                         default:
                             break;
             }
         }
-        fprintf(arquivo_temporario, "%d;", id_cliente);
-        fprintf(arquivo_temporario, "%s;", nome);
-        fprintf(arquivo_temporario, "%s;", cpf);
-        fprintf(arquivo_temporario, "%s;", email);
-        fprintf(arquivo_temporario, "%s\n", telefone);              
+        fprintf(arquivo_temporario, "%d;", cli->id);
+        fprintf(arquivo_temporario, "%s;", cli->nome);
+        fprintf(arquivo_temporario, "%s;", cli->cpf);
+        fprintf(arquivo_temporario, "%s;", cli->email);
+        fprintf(arquivo_temporario, "%s\n", cli->telefone);              
     }
     fclose(arquivo_temporario);
     fclose(arquivo_cliente);
@@ -278,13 +267,8 @@ void alterar_cliente(void){
     getchar();
 }
 
-void excluir_cliente(void){
+void excluir_cliente(Cliente* cli){
     int id_procurar = 0;
-    int id_cliente = 0;
-    char nome[51];
-    char cpf[12];
-    char email[26];
-    char telefone[12];
     FILE * arquivo_temporario;
 
     system("clear || cls");
@@ -307,23 +291,23 @@ void excluir_cliente(void){
         arquivo_cliente = fopen("clientes.csv", "rt");
     }
 
-    while (fscanf(arquivo_cliente, "%d", &id_cliente) == 1){
+    while (fscanf(arquivo_cliente, "%d", &cli->id) == 1){
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", nome);
+        fscanf(arquivo_cliente, "%[^;]", cli->nome);
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cpf);
+        fscanf(arquivo_cliente, "%[^;]", cli->cpf);
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", email);
+        fscanf(arquivo_cliente, "%[^;]", cli->email);
         fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^\n]", telefone);
+        fscanf(arquivo_cliente, "%[^\n]", cli->telefone);
         fgetc(arquivo_cliente);
 
-        if (id_cliente != id_procurar){
-            fprintf(arquivo_temporario, "%d;", id_cliente);
-            fprintf(arquivo_temporario, "%s;", nome);
-            fprintf(arquivo_temporario, "%s;", cpf);
-            fprintf(arquivo_temporario, "%s;", email);
-            fprintf(arquivo_temporario, "%s\n", telefone);
+        if (cli->id != id_procurar){
+            fprintf(arquivo_temporario, "%d;", cli->id);
+            fprintf(arquivo_temporario, "%s;", cli->nome);
+            fprintf(arquivo_temporario, "%s;", cli->cpf);
+            fprintf(arquivo_temporario, "%s;", cli->email);
+            fprintf(arquivo_temporario, "%s\n", cli->telefone);
         }
                  
         
@@ -336,3 +320,8 @@ void excluir_cliente(void){
     getchar();
     // esta tela ainda vai receber atualizações ao longo do projeto
 }
+
+//x = malloc(1000) >>>> Pega 1000 bytes, pega o endereco do primeiro byte e coloca em x
+//malloc >>> aloca espaco de memoria em uma variavel
+//x = (Cliente *) malloc(sizeof(Cliente)); >>> Pegar mais memoria e colocar na estruct
+//free(x) >>> devolve a memoria alocada em "x".
