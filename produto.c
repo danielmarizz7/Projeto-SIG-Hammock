@@ -168,14 +168,88 @@ void exibir_produto(Produto* prod){
 
 
 
-void alterar_produto(void){
-    char id_produto[12];
+void alterar_produto(Produto* prod){
+   
+    int id_procurar = 0;
+    char opc_alterar;
+    FILE * arquivo_temporario;
+
+
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Alterar Produto                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do produto que deseja alterar: ");
-    scanf(" %s", id_produto);
+    scanf(" %s", opc_alterar);
+    limpar_buffer();
+    printf("\nO que deseja alterar desse Prodtuo ?");
+    printf("\n1 - modelo");
+    printf("\n2 - valor");
+    printf("\n3 - tipo");
+    printf("\n4 - cor");
+    scanf("%c", &opc_alterar);
+    limpar_buffer();
+
+    arquivo_produto = fopen("produtos.csv", "rt");
+
+    arquivo_temporario = fopen("produtos_temp.csv", "wt");
+
+    if (arquivo_produto == NULL){
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.csv", "wt");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.csv", "rt");
+    }
+    while (fscanf(arquivo_produto, "%d", &prod->id) == 1){
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^;]", prod->modelo_rede);
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^;]", prod->valor_rede);
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^;]", prod->tipo_rede);
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^\n]", prod->cor_rede);
+        fgetc(arquivo_produto);
+
+        if (prod->id == id_procurar){
+            switch (opc_alterar)
+                        {
+                        case '1':
+                            printf("\nDigite o novo novo modelo: ");
+                            scanf("%[^\n]", prod->modelo_rede);
+                            limpar_buffer();
+                            break;
+                        case  '2':
+                            printf("\nDigite o novo valor: ");
+                            scanf("%[^\n]", prod->valor_rede);
+                            limpar_buffer();
+                            break;
+                        case  '3':
+                            printf("\nDigite o novo tipo: ");
+                            scanf("%[^\n]", prod->tipo_rede);
+                            limpar_buffer();
+                            break;
+                        case  '4':
+                            printf("\nDigite a nova cor: ");
+                            scanf("%[^\n]", prod->cor_rede);
+                            limpar_buffer();
+                            break;
+                        default:
+                            break;
+                        }
+        }
+        fprintf(arquivo_temporario, "%d;", prod->id);
+        fprintf(arquivo_temporario, "%s;", prod->modelo_rede);
+        fprintf(arquivo_temporario, "%s;", prod->valor_rede);
+        fprintf(arquivo_temporario, "%s;", prod->tipo_rede);
+        fprintf(arquivo_temporario, "%s\n", prod->cor_rede);   
+    }
+    fclose(arquivo_temporario);
+    fclose(arquivo_produto);
+    remove("produtos.csv");
+    rename("produtos_temp.csv", "funcionarios.csv");
+    printf("\nProduto com o ID %d alterado com sucesso!", id_procurar);
     getchar();
  
 }
