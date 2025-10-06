@@ -52,8 +52,9 @@ char tela_de_produto(void){
     return op_produtos;
 }
 
-void cadastrar_produto(char modelo_rede[], char valor_rede[], char tipo_rede[], char cor_rede[]){
-    int id_produto = 0;
+void cadastrar_produto(Produto* prod){
+    int id = 0;
+
     limpar_buffer();
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -61,19 +62,19 @@ void cadastrar_produto(char modelo_rede[], char valor_rede[], char tipo_rede[], 
     printf("╚═════════════════════════════════════════════════╝\n");
 
     printf("Digite o modelo da rede: ");
-    scanf("%[^\n]", modelo_rede);
+    scanf("%[^\n]", prod->modelo_rede);
     limpar_buffer();
 
     printf("Digite o valor da rede: ");
-    scanf("%[^\n]", valor_rede);
+    scanf("%[^\n]", prod->valor_rede);
     limpar_buffer();
 
     printf("Digite o tipo da rede: ");
-    scanf("%[^\n]", tipo_rede);
+    scanf("%[^\n]", prod->tipo_rede);
     limpar_buffer();
 
     printf("Digite a cor da rede: ");
-    scanf("%[^\n]", cor_rede);
+    scanf("%[^\n]", prod->cor_rede);
     limpar_buffer();
 
     arquivo_produto = fopen("produtos.csv", "rt");
@@ -86,7 +87,7 @@ void cadastrar_produto(char modelo_rede[], char valor_rede[], char tipo_rede[], 
         arquivo_produto = fopen("produtos.csv", "rt");
     }
 
-    id_produto = gerar_id(arquivo_produto);
+    prod->id = gerar_id(arquivo_produto);
 
     fclose(arquivo_produto);
 
@@ -96,13 +97,13 @@ void cadastrar_produto(char modelo_rede[], char valor_rede[], char tipo_rede[], 
         getchar();
         fclose(arquivo_produto);
     } else {
-        fprintf(arquivo_produto, "%d;", id_produto);
-        fprintf(arquivo_produto, "%s;", modelo_rede);
-        fprintf(arquivo_produto, "%s;", valor_rede);
-        fprintf(arquivo_produto, "%s;", tipo_rede);
-        fprintf(arquivo_produto, "%s\n", cor_rede);
+        fprintf(arquivo_produto, "%d;", id);
+        fprintf(arquivo_produto, "%s;", prod->modelo_rede);
+        fprintf(arquivo_produto, "%s;", prod->valor_rede);
+        fprintf(arquivo_produto, "%s;", prod->tipo_rede);
+        fprintf(arquivo_produto, "%s\n", prod->cor_rede);
         fclose(arquivo_produto);
-        printf("\nA rede de modelo %s foi cadastrada com sucesso!", modelo_rede);
+        printf("\nA rede de modelo %s foi cadastrada com sucesso!", prod->modelo_rede);
         printf("\nPressione ENTER para continuar.");
     }
     getchar();  // Apenas para pausar antes de sair
