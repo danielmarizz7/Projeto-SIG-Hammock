@@ -9,9 +9,9 @@ struct pedido {
     char data[26];
 };
 
-void modulo_pedidos(void);
 char tela_de_pedidos(void);
-void cadastrar_pedidos(int, int, int, float, char[]);
-void exibir_pedidos(int, int, int, float, char[]);
-void alterar_pedido(void);
-void excluir_pedido(void);
+void cadastrar_pedidos(Pedido*);
+void exibir_pedidos(Pedido*);
+void alterar_pedido(Pedido*);
+void excluir_pedido(Pedido*);
+void modulo_pedidos(void);

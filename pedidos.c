@@ -11,22 +11,18 @@ FILE * arquivo_pedido; //Apontador do arquivo
 
 void modulo_pedidos(void){
     char opcao;
-    int id_cliente = 0;
-    int id_produto = 0;
-    int id_funcionario = 0;
-    float preco = 0;
-    char data[26];
+    Pedido pedido;;
 
     do {
         opcao = tela_de_pedidos();
         switch(opcao){
-            case '1':   cadastrar_pedidos(id_cliente, id_produto, id_funcionario, preco, data);
+            case '1':   cadastrar_pedidos(&pedido);
                         break;
-            case '2':   exibir_pedidos(id_cliente, id_produto, id_funcionario, preco, data);
+            case '2':   exibir_pedidos(&pedido);
                         break;
-            case '3':   alterar_pedido();
+            case '3':   alterar_pedido(&pedido);
                         break;
-            case '4':   excluir_pedido();
+            case '4':   excluir_pedido(&pedido);
                         break;
 
         }
@@ -57,42 +53,35 @@ char tela_de_pedidos(void){
 
 
 
-void cadastrar_pedidos(int id_cliente, int id_produto, int id_funcionario, float preco, char data[]){
-    int id_pedido = 0;
+void cadastrar_pedidos(Pedido* pedido){
     limpar_buffer();
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Cadastrar Pedidos                 ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do cliente que fez o pedido: ");
-    scanf("%d", &id_cliente);
+    scanf("%d", &pedido->id_cliente);
     limpar_buffer();
 
     printf("Digite o ID do produto que faz parte do pedido: ");
-    scanf("%d", &id_produto);
+    scanf("%d", &pedido->id_produto);
     limpar_buffer();
 
     printf("Digite o ID do funcionario que fez a venda: ");
-    scanf("%d", &id_funcionario);
+    scanf("%d", &pedido->id_funcionario);
     limpar_buffer();
 
     printf("Digite o preco do pedido: ");
-    scanf("%f", &preco);
+    scanf("%f", &pedido->preco);
     limpar_buffer();
 
     printf("Digite a data do pedido: ");
-    scanf("%[^\n]", data);
+    scanf("%[^\n]", pedido->data);
     limpar_buffer();    
 
     arquivo_pedido = fopen("pedidos.csv", "rt");
 
-    if (arquivo_pedido == NULL) {
-        fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.csv", "wt");
-        fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.csv", "rt");
-    }
-    id_pedido = gerar_id(arquivo_pedido);
+    pedido->id_pedido = gerar_id(arquivo_pedido);
 
     fclose(arquivo_pedido);
     
@@ -105,14 +94,14 @@ void cadastrar_pedidos(int id_cliente, int id_produto, int id_funcionario, float
     else
     {
         //Escreve coisas no arquivo
-        fprintf(arquivo_pedido, "%d;", id_pedido);
-        fprintf(arquivo_pedido, "%d;", id_cliente);
-        fprintf(arquivo_pedido, "%d;", id_produto);
-        fprintf(arquivo_pedido, "%d;", id_funcionario);
-        fprintf(arquivo_pedido, "%f;", preco);
-        fprintf(arquivo_pedido, "%s\n", data);
+        fprintf(arquivo_pedido, "%d;", pedido->id_pedido);
+        fprintf(arquivo_pedido, "%d;", pedido->id_cliente);
+        fprintf(arquivo_pedido, "%d;", pedido->id_produto);
+        fprintf(arquivo_pedido, "%d;", pedido->id_funcionario);
+        fprintf(arquivo_pedido, "%f;", pedido->preco);
+        fprintf(arquivo_pedido, "%s\n", pedido->data);
         fclose(arquivo_pedido);
-        printf("\nPedido de numero %d cadastrado com sucesso!", id_pedido);
+        printf("\nPedido de numero %d cadastrado com sucesso!", pedido->id_pedido);
         printf("\nPressione ENTER para continuar.");
     }
     
@@ -126,9 +115,8 @@ void cadastrar_pedidos(int id_cliente, int id_produto, int id_funcionario, float
 
 
 
-void exibir_pedidos(int id_cliente, int id_produto, int id_funcionario, float preco, char data[]){
+void exibir_pedidos(Pedido* pedido){
     int id_procurar = 0;
-    int id_pedido = 0;
 
     system("clear || cls");
     limpar_buffer();
@@ -141,34 +129,32 @@ void exibir_pedidos(int id_cliente, int id_produto, int id_funcionario, float pr
     arquivo_pedido = fopen("pedidos.csv", "rt");
 
     if (arquivo_pedido == NULL) {
-        fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.csv", "wt");
-        fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.csv", "rt");
+        printf("\nO arquivo nao existe.");
+        getchar();
     }
 
     while (!feof(arquivo_pedido)){
-        fscanf(arquivo_pedido, "%d", &id_pedido);
+        fscanf(arquivo_pedido, "%d", &pedido->id_pedido);
         fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &id_cliente);
+        fscanf(arquivo_pedido, "%d", &pedido->id_cliente);
         fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &id_produto);
+        fscanf(arquivo_pedido, "%d", &pedido->id_produto);
         fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &id_funcionario);
+        fscanf(arquivo_pedido, "%d", &pedido->id_funcionario);
         fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%f", &preco);
+        fscanf(arquivo_pedido, "%f", &pedido->preco);
         fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%[^\n]", data);
+        fscanf(arquivo_pedido, "%[^\n]", pedido->data);
         fgetc(arquivo_pedido);
 
-        if (id_pedido == id_procurar)
+        if (pedido->id_pedido == id_procurar)
         {
-            printf("\nID do pedido: %d", id_pedido);
-            printf("\nID do cliente: %d", id_cliente);
-            printf("\nID do produto: %d", id_produto);
-            printf("\nID do funcionario: %d", id_funcionario);
-            printf("\nPreco do pedido: %f", preco);
-            printf("\nData do pedido: %s", data);
+            printf("\nID do pedido: %d", pedido->id_pedido);
+            printf("\nID do cliente: %d", pedido->id_cliente);
+            printf("\nID do produto: %d", pedido->id_produto);
+            printf("\nID do funcionario: %d", pedido->id_funcionario);
+            printf("\nPreco do pedido: %f", pedido->preco);
+            printf("\nData do pedido: %s", pedido->data);
 
             fclose(arquivo_pedido);
             limpar_buffer();
@@ -191,7 +177,7 @@ void exibir_pedidos(int id_cliente, int id_produto, int id_funcionario, float pr
 
 
 
-void alterar_pedido(void){
+void alterar_pedido(Pedido* pedido){
     char id[12];
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -206,7 +192,7 @@ void alterar_pedido(void){
 
 
 
-void excluir_pedido(void){
+void excluir_pedido(Pedido* pedido){
     char id[12];
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
