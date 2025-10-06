@@ -110,10 +110,9 @@ void cadastrar_produto(Produto* prod){
 }
 
 
-void exibir_produto(char modelo_rede[], char valor_rede[], char tipo_rede[], char cor_rede[]){
+void exibir_produto(Produto* prod){
     int id_procurar = 0;
-    int id_produto = 0;
-
+    
     system("clear || cls");
     limpar_buffer();
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -133,24 +132,23 @@ void exibir_produto(char modelo_rede[], char valor_rede[], char tipo_rede[], cha
     }
 
     while (!feof(arquivo_produto)){
-        fscanf(arquivo_produto, "%d", &id_produto);
+        fscanf(arquivo_produto, "%d", prod->id);
         fgetc(arquivo_produto);
-        fscanf(arquivo_produto, "%[^;]", modelo_rede);
+        fscanf(arquivo_produto, "%[^;]", prod->modelo_rede);
         fgetc(arquivo_produto);
-        fscanf(arquivo_produto, "%[^;]", valor_rede);
+        fscanf(arquivo_produto, "%[^;]", prod->valor_rede);
         fgetc(arquivo_produto);
-        fscanf(arquivo_produto, "%[^;]", tipo_rede);
+        fscanf(arquivo_produto, "%[^;]", prod->tipo_rede);
         fgetc(arquivo_produto);
-        fscanf(arquivo_produto, "%[^\n]", cor_rede);
+        fscanf(arquivo_produto, "%[^\n]", prod->cor_rede);
         fgetc(arquivo_produto);
 
-        if (id_produto == id_procurar)
+        if (prod->id == id_procurar)
         {
-            printf("\nID do Produto: %d", id_produto);
-            printf("\nmodelo do Produto: %s", modelo_rede);
-            printf("\nValor do Produto: %s", valor_rede);
-            printf("\nTipo do Produto: %s", tipo_rede);
-            printf("\nCor do Produto: %s", cor_rede);
+            printf("\nID do Produto: %d", prod->id);
+            printf("\nmodelo do Produto: %s", prod->valor_rede);
+            printf("\nTipo do Produto: %s", prod->tipo_rede);
+            printf("\nCor do Produto: %s", prod->cor_rede);
 
             fclose(arquivo_produto);
             limpar_buffer();
