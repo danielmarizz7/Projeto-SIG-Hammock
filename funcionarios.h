@@ -10,10 +10,9 @@ struct funcionarios {
 
 
 
-
-void modulo_funcionarios(void);
-char tela_de_funcionarios(Funcionarios*);
+char tela_de_funcionarios(void);
 void cadastrar_funcionarios(Funcionarios*);
 void exibir_funcionarios(Funcionarios*);
 void alterar_funcionarios(Funcionarios*);
-void excluir_funcionarios(void);
+void excluir_funcionarios(Funcionarios*);
+void modulo_funcionarios(void);

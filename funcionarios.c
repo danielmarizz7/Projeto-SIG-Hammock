@@ -195,13 +195,13 @@ void alterar_funcionarios(Funcionarios* func){
 
     while (fscanf(arquivo_funcionario, "%d", &func->id) == 1){
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", &func->nome);
+        fscanf(arquivo_funcionario, "%[^;]", func->nome);
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", &func->cpf);
+        fscanf(arquivo_funcionario, "%[^;]", func->cpf);
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", &func->email);
+        fscanf(arquivo_funcionario, "%[^;]", func->email);
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^\n]", &func->telefone);
+        fscanf(arquivo_funcionario, "%[^\n]", func->telefone);
         fgetc(arquivo_funcionario);
 
         if (func->id == id_procurar){
@@ -229,6 +229,8 @@ void alterar_funcionarios(Funcionarios* func){
                             break;
                         default:
                             break;
+                        }
+
         }
         fprintf(arquivo_temporario, "%d;", func->id);
         fprintf(arquivo_temporario, "%s;", func->nome);
@@ -242,16 +244,56 @@ void alterar_funcionarios(Funcionarios* func){
     rename("funcionarios_temp.csv", "funcionarios.csv");
     printf("\nFuncionário com o ID %d alterado com sucesso!", id_procurar);
     getchar();
-    
 }
 
-void excluir_funcionarios(void){
-    char cpf[12];
+
+void excluir_funcionarios(Funcionarios* func){
+    int id_procurar = 0;
+    FILE * arquivo_temporario;
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Excluir funcionários             ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o CPF do funcionário que deseja excluir: ");
-    scanf(" %s", cpf);
-    // esta tela ainda vai receber atualizações ao longo do projeto
+    scanf(" %d", &id_procurar);
+    limpar_buffer();
+
+    arquivo_funcionario = fopen("funcionarios.csv", "rt");
+
+    arquivo_temporario = fopen("funcionarios_temp.csv", "wt");
+
+    if(arquivo_funcionario == NULL){
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.csv", "wt");
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios_temp.csv", "rt");
+    }
+    
+    while (fscanf(arquivo_funcionario, "%d", &func->id) == 1){
+        fgetc(arquivo_funcionario);
+        fscanf(arquivo_funcionario, "%[^;]", func->nome);
+        fgetc(arquivo_funcionario);
+        fscanf(arquivo_funcionario, "%[^;]", func->cpf);
+        fgetc(arquivo_funcionario);
+        fscanf(arquivo_funcionario, "%[^;]", func->email);
+        fgetc(arquivo_funcionario);
+        fscanf(arquivo_funcionario, "%[^\n]", func->telefone);
+        fgetc(arquivo_funcionario);
+
+        if (func->id != id_procurar){
+            fprintf(arquivo_temporario, "%d;", func->id);
+            fprintf(arquivo_temporario, "%s;", func->nome);
+            fprintf(arquivo_temporario, "%s;", func->cpf);
+            fprintf(arquivo_temporario, "%s;", func->email);
+            fprintf(arquivo_temporario, "%s\n", func->telefone);
+        }
+
+        }
+        fclose(arquivo_temporario);
+        fclose(arquivo_funcionario);
+        remove("funcionarios.csv");
+        rename("funcionarios_temp.csv", "funcionarios.csv");
+        printf("\nFuncionário com o ID %d excluido com sucesso!", id_procurar);
+        getchar();
 }
