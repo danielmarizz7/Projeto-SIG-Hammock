@@ -11,21 +11,18 @@ FILE * arquivo_funcionario; //Apontador para o arquivo
 
 void modulo_funcionarios(void) {
     char opcao;
-    char nome[51];
-    char cpf[12];
-    char email[26];
-    char telefone[12];
-    
+    Funcionarios func;
+
     do {
         opcao = tela_de_funcionarios();
         switch(opcao) {
-            case '1':   cadastrar_funcionarios(nome, cpf, email, telefone);
+            case '1':   cadastrar_funcionarios(&func);
                         break;
-            case '2': 	exibir_funcionarios(nome, cpf, email, telefone);
+            case '2': 	exibir_funcionarios(&func);
                         break;
-            case '3': 	alterar_funcionarios();
+            case '3': 	alterar_funcionarios(&func);
                         break;
-            case '4': 	excluir_funcionarios();
+            case '4': 	excluir_funcionarios(&func);
                         break;
         } 		
     } while (opcao != '0');
