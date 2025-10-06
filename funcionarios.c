@@ -152,7 +152,7 @@ void exibir_funcionarios(Funcionarios* func){
             return;
         }
     }
-    
+
     fclose(arquivo_funcionario);
     
     limpar_buffer();
@@ -163,14 +163,35 @@ void exibir_funcionarios(Funcionarios* func){
 
 
 void alterar_funcionarios(void){
-    char cpf[12];
+    int id_procurar = 0;
+    char opc_alterar;
+    FILE * arquivo_temporario;
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Alterar Funcionários             ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o CPF do Funcionário que deseja alterar: ");
-    scanf(" %s", cpf);
-    // esta tela ainda vai receber atualizações ao longo do projeto
+    scanf(" %d", &id_procurar);
+    limpar_buffer();
+    printf("\nO que deseja alterar desse Funcionário ?");
+    printf("\n1 - nome");
+    printf("\n2 - cpf");
+    printf("\n3 - email");
+    printf("\n4 - telefone\n");
+    scanf("%c", &opc_alterar);
+    limpar_buffer();
+
+    arquivo_funcionario = fopen("funcionarios.csv", "rt");
+
+    arquivo_temporario = fopen("funcionarios_tem_csv", "wt");
+
+    if (arquivo_funcionario == NULL){
+        fclose(arquivo_funcionario);
+        arquivo_funcionario == fopen("funcionarios.csv", "wt");
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.csv", "rt");
+    }
 }
 
 void excluir_funcionarios(void){
