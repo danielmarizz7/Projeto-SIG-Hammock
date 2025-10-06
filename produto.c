@@ -254,14 +254,54 @@ void alterar_produto(Produto* prod){
  
 }
 
-void excluir_produto(void){
-    char id_produto[12];
+void excluir_produto(Produto* prod){
+    int id_procurar = 0;
+    FILE * arquivo_temporario;
+
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Excluir Produto                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do produto que deseja Excluir: ");
-    scanf(" %s", id_produto);
-    getchar();
- 
+    scanf(" %s", id_procurar);
+    limpar_buffer();
+
+    arquivo_produto = fopen("produtos.csv", "rt");
+
+    arquivo_temporario = fopen("produtos_temp.csv", "wt");
+
+
+    if(arquivo_produto == NULL){
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.csv", "wt");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos_temp.csv", "rt");  
+    }
+    while (fscanf(arquivo_produto, "%d", &prod->id) == 1){
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^;]", prod->modelo_rede);
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^;]", prod->valor_rede);
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^;]", prod->tipo_rede);
+        fgetc(arquivo_produto);
+        fscanf(arquivo_produto, "%[^\n]", prod->cor_rede);
+        fgetc(arquivo_produto);
+
+        if (prod->id != id_procurar){
+            fprintf(arquivo_temporario, "%d;", prod->id);
+            fprintf(arquivo_temporario, "%s;", prod->modelo_rede);
+            fprintf(arquivo_temporario, "%s;", prod->valor_rede);
+            fprintf(arquivo_temporario, "%s;", prod->tipo_rede);
+            fprintf(arquivo_temporario, "%s\n", prod->cor_rede);
+        }
+
+        }
+        fclose(arquivo_temporario);
+        fclose(arquivo_produto);
+        remove("produtos.csv");
+        rename("produtos_temp.csv", "funcionarios.csv");
+        printf("\nProdutos com o ID %d excluido com sucesso!", id_procurar);
+        getchar();
 }
