@@ -48,27 +48,27 @@ char tela_de_funcionarios(void){
     return op_funcionario;
 }
 
-void cadastrar_funcionarios(char nome[], char cpf[], char email[], char telefone[]){
+void cadastrar_funcionarios(Funcionarios* func){
     int id_funcionario = 0;
     limpar_buffer();
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
-    printf("║              Cadastrar Funcionarios             ║\n");
+    printf("║              Cadastrar Funcionários             ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o nome do funcionario: ");
-    scanf("%[^\n]", nome);
+    scanf("%[^\n]", func->nome);
     limpar_buffer();
 
     printf("Digite o CPF do funcionario: ");
-    scanf("%[^\n]", cpf);
+    scanf("%[^\n]", func->cpf);
     limpar_buffer();
 
     printf("Digite o email do funcionario: ");
-    scanf("%[^\n]", email);
+    scanf("%[^\n]", func->email);
     limpar_buffer();
 
     printf("Digite o telefone do funcionario: ");
-    scanf("%[^\n]", telefone);
+    scanf("%[^\n]", func->telefone);
     limpar_buffer();
     
     arquivo_funcionario = fopen("funcionarios.csv", "rt");
@@ -79,7 +79,9 @@ void cadastrar_funcionarios(char nome[], char cpf[], char email[], char telefone
         fclose(arquivo_funcionario);
         arquivo_funcionario = fopen("funcionarios.csv", "rt");
     }
-    id_funcionario = gerar_id(arquivo_funcionario);
+
+
+    func->id = gerar_id(arquivo_funcionario);
 
     fclose(arquivo_funcionario);
 
@@ -91,13 +93,13 @@ void cadastrar_funcionarios(char nome[], char cpf[], char email[], char telefone
     }
     else
     {
-        fprintf(arquivo_funcionario, "%d;", id_funcionario);
-        fprintf(arquivo_funcionario, "%s;", nome);
-        fprintf(arquivo_funcionario, "%s;", cpf);
-        fprintf(arquivo_funcionario, "%s;", email);
-        fprintf(arquivo_funcionario, "%s\n", telefone);
+        fprintf(arquivo_funcionario, "%d;", func->id);
+        fprintf(arquivo_funcionario, "%s;", func->nome);
+        fprintf(arquivo_funcionario, "%s;", func->cpf);
+        fprintf(arquivo_funcionario, "%s;", func->email);
+        fprintf(arquivo_funcionario, "%s\n", func->telefone);
         fclose(arquivo_funcionario);
-        printf("\nFuncionário %s cadastrado com sucesso!", nome);
+        printf("\nFuncionário %s cadastrado com sucesso!", func->nome);
         printf("\nPressione ENTER para continuar.");
     }
 
