@@ -170,7 +170,7 @@ void alterar_funcionarios(Funcionarios* func){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Alterar Funcionários             ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Digite o CPF do Funcionário que deseja alterar: ");
+    printf("Digite o ID do Funcionário que deseja alterar: ");
     scanf(" %d", &id_procurar);
     limpar_buffer();
     printf("\nO que deseja alterar desse Funcionário ?");
@@ -183,7 +183,7 @@ void alterar_funcionarios(Funcionarios* func){
 
     arquivo_funcionario = fopen("funcionarios.csv", "rt");
 
-    arquivo_temporario = fopen("funcionarios_tem_csv", "wt");
+    arquivo_temporario = fopen("funcionarios_temp.csv", "wt");
 
     if (arquivo_funcionario == NULL){
         fclose(arquivo_funcionario);
