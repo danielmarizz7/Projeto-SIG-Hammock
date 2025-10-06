@@ -9,25 +9,20 @@
 
 FILE * arquivo_produto;
 
-
 void modulo_produto(void){
-
     char opcao;
-    char modelo_rede[31];
-    char valor_rede[11];
-    char tipo_rede[15]; 
-    char cor_rede [26];
-
+    Produto prod;
+    
     do {
         opcao = tela_de_produto();
         switch(opcao){
-            case '1':   cadastrar_produto(modelo_rede, valor_rede, tipo_rede, cor_rede);
+            case '1':   cadastrar_produto(&prod);
                         break;
-            case '2':   exibir_produto(modelo_rede, valor_rede, tipo_rede, cor_rede);
+            case '2':   exibir_produto(&prod);
                         break;
-            case '3':   alterar_produto();
+            case '3':   alterar_produto(&prod);
                         break;
-            case '4':   excluir_produto();
+            case '4':   excluir_produto(&prod);
                         break;
 
         }
