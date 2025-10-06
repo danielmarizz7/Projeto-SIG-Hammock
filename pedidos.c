@@ -178,14 +178,98 @@ void exibir_pedidos(Pedido* pedido){
 
 
 void alterar_pedido(Pedido* pedido){
-    char id[12];
+    int id_procurar = 0;
+    char opc_alterar;
+    FILE * arquivo_temporario;
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Alterar Pedidos                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do pedido que deseja alterar: ");
-    scanf(" %s", id);
+    scanf(" %d", &id_procurar);
+    limpar_buffer();
     // esta tela ainda vai receber atualizações ao longo do projeto
+
+    printf("\nO que deseja alterar desse pedido? ");
+    printf("\n1 - ID_cliente");
+    printf("\n2 - ID_produto");
+    printf("\n3 - ID_funcionario");
+    printf("\n4 - Preco");    
+    printf("\n5 - Data\n");
+    scanf("%c", &opc_alterar);
+    limpar_buffer();
+
+    arquivo_pedido = fopen("pedidos.csv", "rt");
+
+    arquivo_temporario = fopen("pedidos_temp.csv", "wt");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_pedido == NULL) {
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.csv", "wt");
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.csv", "rt");
+    }
+
+    while (fscanf(arquivo_pedido, "%d", &pedido->id_pedido) == 1){
+        fgetc(arquivo_pedido);
+        fscanf(arquivo_pedido, "%d", &pedido->id_cliente);
+        fgetc(arquivo_pedido);
+        fscanf(arquivo_pedido, "%d", &pedido->id_produto);
+        fgetc(arquivo_pedido);
+        fscanf(arquivo_pedido, "%d", &pedido->id_funcionario);
+        fgetc(arquivo_pedido);
+        fscanf(arquivo_pedido, "%f", &pedido->preco);
+        fgetc(arquivo_pedido);
+        fscanf(arquivo_pedido, "%[^\n]", pedido->data);
+        fgetc(arquivo_pedido);
+
+        if (pedido->id_pedido == id_procurar){
+            switch (opc_alterar)
+                        {
+                        case '1':
+                            printf("\nDigite o novo ID do cliente: ");
+                            scanf("%d", &pedido->id_cliente);
+                            limpar_buffer();
+                            break;
+                        case  '2':
+                            printf("\nDigite o novo ID do produto: ");
+                            scanf("%d", &pedido->id_produto);
+                            limpar_buffer();
+                            break;
+                        case  '3':
+                            printf("\nDigite o novo ID do funcionario: ");
+                            scanf("%d", &pedido->id_funcionario);
+                            limpar_buffer();
+                            break;
+                        case  '4':
+                            printf("\nDigite o novo preco: ");
+                            scanf("%f", &pedido->preco);
+                            limpar_buffer();
+                            break;
+                        case '5':
+                            printf("\nDigite a nova data: ");
+                            scanf("%[^\n]", pedido->data);
+                            limpar_buffer();
+                            break;                            
+                        default:
+                            break;
+            }
+        }
+        fprintf(arquivo_temporario, "%d;", pedido->id_pedido);
+        fprintf(arquivo_temporario, "%d;", pedido->id_cliente);
+        fprintf(arquivo_temporario, "%d;", pedido->id_produto);
+        fprintf(arquivo_temporario, "%d;", pedido->id_funcionario);
+        fprintf(arquivo_temporario, "%f;", pedido->preco);
+        fprintf(arquivo_temporario, "%s\n", pedido->data);              
+    }
+    fclose(arquivo_temporario);
+    fclose(arquivo_pedido);
+    remove("pedidos.csv");
+    rename("pedidos_temp.csv", "pedidos.csv");
+    printf("\nPedido com o ID %d alterado com sucesso!", id_procurar);
+    getchar();
 }
 
 
@@ -193,12 +277,57 @@ void alterar_pedido(Pedido* pedido){
 
 
 void excluir_pedido(Pedido* pedido){
-    char id[12];
+    int id_procurar = 0;
+    FILE * arquivo_temporario;
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Excluir Pedidos                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do pedido que deseja excluir: ");
-    scanf(" %s", id);
-    // esta tela ainda vai receber atualizações ao longo do projeto
+    scanf(" %d", &id_procurar);
+    limpar_buffer();
+
+    arquivo_pedido = fopen("pedidos.csv", "rt");
+
+    arquivo_temporario = fopen("pedidos_temp.csv", "wt");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_pedido == NULL) {
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.csv", "wt");
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.csv", "rt");
+    }
+
+    while (fscanf(arquivo_pedido, "%d", &pedido->id_pedido) == 1){
+        fgetc(arquivo_pedido);
+        fscanf(arquivo_pedido, "%d", &pedido->id_cliente);
+        fgetc(arquivo_pedido);
+        fscanf(arquivo_pedido, "%d", &pedido->id_produto);
+        fgetc(arquivo_pedido);
+        fscanf(arquivo_pedido, "%d", &pedido->id_funcionario);
+        fgetc(arquivo_pedido);
+        fscanf(arquivo_pedido, "%f", &pedido->preco);
+        fgetc(arquivo_pedido);
+        fscanf(arquivo_pedido, "%[^\n]", pedido->data);
+        fgetc(arquivo_pedido);
+
+        if (pedido->id_pedido != id_procurar){
+            fprintf(arquivo_temporario, "%d;", pedido->id_pedido);
+            fprintf(arquivo_temporario, "%d;", pedido->id_cliente);
+            fprintf(arquivo_temporario, "%d;", pedido->id_produto);
+            fprintf(arquivo_temporario, "%d;", pedido->id_funcionario);
+            fprintf(arquivo_temporario, "%f;", pedido->preco);
+            fprintf(arquivo_temporario, "%s\n", pedido->data);
+        }
+                 
+        
+    }
+    fclose(arquivo_temporario);
+    fclose(arquivo_pedido);
+    remove("pedidos.csv");
+    rename("pedidos_temp.csv", "pedidos.csv");
+    printf("\nPedido com o ID %d excluido com sucesso!", id_procurar);
+    getchar();
 }
