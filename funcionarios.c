@@ -49,7 +49,6 @@ char tela_de_funcionarios(void){
 }
 
 void cadastrar_funcionarios(Funcionarios* func){
-    int id_funcionario = 0;
     limpar_buffer();
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -127,15 +126,15 @@ void exibir_funcionarios(Funcionarios* func){
         arquivo_funcionario = fopen("funcionarios.csv", "rt");
     }
 
-    while (!fscanf(arquivo_funcionario, "%d", &func->id)== 1){
+    while (fscanf(arquivo_funcionario, "%d", &func->id) == 1){
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", &func->nome);
+        fscanf(arquivo_funcionario, "%[^;]", func->nome);
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", &func->cpf);
+        fscanf(arquivo_funcionario, "%[^;]", func->cpf);
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", &func->email);
+        fscanf(arquivo_funcionario, "%[^;]", func->email);
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^\n]", &func->telefone);
+        fscanf(arquivo_funcionario, "%[^\n]", func->telefone);
         fgetc(arquivo_funcionario);
 
         if (func->id == id_procurar)
@@ -188,7 +187,7 @@ void alterar_funcionarios(Funcionarios* func){
 
     if (arquivo_funcionario == NULL){
         fclose(arquivo_funcionario);
-        arquivo_funcionario == fopen("funcionarios.csv", "wt");
+        arquivo_funcionario = fopen("funcionarios.csv", "wt");
         fclose(arquivo_funcionario);
         arquivo_funcionario = fopen("funcionarios.csv", "rt");
     }
