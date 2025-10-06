@@ -106,9 +106,9 @@ void cadastrar_funcionarios(Funcionarios* func){
     getchar();
 }
 
-void exibir_funcionarios(char nome[], char cpf[], char email[], char telefone[]){
+void exibir_funcionarios(Funcionarios* func){
     int id_procurar = 0;
-    int id_funcionario = 0;
+    
 
     system("clear || cls");
     limpar_buffer();
@@ -127,25 +127,24 @@ void exibir_funcionarios(char nome[], char cpf[], char email[], char telefone[])
         arquivo_funcionario = fopen("funcionarios.csv", "rt");
     }
 
-    while (!feof(arquivo_funcionario)){
-        fscanf(arquivo_funcionario, "%d", &id_funcionario);
+    while (!fscanf(arquivo_funcionario, "%d", &func->id)== 1){
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", nome);
+        fscanf(arquivo_funcionario, "%[^;]", &func->nome);
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", cpf);
+        fscanf(arquivo_funcionario, "%[^;]", &func->cpf);
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", email);
+        fscanf(arquivo_funcionario, "%[^;]", &func->email);
         fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^\n]", telefone);
+        fscanf(arquivo_funcionario, "%[^\n]", &func->telefone);
         fgetc(arquivo_funcionario);
 
-        if (id_funcionario == id_procurar)
+        if (func->id == id_procurar)
         {
-            printf("\nID do funcionário: %d", id_funcionario);
-            printf("\nNome do funcionário: %s", nome);
-            printf("\nCPF do funcionário: %s", cpf);
-            printf("\nEmail do funcionário: %s", email);
-            printf("\nTelefone do funcionário: %s", telefone);
+            printf("\nID do funcionário: %d", func->id);
+            printf("\nNome do funcionário: %s", func->nome);
+            printf("\nCPF do funcionário: %s", func->cpf);
+            printf("\nEmail do funcionário: %s", func->email);
+            printf("\nTelefone do funcionário: %s", func->telefone);
 
             fclose(arquivo_funcionario);
             limpar_buffer();
@@ -153,6 +152,7 @@ void exibir_funcionarios(char nome[], char cpf[], char email[], char telefone[])
             return;
         }
     }
+    
     fclose(arquivo_funcionario);
     
     limpar_buffer();
