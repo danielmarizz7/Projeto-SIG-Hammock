@@ -132,7 +132,7 @@ void exibir_produto(Produto* prod){
     }
 
     while (!feof(arquivo_produto)){
-        fscanf(arquivo_produto, "%d", prod->id);
+        fscanf(arquivo_produto, "%d", &prod->id);
         fgetc(arquivo_produto);
         fscanf(arquivo_produto, "%[^;]", prod->modelo_rede);
         fgetc(arquivo_produto);
@@ -181,7 +181,7 @@ void alterar_produto(Produto* prod){
     printf("║                Alterar Produto                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do produto que deseja alterar: ");
-    scanf(" %s", opc_alterar);
+    scanf(" %d", &id_procurar);
     limpar_buffer();
     printf("\nO que deseja alterar desse Prodtuo ?");
     printf("\n1 - modelo");
@@ -264,7 +264,7 @@ void excluir_produto(Produto* prod){
     printf("║                Excluir Produto                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do produto que deseja Excluir: ");
-    scanf(" %s", id_procurar);
+    scanf(" %d", &id_procurar);
     limpar_buffer();
 
     arquivo_produto = fopen("produtos.csv", "rt");
