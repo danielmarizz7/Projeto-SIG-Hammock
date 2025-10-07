@@ -16,15 +16,17 @@ void modulo_clientes(void){
     do {
         opcao = tela_de_clientes();
         switch(opcao){
-            case '1':   cadastrar_clientes(&cli);
+            case '1':   cadastrar_clientes();
                         break;
-            case '2':   exibir_clientes(&cli);
+            case '2':   exibir_clientes();
                         break;
             case '3':   alterar_cliente(&cli);
                         break;
             case '4':   excluir_cliente(&cli);
                         break;
-
+            case '5':
+                listar_clientes();
+                break;
         }
     } while (opcao != '0');
 }
@@ -54,8 +56,15 @@ char tela_de_clientes(void){
 
 
 
-void cadastrar_clientes(Cliente* cli){
-
+void cadastrar_clientes(void){
+    Cliente* cli; //criando um apontador de Cliente
+    //colocando na variável "cli" uma alocação de memória de "Cliente", com base no tamanho do struct de cliente
+    //.dat
+    //criar o campo status. "status" vai servir como um modo de "desativar" e "ativar" o cliente em questão. Usar True e False
+    // #define True 1
+    // #define False 0
+    // Refazer função de gerar ID
+    cli = (Cliente*) malloc(sizeof(Cliente));
     limpar_buffer();
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -77,21 +86,22 @@ void cadastrar_clientes(Cliente* cli){
     scanf("%[^\n]", cli->telefone);
     limpar_buffer();
 
-    arquivo_cliente = fopen("clientes.csv", "rt");
+    //RB -> Read Binary
+    arquivo_cliente = fopen("clientes.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.csv", "wt");
+        arquivo_cliente = fopen("clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.csv", "rt");
+        arquivo_cliente = fopen("clientes.csv", "rb");
     }
 
     cli->id = gerar_id(arquivo_cliente);
-
+    //cli->id = 1;
     fclose(arquivo_cliente);
     
-    arquivo_cliente = fopen("clientes.csv", "at"); //Cria o arquivo
+    arquivo_cliente = fopen("clientes.dat", "ab"); //Cria o arquivo
     if (arquivo_cliente == NULL) {
         printf("\nO arquivo nao foi criado.");
         getchar();
@@ -100,18 +110,12 @@ void cadastrar_clientes(Cliente* cli){
     else
     {
         //Escreve coisas no arquivo
-        fprintf(arquivo_cliente, "%d;", cli->id);
-        fprintf(arquivo_cliente, "%s;", cli->nome);
-        fprintf(arquivo_cliente, "%s;", cli->cpf);
-        fprintf(arquivo_cliente, "%s;", cli->email);
-        fprintf(arquivo_cliente, "%s\n", cli->telefone);
+        fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
         fclose(arquivo_cliente);
-        printf("\nCliente %s cadastrado com sucesso!", cli->nome);
+        free(cli);
+        printf("\nCliente cadastrado com sucesso!");
         printf("\nPressione ENTER para continuar.");
     }
-    
-    
-
     getchar();  // Apenas para pausar antes de sair
 }
 
@@ -120,7 +124,9 @@ void cadastrar_clientes(Cliente* cli){
 
 
 
-void exibir_clientes(Cliente* cli){
+void exibir_clientes(){
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
     int id_procurar = 0;
 
     system("clear || cls");
@@ -131,26 +137,17 @@ void exibir_clientes(Cliente* cli){
     printf("Digite o ID do cliente que deseja buscar: ");
     scanf(" %d", &id_procurar);
 
-    arquivo_cliente = fopen("clientes.csv", "rt");
+    arquivo_cliente = fopen("clientes.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.csv", "wt");
+        arquivo_cliente = fopen("clientes.csv", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.csv", "rt");
+        arquivo_cliente = fopen("clientes.csv", "rb");
     }
 
-    while (fscanf(arquivo_cliente, "%d", &cli->id) == 1){
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->nome);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->cpf);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->email);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^\n]", cli->telefone);
-        fgetc(arquivo_cliente);
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
 
         if (cli->id == id_procurar)
         {
@@ -161,6 +158,7 @@ void exibir_clientes(Cliente* cli){
             printf("\nTelefone do cliente: %s", cli->telefone);
 
             fclose(arquivo_cliente);
+            free(cli);
             limpar_buffer();
             getchar();
             return;
@@ -169,12 +167,45 @@ void exibir_clientes(Cliente* cli){
         
     }
     fclose(arquivo_cliente);
+    free(cli);
     
     limpar_buffer();
     printf("\nNenhum cliente com esse id foi encontrado.");
     getchar();
     
     // esta tela ainda vai receber atualizações ao longo do projeto
+}
+
+void listar_clientes(void) {
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
+    system("clear || cls");
+    limpar_buffer();
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Lista de Clientes                 ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+
+    arquivo_cliente = fopen("clientes.dat", "rb");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_cliente == NULL) {
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.dat", "wb");
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.dat", "rb");
+    }
+    
+    while(fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
+        printf("\nID do cliente: %d", cli->id);
+        printf("\nNome do cliente: %s", cli->nome);
+        printf("\nCPF do cliente: %s", cli->cpf);
+        printf("\nEmail do cliente: %s", cli->email);
+        printf("\nTelefone do cliente: %s\n", cli->telefone);
+    }
+
+    fclose(arquivo_cliente);
+    free(cli);
+    getchar();
 }
 
 

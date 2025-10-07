@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <unistd.h>
+#include "clientes.h"
 
 void limpar_buffer(void) {
     int c;
@@ -12,15 +13,13 @@ void limpar_buffer(void) {
 }
 
 int gerar_id(FILE *arquivo) {
-    char pular_linha[200];
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
     int id = 0;
-    while (!feof(arquivo))
-    {
-        fscanf(arquivo, "%20d", &id);
-        fgetc(arquivo);
 
-        fscanf(arquivo, "%[^\n]", pular_linha);
-        fgetc(arquivo);
+    while(fread(cli, sizeof(Cliente), 1, arquivo))
+    {
+        id = cli->id;
     }
 
     id += 1;
