@@ -91,7 +91,6 @@ void cadastrar_clientes(void){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.dat", "wb");
         fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "rb");
@@ -142,7 +141,6 @@ void exibir_clientes(){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "wb");
         fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "rb");
@@ -190,7 +188,6 @@ void listar_clientes(void) {
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.dat", "wb");
         fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.dat", "rb");
@@ -242,7 +239,6 @@ void alterar_cliente(Cliente* cli){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "wt");
         fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "rt");
@@ -323,7 +319,7 @@ void excluir_cliente(void){
         arquivo_cliente = fopen("clientes.dat", "r+b");
     }
 
-    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && (excluido != 1)){
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && (excluido == 0)){
 
         if (cli->id == id_procurar){
             cli->status = 0;
