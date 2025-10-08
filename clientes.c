@@ -22,7 +22,7 @@ void modulo_clientes(void){
                         break;
             case '3':   alterar_cliente(&cli);
                         break;
-            case '4':   excluir_cliente(&cli);
+            case '4':   excluir_cliente();
                         break;
             case '5':
                 listar_clientes();
@@ -97,9 +97,10 @@ void cadastrar_clientes(void){
         arquivo_cliente = fopen("clientes.csv", "rb");
     }
 
-    cli->id = gerar_id(arquivo_cliente);
+    cli->id = gerar_id(arquivo_cliente, 1);
     //cli->id = 1;
     fclose(arquivo_cliente);
+    cli->status = 1;
     
     arquivo_cliente = fopen("clientes.dat", "ab"); //Cria o arquivo
     if (arquivo_cliente == NULL) {
@@ -149,7 +150,7 @@ void exibir_clientes(){
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
 
-        if (cli->id == id_procurar)
+        if (cli->id == id_procurar && cli->status == 1)
         {
             printf("\nID do cliente: %d", cli->id);
             printf("\nNome do cliente: %s", cli->nome);
@@ -201,6 +202,7 @@ void listar_clientes(void) {
         printf("\nCPF do cliente: %s", cli->cpf);
         printf("\nEmail do cliente: %s", cli->email);
         printf("\nTelefone do cliente: %s\n", cli->telefone);
+        printf("\nStatus do cliente: %d\n", cli->status);
     }
 
     fclose(arquivo_cliente);
@@ -298,9 +300,11 @@ void alterar_cliente(Cliente* cli){
     getchar();
 }
 
-void excluir_cliente(Cliente* cli){
+void excluir_cliente(void){
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
     int id_procurar = 0;
-    FILE * arquivo_temporario;
+    int excluido = 0;
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -310,43 +314,37 @@ void excluir_cliente(Cliente* cli){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_cliente = fopen("clientes.csv", "rt");
-
-    arquivo_temporario = fopen("clientes_temp.csv", "wt");
+    arquivo_cliente = fopen("clientes.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
+        arquivo_cliente = fopen("clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.csv", "wt");
-        fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.csv", "rt");
+        arquivo_cliente = fopen("clientes.dat", "r+b");
     }
 
-    while (fscanf(arquivo_cliente, "%d", &cli->id) == 1){
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->nome);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->cpf);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->email);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^\n]", cli->telefone);
-        fgetc(arquivo_cliente);
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && (excluido != 1)){
 
-        if (cli->id != id_procurar){
-            fprintf(arquivo_temporario, "%d;", cli->id);
-            fprintf(arquivo_temporario, "%s;", cli->nome);
-            fprintf(arquivo_temporario, "%s;", cli->cpf);
-            fprintf(arquivo_temporario, "%s;", cli->email);
-            fprintf(arquivo_temporario, "%s\n", cli->telefone);
+        if (cli->id == id_procurar){
+            cli->status = 0;
+
+            printf("\nID do cliente: %d", cli->id);
+            printf("\nNome do cliente: %s", cli->nome);
+            printf("\nCPF do cliente: %s", cli->cpf);
+            printf("\nEmail do cliente: %s", cli->email);
+            printf("\nTelefone do cliente: %s\n", cli->telefone);
+            printf("\nStatus do cliente: %d\n", cli->status);
+            getchar();
+
+            excluido = 1;
+            fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
+            fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
         }
                  
         
     }
-    fclose(arquivo_temporario);
     fclose(arquivo_cliente);
-    remove("clientes.csv");
-    rename("clientes_temp.csv", "clientes.csv");
+    free(cli);
     printf("\nCliente com o ID %d excluido com sucesso!", id_procurar);
     getchar();
 }

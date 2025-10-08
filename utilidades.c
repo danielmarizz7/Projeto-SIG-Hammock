@@ -3,6 +3,9 @@
 #include <locale.h>
 #include <unistd.h>
 #include "clientes.h"
+#include "produto.h"
+#include "funcionarios.h"
+#include "pedidos.h"
 
 void limpar_buffer(void) {
     int c;
@@ -12,23 +15,33 @@ void limpar_buffer(void) {
     };
 }
 
-int gerar_id(FILE *arquivo) {
-    Cliente* cli;
-    cli = (Cliente*) malloc(sizeof(Cliente));
+int gerar_id(FILE *arquivo, int estrutura) {
+    //Cliente* cli;
+    //cli = (Cliente*) malloc(sizeof(Cliente));
     int id = 0;
+    long int arquivo_tam, registro_tam, numero_registros;
 
-    while(fread(cli, sizeof(Cliente), 1, arquivo))
-    {
-        id = cli->id;
+    fseek(arquivo, 0, SEEK_END);
+    arquivo_tam = ftell(arquivo);
+
+    if (estrutura == 1){
+        registro_tam = sizeof(Cliente);
     }
+    else if (estrutura == 2){
+        registro_tam = sizeof(Produto);
+    }
+    else if (estrutura == 3){
+        registro_tam = sizeof(Funcionarios);
+    } else{
+        registro_tam = sizeof(Pedido);
+    }
+    
+    
+    
+    registro_tam = sizeof(Cliente);
+    numero_registros = arquivo_tam/registro_tam;
 
-    id += 1;
+    id = numero_registros + 1;
     return id;
 }
-
-//fseek() -> joga o ponteiro para o final do arquivo
-//ftell() -> mostra em qual posição do arquivo eu estou
-// Usa o fsize() para pegar o tamanho do struct em questão
-// divide o numero total de bytes pego em ftell() pelo numero obtido por fsize().
-// Assim, dá para saber quantos registros tem no arquivo.
-//modificar o gerar_id
+//voltar uma posição para gravar no lugar correto (usar o fseek)
