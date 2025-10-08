@@ -247,7 +247,6 @@ void alterar_produto(Produto* prod){
     }
     fclose(arquivo_temporario);
     fclose(arquivo_produto);
-    remove("produtos.csv");
     rename("produtos_temp.csv", "funcionarios.csv");
     printf("\nProduto com o ID %d alterado com sucesso!", id_procurar);
     getchar();
