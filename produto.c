@@ -40,7 +40,7 @@ char tela_de_produto(void){
     printf("║              Módulo De Produtos                 ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 1 - Cadastrar Produto                           ║\n");
-    printf("║ 2 - exibir Produto                              ║\n");
+    printf("║ 2 - Exibir Produto                              ║\n");
     printf("║ 3 - Editar Produto                              ║\n");
     printf("║ 4 - Excluir Produto                             ║\n");
     printf("║                                                 ║\n");
