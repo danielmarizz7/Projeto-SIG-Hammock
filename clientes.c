@@ -22,7 +22,7 @@ void modulo_clientes(void){
                         break;
             case '3':   alterar_cliente(&cli);
                         break;
-            case '4':   excluir_cliente(&cli);
+            case '4':   excluir_cliente();
                         break;
 
         }
@@ -251,9 +251,11 @@ void alterar_cliente(Cliente* cli){
     getchar();
 }
 
-void excluir_cliente(Cliente* cli){
+void excluir_cliente(void){
     int id_procurar = 0;
-    FILE * arquivo_temporario;
+    int excluido = False;
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -263,42 +265,28 @@ void excluir_cliente(Cliente* cli){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_cliente = fopen("clientes.csv", "rt");
-
-    arquivo_temporario = fopen("clientes_temp.csv", "wt");
+    arquivo_cliente = fopen("clientes.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.csv", "wt");
+        arquivo_cliente = fopen("clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.csv", "rt");
+        arquivo_cliente = fopen("clientes.dat", "r+b");
     }
 
-    while (fscanf(arquivo_cliente, "%d", &cli->id) == 1){
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->nome);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->cpf);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->email);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^\n]", cli->telefone);
-        fgetc(arquivo_cliente);
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && (excluido == False)){
+        if (cli->id == id_procurar){
+            cli->status = False;
 
-        if (cli->id != id_procurar){
-            fprintf(arquivo_temporario, "%d;", cli->id);
-            fprintf(arquivo_temporario, "%s;", cli->nome);
-            fprintf(arquivo_temporario, "%s;", cli->cpf);
-            fprintf(arquivo_temporario, "%s;", cli->email);
-            fprintf(arquivo_temporario, "%s\n", cli->telefone);
+            excluido = True;
+            fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
+            fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
         }
                  
         
     }
-    fclose(arquivo_temporario);
     fclose(arquivo_cliente);
-    remove("clientes.csv");
-    rename("clientes_temp.csv", "clientes.csv");
+    free(cli);
     printf("\nCliente com o ID %d excluido com sucesso!", id_procurar);
     getchar();
 }
