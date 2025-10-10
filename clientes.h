@@ -11,7 +11,7 @@ struct cliente {
 
 char tela_de_clientes(void);
 void cadastrar_clientes(void);
-void exibir_clientes(Cliente*);
+void exibir_clientes(void);
 void alterar_cliente(Cliente*);
 void excluir_cliente(Cliente*);
 void modulo_clientes(void);

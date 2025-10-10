@@ -18,7 +18,7 @@ void modulo_clientes(void){
         switch(opcao){
             case '1':   cadastrar_clientes();
                         break;
-            case '2':   exibir_clientes(&cli);
+            case '2':   exibir_clientes();
                         break;
             case '3':   alterar_cliente(&cli);
                         break;
@@ -54,7 +54,7 @@ char tela_de_clientes(void){
 
 
 
-void cadastrar_clientes(){
+void cadastrar_clientes(void){
     Cliente* cli;
     cli = (Cliente*) malloc(sizeof(Cliente));
     limpar_buffer();
@@ -115,8 +115,10 @@ void cadastrar_clientes(){
 
 
 
-void exibir_clientes(Cliente* cli){
+void exibir_clientes(void){
     int id_procurar = 0;
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
 
     system("clear || cls");
     limpar_buffer();
@@ -126,27 +128,17 @@ void exibir_clientes(Cliente* cli){
     printf("Digite o ID do cliente que deseja buscar: ");
     scanf(" %d", &id_procurar);
 
-    arquivo_cliente = fopen("clientes.csv", "rt");
+    arquivo_cliente = fopen("clientes.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.csv", "wt");
+        arquivo_cliente = fopen("clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.csv", "rt");
+        arquivo_cliente = fopen("clientes.dat", "rb");
     }
 
-    while (fscanf(arquivo_cliente, "%d", &cli->id) == 1){
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->nome);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->cpf);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->email);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^\n]", cli->telefone);
-        fgetc(arquivo_cliente);
-
-        if (cli->id == id_procurar)
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
+        if (cli->id == id_procurar && cli->status == True)
         {
             printf("\nID do cliente: %d", cli->id);
             printf("\nNome do cliente: %s", cli->nome);
@@ -155,6 +147,7 @@ void exibir_clientes(Cliente* cli){
             printf("\nTelefone do cliente: %s", cli->telefone);
 
             fclose(arquivo_cliente);
+            free(cli);
             limpar_buffer();
             getchar();
             return;
@@ -163,12 +156,10 @@ void exibir_clientes(Cliente* cli){
         
     }
     fclose(arquivo_cliente);
-    
+    free(cli);
     limpar_buffer();
     printf("\nNenhum cliente com esse id foi encontrado.");
     getchar();
-    
-    // esta tela ainda vai receber atualizações ao longo do projeto
 }
 
 
