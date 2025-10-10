@@ -11,7 +11,6 @@ FILE * arquivo_cliente; //Apontador do arquivo
 
 void modulo_clientes(void){
     char opcao;
-    Cliente cli;
 
     do {
         opcao = tela_de_clientes();
@@ -20,7 +19,7 @@ void modulo_clientes(void){
                         break;
             case '2':   exibir_clientes();
                         break;
-            case '3':   alterar_cliente(&cli);
+            case '3':   alterar_cliente();
                         break;
             case '4':   excluir_cliente();
                         break;
@@ -166,10 +165,12 @@ void exibir_clientes(void){
 
 
 
-void alterar_cliente(Cliente* cli){
+void alterar_cliente(void){
     int id_procurar = 0;
     char opc_alterar;
-    FILE * arquivo_temporario;
+    int cli_alterado = False;
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -178,7 +179,6 @@ void alterar_cliente(Cliente* cli){
     printf("Digite o ID do cliente que deseja alterar: ");
     scanf(" %d", &id_procurar);
     limpar_buffer();
-    // esta tela ainda vai receber atualizações ao longo do projeto
 
     printf("\nO que deseja alterar desse cliente? ");
     printf("\n1 - nome");
@@ -188,27 +188,16 @@ void alterar_cliente(Cliente* cli){
     scanf("%c", &opc_alterar);
     limpar_buffer();
 
-    arquivo_cliente = fopen("clientes.csv", "rt");
-
-    arquivo_temporario = fopen("clientes_temp.csv", "wt");
+    arquivo_cliente = fopen("clientes.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.csv", "wt");
+        arquivo_cliente = fopen("clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.csv", "rt");
+        arquivo_cliente = fopen("clientes.dat", "r+b");
     }
 
-    while (fscanf(arquivo_cliente, "%d", &cli->id) == 1){
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->nome);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->cpf);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^;]", cli->email);
-        fgetc(arquivo_cliente);
-        fscanf(arquivo_cliente, "%[^\n]", cli->telefone);
-        fgetc(arquivo_cliente);
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && cli_alterado == False){
 
         if (cli->id == id_procurar){
             switch (opc_alterar)
@@ -216,39 +205,50 @@ void alterar_cliente(Cliente* cli){
                         case '1':
                             printf("\nDigite o novo nome: ");
                             scanf("%[^\n]", cli->nome);
+                            cli_alterado = True;
                             limpar_buffer();
                             break;
                         case  '2':
                             printf("\nDigite o novo cpf: ");
                             scanf("%[^\n]", cli->cpf);
+                            cli_alterado = True;
                             limpar_buffer();
                             break;
                         case  '3':
                             printf("\nDigite o novo email: ");
                             scanf("%[^\n]", cli->email);
+                            cli_alterado = True;
                             limpar_buffer();
                             break;
                         case  '4':
                             printf("\nDigite o novo telefone: ");
                             scanf("%[^\n]", cli->telefone);
+                            cli_alterado = True;
                             limpar_buffer();
                             break;
                         default:
                             break;
             }
+            fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
+            fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
+            
+            system("clear || cls");
+            printf("\nCliente com o ID %d alterado com sucesso!", id_procurar);
+            printf("\n\n------------------------ Cliente Alterado ------------------------");
+            printf("\nID do cliente: %d", cli->id);
+            printf("\nNome do cliente: %s", cli->nome);
+            printf("\nCPF do cliente: %s", cli->cpf);
+            printf("\nEmail do cliente: %s", cli->email);
+            printf("\nTelefone do cliente: %s", cli->telefone);
+            getchar();
         }
-        fprintf(arquivo_temporario, "%d;", cli->id);
-        fprintf(arquivo_temporario, "%s;", cli->nome);
-        fprintf(arquivo_temporario, "%s;", cli->cpf);
-        fprintf(arquivo_temporario, "%s;", cli->email);
-        fprintf(arquivo_temporario, "%s\n", cli->telefone);              
     }
-    fclose(arquivo_temporario);
+    if (cli_alterado == False) {
+        printf("\nCliente com o ID %d não foi encontrado...", id_procurar);
+        getchar();
+    }
     fclose(arquivo_cliente);
-    remove("clientes.csv");
-    rename("clientes_temp.csv", "clientes.csv");
-    printf("\nCliente com o ID %d alterado com sucesso!", id_procurar);
-    getchar();
+    free(cli);
 }
 
 void excluir_cliente(void){
