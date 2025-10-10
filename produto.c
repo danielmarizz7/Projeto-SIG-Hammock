@@ -81,7 +81,6 @@ void cadastrar_produto(Produto* prod){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_produto == NULL) {
-        fclose(arquivo_produto);
         arquivo_produto = fopen("produtos.csv", "wt");
         fclose(arquivo_produto);
         arquivo_produto = fopen("produtos.csv", "rt");
@@ -125,7 +124,6 @@ void exibir_produto(Produto* prod){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_produto == NULL) {
-        fclose(arquivo_produto);
         arquivo_produto = fopen("produtos.csv", "wt");
         fclose(arquivo_produto);
         arquivo_produto = fopen("produtos.csv", "rt");
@@ -195,8 +193,7 @@ void alterar_produto(Produto* prod){
 
     arquivo_temporario = fopen("produtos_temp.csv", "wt");
 
-    if (arquivo_produto == NULL){
-        fclose(arquivo_produto);
+    if (arquivo_produto == NULL) {
         arquivo_produto = fopen("produtos.csv", "wt");
         fclose(arquivo_produto);
         arquivo_produto = fopen("produtos.csv", "rt");
@@ -271,11 +268,10 @@ void excluir_produto(Produto* prod){
     arquivo_temporario = fopen("produtos_temp.csv", "wt");
 
 
-    if(arquivo_produto == NULL){
-        fclose(arquivo_produto);
+    if (arquivo_produto == NULL) {
         arquivo_produto = fopen("produtos.csv", "wt");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos_temp.csv", "rt");  
+        arquivo_produto = fopen("produtos.csv", "rt");
     }
     while (fscanf(arquivo_produto, "%d", &prod->id) == 1){
         fgetc(arquivo_produto);

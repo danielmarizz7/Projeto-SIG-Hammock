@@ -73,7 +73,6 @@ void cadastrar_funcionarios(Funcionarios* func){
     arquivo_funcionario = fopen("funcionarios.csv", "rt");
 
     if (arquivo_funcionario == NULL) {
-        fclose(arquivo_funcionario);
         arquivo_funcionario = fopen("funcionarios.csv", "wt");
         fclose(arquivo_funcionario);
         arquivo_funcionario = fopen("funcionarios.csv", "rt");
@@ -120,7 +119,6 @@ void exibir_funcionarios(Funcionarios* func){
     arquivo_funcionario = fopen("funcionarios.csv", "rt");
 
     if (arquivo_funcionario == NULL) {
-        fclose(arquivo_funcionario);
         arquivo_funcionario = fopen("funcionarios.csv", "wt");
         fclose(arquivo_funcionario);
         arquivo_funcionario = fopen("funcionarios.csv", "rt");
@@ -185,8 +183,7 @@ void alterar_funcionarios(Funcionarios* func){
 
     arquivo_temporario = fopen("funcionarios_temp.csv", "wt");
 
-    if (arquivo_funcionario == NULL){
-        fclose(arquivo_funcionario);
+    if (arquivo_funcionario == NULL) {
         arquivo_funcionario = fopen("funcionarios.csv", "wt");
         fclose(arquivo_funcionario);
         arquivo_funcionario = fopen("funcionarios.csv", "rt");
@@ -262,11 +259,10 @@ void excluir_funcionarios(Funcionarios* func){
 
     arquivo_temporario = fopen("funcionarios_temp.csv", "wt");
 
-    if(arquivo_funcionario == NULL){
-        fclose(arquivo_funcionario);
+    if (arquivo_funcionario == NULL) {
         arquivo_funcionario = fopen("funcionarios.csv", "wt");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios_temp.csv", "rt");
+        arquivo_funcionario = fopen("funcionarios.csv", "rt");
     }
     
     while (fscanf(arquivo_funcionario, "%d", &func->id) == 1){

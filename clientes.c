@@ -81,7 +81,6 @@ void cadastrar_clientes(Cliente* cli){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "wt");
         fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "rt");
@@ -135,7 +134,6 @@ void exibir_clientes(Cliente* cli){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "wt");
         fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "rt");
@@ -209,7 +207,6 @@ void alterar_cliente(Cliente* cli){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "wt");
         fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "rt");
@@ -285,7 +282,6 @@ void excluir_cliente(Cliente* cli){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "wt");
         fclose(arquivo_cliente);
         arquivo_cliente = fopen("clientes.csv", "rt");

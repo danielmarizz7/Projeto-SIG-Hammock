@@ -81,6 +81,12 @@ void cadastrar_pedidos(Pedido* pedido){
 
     arquivo_pedido = fopen("pedidos.csv", "rt");
 
+    if (arquivo_pedido == NULL) {
+        arquivo_pedido = fopen("pedidos.csv", "wt");
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.csv", "rt");
+    }
+
     pedido->id_pedido = gerar_id(arquivo_pedido);
 
     fclose(arquivo_pedido);
@@ -129,8 +135,9 @@ void exibir_pedidos(Pedido* pedido){
     arquivo_pedido = fopen("pedidos.csv", "rt");
 
     if (arquivo_pedido == NULL) {
-        printf("\nO arquivo nao existe.");
-        getchar();
+        arquivo_pedido = fopen("pedidos.csv", "wt");
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.csv", "rt");
     }
 
     while (!feof(arquivo_pedido)){
@@ -206,7 +213,6 @@ void alterar_pedido(Pedido* pedido){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_pedido == NULL) {
-        fclose(arquivo_pedido);
         arquivo_pedido = fopen("pedidos.csv", "wt");
         fclose(arquivo_pedido);
         arquivo_pedido = fopen("pedidos.csv", "rt");
@@ -294,7 +300,6 @@ void excluir_pedido(Pedido* pedido){
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_pedido == NULL) {
-        fclose(arquivo_pedido);
         arquivo_pedido = fopen("pedidos.csv", "wt");
         fclose(arquivo_pedido);
         arquivo_pedido = fopen("pedidos.csv", "rt");
