@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <unistd.h>
+#include "clientes.h"
+#include "produto.h"
+#include "funcionarios.h"
+#include "pedidos.h"
 
 void limpar_buffer(void) {
     int c;
@@ -11,18 +15,28 @@ void limpar_buffer(void) {
     };
 }
 
-int gerar_id(FILE *arquivo) {
-    char pular_linha[200];
+
+int gerar_id(FILE *arquivo, int estrutura) {
     int id = 0;
-    while (!feof(arquivo))
-    {
-        fscanf(arquivo, "%20d", &id);
-        fgetc(arquivo);
+    long int arquivo_tam, registro_tam, numero_registros;
 
-        fscanf(arquivo, "%[^\n]", pular_linha);
-        fgetc(arquivo);
+    fseek(arquivo, 0, SEEK_END);
+    arquivo_tam = ftell(arquivo);
+
+    if (estrutura == 1){
+        registro_tam = sizeof(Cliente);
     }
+    else if (estrutura == 2){
+        registro_tam = sizeof(Produto);
+    }
+    else if (estrutura == 3){
+        registro_tam = sizeof(Funcionarios);
+    } else{
+        registro_tam = sizeof(Pedido);
+    }
+    
+    numero_registros = arquivo_tam/registro_tam;
 
-    id += 1;
+    id = numero_registros + 1;
     return id;
 }

@@ -87,7 +87,7 @@ void cadastrar_pedidos(Pedido* pedido){
         arquivo_pedido = fopen("pedidos.csv", "rt");
     }
 
-    pedido->id_pedido = gerar_id(arquivo_pedido);
+    pedido->id_pedido = gerar_id(arquivo_pedido, 4);
 
     fclose(arquivo_pedido);
     

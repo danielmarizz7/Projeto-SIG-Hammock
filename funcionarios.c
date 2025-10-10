@@ -79,7 +79,7 @@ void cadastrar_funcionarios(Funcionarios* func){
     }
 
 
-    func->id = gerar_id(arquivo_funcionario);
+    func->id = gerar_id(arquivo_funcionario, 3);
 
     fclose(arquivo_funcionario);
 

@@ -86,7 +86,7 @@ void cadastrar_clientes(Cliente* cli){
         arquivo_cliente = fopen("clientes.csv", "rt");
     }
 
-    cli->id = gerar_id(arquivo_cliente);
+    cli->id = gerar_id(arquivo_cliente, 1);
 
     fclose(arquivo_cliente);
     

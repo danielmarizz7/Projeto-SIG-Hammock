@@ -86,7 +86,7 @@ void cadastrar_produto(Produto* prod){
         arquivo_produto = fopen("produtos.csv", "rt");
     }
 
-    prod->id = gerar_id(arquivo_produto);
+    prod->id = gerar_id(arquivo_produto, 2);
 
     fclose(arquivo_produto);
 
