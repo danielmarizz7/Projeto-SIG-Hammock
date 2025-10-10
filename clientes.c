@@ -99,7 +99,7 @@ void cadastrar_clientes(void){
     }
     else
     {
-        //Escreve coisas no arquivo
+        //Escreve o novo cliente no arquivo
         fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
         fclose(arquivo_cliente);
         free(cli);
@@ -199,7 +199,7 @@ void alterar_cliente(void){
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && cli_alterado == False){
 
-        if (cli->id == id_procurar){
+        if (cli->id == id_procurar && cli->status == True){
             switch (opc_alterar)
                         {
                         case '1':
@@ -231,7 +231,7 @@ void alterar_cliente(void){
             }
             fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
             fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
-            
+
             system("clear || cls");
             printf("\nCliente com o ID %d alterado com sucesso!", id_procurar);
             printf("\n\n------------------------ Cliente Alterado ------------------------");
@@ -275,18 +275,21 @@ void excluir_cliente(void){
     }
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && (excluido == False)){
-        if (cli->id == id_procurar){
+        if (cli->id == id_procurar && cli->status == True){
             cli->status = False;
 
             excluido = True;
             fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
             fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
+            printf("\nCliente com o ID %d excluido com sucesso!", id_procurar);
         }
                  
         
     }
+    if (excluido == False) {
+        printf("\nNão existe nenhum cliente com o ID %d cadastrado...", id_procurar);
+    }
     fclose(arquivo_cliente);
     free(cli);
-    printf("\nCliente com o ID %d excluido com sucesso!", id_procurar);
     getchar();
 }

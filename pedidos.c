@@ -11,18 +11,17 @@ FILE * arquivo_pedido; //Apontador do arquivo
 
 void modulo_pedidos(void){
     char opcao;
-    Pedido pedido;;
 
     do {
         opcao = tela_de_pedidos();
         switch(opcao){
-            case '1':   cadastrar_pedidos(&pedido);
+            case '1':   cadastrar_pedidos();
                         break;
-            case '2':   exibir_pedidos(&pedido);
+            case '2':   exibir_pedidos();
                         break;
-            case '3':   alterar_pedido(&pedido);
+            case '3':   alterar_pedido();
                         break;
-            case '4':   excluir_pedido(&pedido);
+            case '4':   excluir_pedido();
                         break;
 
         }
@@ -53,8 +52,11 @@ char tela_de_pedidos(void){
 
 
 
-void cadastrar_pedidos(Pedido* pedido){
+void cadastrar_pedidos(void){
     limpar_buffer();
+    Pedido* pedido;
+    pedido = (Pedido*) malloc(sizeof(Pedido));
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Cadastrar Pedidos                 ║\n");
@@ -79,41 +81,34 @@ void cadastrar_pedidos(Pedido* pedido){
     scanf("%[^\n]", pedido->data);
     limpar_buffer();    
 
-    arquivo_pedido = fopen("pedidos.csv", "rt");
+    arquivo_pedido = fopen("pedidos.dat", "rb");
 
     if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.csv", "wt");
+        arquivo_pedido = fopen("pedidos.dat", "wb");
         fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.csv", "rt");
+        arquivo_pedido = fopen("pedidos.dat", "rb");
     }
 
     pedido->id_pedido = gerar_id(arquivo_pedido, 4);
 
     fclose(arquivo_pedido);
+    pedido->status = True;
     
-    arquivo_pedido = fopen("pedidos.csv", "at"); //Cria o arquivo
+    arquivo_pedido = fopen("pedidos.dat", "ab"); //Cria o arquivo
     if (arquivo_pedido == NULL) {
         printf("\nO arquivo nao foi criado.");
         getchar();
-        fclose(arquivo_pedido);
     }
     else
     {
-        //Escreve coisas no arquivo
-        fprintf(arquivo_pedido, "%d;", pedido->id_pedido);
-        fprintf(arquivo_pedido, "%d;", pedido->id_cliente);
-        fprintf(arquivo_pedido, "%d;", pedido->id_produto);
-        fprintf(arquivo_pedido, "%d;", pedido->id_funcionario);
-        fprintf(arquivo_pedido, "%f;", pedido->preco);
-        fprintf(arquivo_pedido, "%s\n", pedido->data);
+        //Escreve o novo pedido no arquivo
+        fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
         fclose(arquivo_pedido);
         printf("\nPedido de numero %d cadastrado com sucesso!", pedido->id_pedido);
         printf("\nPressione ENTER para continuar.");
+        free(pedido);
     }
-    
-    
-
-    getchar();  // Apenas para pausar antes de sair
+    getchar();
 }
 
 
@@ -121,8 +116,10 @@ void cadastrar_pedidos(Pedido* pedido){
 
 
 
-void exibir_pedidos(Pedido* pedido){
+void exibir_pedidos(void){
     int id_procurar = 0;
+    Pedido* pedido;
+    pedido = (Pedido*) malloc(sizeof(Pedido));
 
     system("clear || cls");
     limpar_buffer();
@@ -132,29 +129,16 @@ void exibir_pedidos(Pedido* pedido){
     printf("Digite o ID do pedido que deseja buscar: ");
     scanf(" %d", &id_procurar);
 
-    arquivo_pedido = fopen("pedidos.csv", "rt");
+    arquivo_pedido = fopen("pedidos.dat", "rb");
 
     if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.csv", "wt");
+        arquivo_pedido = fopen("pedidos.dat", "wb");
         fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.csv", "rt");
+        arquivo_pedido = fopen("pedidos.dat", "rb");
     }
 
-    while (!feof(arquivo_pedido)){
-        fscanf(arquivo_pedido, "%d", &pedido->id_pedido);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &pedido->id_cliente);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &pedido->id_produto);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &pedido->id_funcionario);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%f", &pedido->preco);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%[^\n]", pedido->data);
-        fgetc(arquivo_pedido);
-
-        if (pedido->id_pedido == id_procurar)
+    while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido)){
+        if (pedido->id_pedido == id_procurar && pedido->status == True)
         {
             printf("\nID do pedido: %d", pedido->id_pedido);
             printf("\nID do cliente: %d", pedido->id_cliente);
@@ -164,6 +148,7 @@ void exibir_pedidos(Pedido* pedido){
             printf("\nData do pedido: %s", pedido->data);
 
             fclose(arquivo_pedido);
+            free(pedido);
             limpar_buffer();
             getchar();
             return;
@@ -172,22 +157,22 @@ void exibir_pedidos(Pedido* pedido){
         
     }
     fclose(arquivo_pedido);
-    
+    free(pedido);
     limpar_buffer();
-    printf("\nNenhum pedido com esse id foi encontrado.");
+    printf("\nNenhum pedido com o ID %d foi encontrado.", id_procurar);
     getchar();
-    
-    // esta tela ainda vai receber atualizações ao longo do projeto
 }
 
 
 
 
 
-void alterar_pedido(Pedido* pedido){
+void alterar_pedido(void){
     int id_procurar = 0;
     char opc_alterar;
-    FILE * arquivo_temporario;
+    int pedido_alterado = False;
+    Pedido* pedido;
+    pedido = (Pedido*) malloc(sizeof(Pedido));
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -207,84 +192,84 @@ void alterar_pedido(Pedido* pedido){
     scanf("%c", &opc_alterar);
     limpar_buffer();
 
-    arquivo_pedido = fopen("pedidos.csv", "rt");
-
-    arquivo_temporario = fopen("pedidos_temp.csv", "wt");
+    arquivo_pedido = fopen("pedidos.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.csv", "wt");
+        arquivo_pedido = fopen("pedidos.csv", "wb");
         fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.csv", "rt");
+        arquivo_pedido = fopen("pedidos.csv", "r+b");
     }
 
-    while (fscanf(arquivo_pedido, "%d", &pedido->id_pedido) == 1){
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &pedido->id_cliente);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &pedido->id_produto);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &pedido->id_funcionario);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%f", &pedido->preco);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%[^\n]", pedido->data);
-        fgetc(arquivo_pedido);
-
-        if (pedido->id_pedido == id_procurar){
+    while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido) && pedido_alterado == False){
+        if (pedido->id_pedido == id_procurar && pedido->status == True){
             switch (opc_alterar)
                         {
                         case '1':
                             printf("\nDigite o novo ID do cliente: ");
                             scanf("%d", &pedido->id_cliente);
+                            pedido_alterado = True;
                             limpar_buffer();
                             break;
                         case  '2':
                             printf("\nDigite o novo ID do produto: ");
                             scanf("%d", &pedido->id_produto);
+                            pedido_alterado = True;
                             limpar_buffer();
                             break;
                         case  '3':
                             printf("\nDigite o novo ID do funcionario: ");
                             scanf("%d", &pedido->id_funcionario);
+                            pedido_alterado = True;
                             limpar_buffer();
                             break;
                         case  '4':
                             printf("\nDigite o novo preco: ");
                             scanf("%f", &pedido->preco);
+                            pedido_alterado = True;
                             limpar_buffer();
                             break;
                         case '5':
                             printf("\nDigite a nova data: ");
                             scanf("%[^\n]", pedido->data);
+                            pedido_alterado = True;
                             limpar_buffer();
                             break;                            
                         default:
                             break;
             }
-        }
-        fprintf(arquivo_temporario, "%d;", pedido->id_pedido);
-        fprintf(arquivo_temporario, "%d;", pedido->id_cliente);
-        fprintf(arquivo_temporario, "%d;", pedido->id_produto);
-        fprintf(arquivo_temporario, "%d;", pedido->id_funcionario);
-        fprintf(arquivo_temporario, "%f;", pedido->preco);
-        fprintf(arquivo_temporario, "%s\n", pedido->data);              
+            fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);
+            fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
+
+            system("clear || cls");
+            printf("\nPedido com o ID %d alterado com sucesso!", id_procurar);
+            printf("\n\n------------------------ Pedido Alterado ------------------------");
+            printf("\nID do pedido: %d", pedido->id_pedido);
+            printf("\nID do cliente: %d", pedido->id_cliente);
+            printf("\nID do produto: %d", pedido->id_produto);
+            printf("\nID do funcionario: %d", pedido->id_funcionario);
+            printf("\nPreco do pedido: %f", pedido->preco);
+            printf("\nData do pedido: %s", pedido->data);
+            getchar();
+        }   
     }
-    fclose(arquivo_temporario);
+    if (pedido_alterado == False) {
+        printf("\nPedido com o ID %d não foi encontrado...", id_procurar);
+        getchar();
+    }
     fclose(arquivo_pedido);
-    remove("pedidos.csv");
-    rename("pedidos_temp.csv", "pedidos.csv");
-    printf("\nPedido com o ID %d alterado com sucesso!", id_procurar);
-    getchar();
+    free(pedido);
 }
 
 
 
 
 
-void excluir_pedido(Pedido* pedido){
+void excluir_pedido(void){
     int id_procurar = 0;
-    FILE * arquivo_temporario;
+    Pedido* pedido;
+    pedido = (Pedido*) malloc(sizeof(Pedido));
+    int pedido_excluido = False;
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -294,45 +279,31 @@ void excluir_pedido(Pedido* pedido){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_pedido = fopen("pedidos.csv", "rt");
-
-    arquivo_temporario = fopen("pedidos_temp.csv", "wt");
+    arquivo_pedido = fopen("pedidos.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.csv", "wt");
+        arquivo_pedido = fopen("pedidos.dat", "wb");
         fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.csv", "rt");
+        arquivo_pedido = fopen("pedidos.dat", "r+b");
     }
 
-    while (fscanf(arquivo_pedido, "%d", &pedido->id_pedido) == 1){
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &pedido->id_cliente);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &pedido->id_produto);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%d", &pedido->id_funcionario);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%f", &pedido->preco);
-        fgetc(arquivo_pedido);
-        fscanf(arquivo_pedido, "%[^\n]", pedido->data);
-        fgetc(arquivo_pedido);
+    while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido) && pedido_excluido == False){
+        if (pedido->id_pedido == id_procurar && pedido->status == True){
+            pedido->status = False;
+            pedido_excluido = True;
 
-        if (pedido->id_pedido != id_procurar){
-            fprintf(arquivo_temporario, "%d;", pedido->id_pedido);
-            fprintf(arquivo_temporario, "%d;", pedido->id_cliente);
-            fprintf(arquivo_temporario, "%d;", pedido->id_produto);
-            fprintf(arquivo_temporario, "%d;", pedido->id_funcionario);
-            fprintf(arquivo_temporario, "%f;", pedido->preco);
-            fprintf(arquivo_temporario, "%s\n", pedido->data);
+            fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);
+            fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
+            printf("\nPedido com o ID %d excluido com sucesso!", id_procurar);
         }
                  
         
     }
-    fclose(arquivo_temporario);
+    if (pedido_excluido == False) {
+        printf("\nNão existe nenhum pedido com o ID %d cadastrado...", id_procurar);
+    }
     fclose(arquivo_pedido);
-    remove("pedidos.csv");
-    rename("pedidos_temp.csv", "pedidos.csv");
-    printf("\nPedido com o ID %d excluido com sucesso!", id_procurar);
+    free(pedido);
     getchar();
 }
