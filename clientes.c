@@ -16,7 +16,7 @@ void modulo_clientes(void){
     do {
         opcao = tela_de_clientes();
         switch(opcao){
-            case '1':   cadastrar_clientes(&cli);
+            case '1':   cadastrar_clientes();
                         break;
             case '2':   exibir_clientes(&cli);
                         break;
@@ -54,9 +54,11 @@ char tela_de_clientes(void){
 
 
 
-void cadastrar_clientes(Cliente* cli){
-
+void cadastrar_clientes(){
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
     limpar_buffer();
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Cadastrar Clientes                ║\n");
@@ -77,40 +79,34 @@ void cadastrar_clientes(Cliente* cli){
     scanf("%[^\n]", cli->telefone);
     limpar_buffer();
 
-    arquivo_cliente = fopen("clientes.csv", "rt");
+    arquivo_cliente = fopen("clientes.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.csv", "wt");
+        arquivo_cliente = fopen("clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.csv", "rt");
+        arquivo_cliente = fopen("clientes.dat", "rb");
     }
 
     cli->id = gerar_id(arquivo_cliente, 1);
 
     fclose(arquivo_cliente);
+    cli->status = True;
     
-    arquivo_cliente = fopen("clientes.csv", "at"); //Cria o arquivo
+    arquivo_cliente = fopen("clientes.dat", "ab"); //Cria o arquivo
     if (arquivo_cliente == NULL) {
         printf("\nO arquivo nao foi criado.");
         getchar();
-        fclose(arquivo_cliente);
     }
     else
     {
         //Escreve coisas no arquivo
-        fprintf(arquivo_cliente, "%d;", cli->id);
-        fprintf(arquivo_cliente, "%s;", cli->nome);
-        fprintf(arquivo_cliente, "%s;", cli->cpf);
-        fprintf(arquivo_cliente, "%s;", cli->email);
-        fprintf(arquivo_cliente, "%s\n", cli->telefone);
+        fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
         fclose(arquivo_cliente);
-        printf("\nCliente %s cadastrado com sucesso!", cli->nome);
+        free(cli);
+        printf("\nCliente cadastrado com sucesso!");
         printf("\nPressione ENTER para continuar.");
     }
-    
-    
-
     getchar();  // Apenas para pausar antes de sair
 }
 
