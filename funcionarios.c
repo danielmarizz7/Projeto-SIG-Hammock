@@ -129,11 +129,11 @@ void exibir_funcionarios(void){
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
         if (func->id == id_procurar && func->status == True)
         {
-            printf("\nID do cliente: %d", func->id);
-            printf("\nNome do cliente: %s", func->nome);
-            printf("\nCPF do cliente: %s", func->cpf);
-            printf("\nEmail do cliente: %s", func->email);
-            printf("\nTelefone do cliente: %s", func->telefone);
+            printf("\nID do funcionário: %d", func->id);
+            printf("\nNome do funcionário: %s", func->nome);
+            printf("\nCPF do funcionário: %s", func->cpf);
+            printf("\nEmail do funcionário: %s", func->email);
+            printf("\nTelefone do funcionário: %s", func->telefone);
 
             fclose(arquivo_funcionario);
             free(func);
