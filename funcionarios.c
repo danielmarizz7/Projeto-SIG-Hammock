@@ -47,7 +47,7 @@ char tela_de_funcionarios(void){
     return op_funcionario;
 }
 
-void cadastrar_funcionarios(Funcionarios* func){
+void cadastrar_funcionarios(void){
     Funcionarios* func;
     func = (Funcionarios*) malloc(sizeof(Funcionarios));
     limpar_buffer();
