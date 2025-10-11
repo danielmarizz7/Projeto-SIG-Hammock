@@ -11,18 +11,17 @@ FILE * arquivo_funcionario; //Apontador para o arquivo
 
 void modulo_funcionarios(void) {
     char opcao;
-    Funcionarios func;
 
     do {
         opcao = tela_de_funcionarios();
         switch(opcao) {
-            case '1':   cadastrar_funcionarios(&func);
+            case '1':   cadastrar_funcionarios();
                         break;
-            case '2': 	exibir_funcionarios(&func);
+            case '2': 	exibir_funcionarios();
                         break;
-            case '3': 	alterar_funcionarios(&func);
+            case '3': 	alterar_funcionarios();
                         break;
-            case '4': 	excluir_funcionarios(&func);
+            case '4': 	excluir_funcionarios();
                         break;
         } 		
     } while (opcao != '0');
@@ -49,7 +48,10 @@ char tela_de_funcionarios(void){
 }
 
 void cadastrar_funcionarios(Funcionarios* func){
+    Funcionarios* func;
+    func = (Funcionarios*) malloc(sizeof(Funcionarios));
     limpar_buffer();
+
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║              Cadastrar Funcionários             ║\n");
@@ -70,37 +72,35 @@ void cadastrar_funcionarios(Funcionarios* func){
     scanf("%[^\n]", func->telefone);
     limpar_buffer();
     
-    arquivo_funcionario = fopen("funcionarios.csv", "rt");
-
+    arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    
+    //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.csv", "wt");
+        arquivo_funcionario = fopen("funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.csv", "rt");
+        arquivo_funcionario = fopen("funcionarios.csv", "rb");
     }
 
 
-    func->id = gerar_id(arquivo_funcionario, 3);
+    func->id = gerar_id(arquivo_funcionario, 1);
 
     fclose(arquivo_funcionario);
+    func->status = True;
 
-    arquivo_funcionario = fopen("funcionarios.csv", "at");
+    arquivo_funcionario = fopen("funcionarios.dat", "ab"); //Cria o arquivo
     if (arquivo_funcionario == NULL){
         printf("\nO arquivo não foi criado.");
         getchar();
-        fclose(arquivo_funcionario);
     }
     else
     {
-        fprintf(arquivo_funcionario, "%d;", func->id);
-        fprintf(arquivo_funcionario, "%s;", func->nome);
-        fprintf(arquivo_funcionario, "%s;", func->cpf);
-        fprintf(arquivo_funcionario, "%s;", func->email);
-        fprintf(arquivo_funcionario, "%s\n", func->telefone);
+        //escreve o novo funcionário no arquivo
+        fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
         fclose(arquivo_funcionario);
-        printf("\nFuncionário %s cadastrado com sucesso!", func->nome);
+        free(func);
+        printf("\nFuncionário cadastrado com sucesso!");
         printf("\nPressione ENTER para continuar.");
     }
-
     getchar();
 }
 
