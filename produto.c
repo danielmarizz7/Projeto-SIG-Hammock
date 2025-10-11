@@ -242,3 +242,45 @@ void alterar_produto(void){
     free(prod);
 }
 
+void excluir_produto(void){
+    int id_procurar = 0;
+    int excluido = False;
+    Produto* prod;
+    prod = (Produto*) malloc(sizeof(Produto));
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║                 Excluir Produtos                ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o ID do Produto que deseja excluir: ");
+    scanf(" %d", &id_procurar);
+    limpar_buffer();
+
+    arquivo_produto = fopen("produtos.dat", "r+b");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_produto == NULL) {
+        arquivo_produto = fopen("produtos.dat", "wb");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.dat", "r+b");
+    }
+
+    while (fread(prod, sizeof(Produto), 1, arquivo_produto) && (excluido == False)){
+        if (prod->id == id_procurar && prod->status == True){
+            prod->status = False;
+
+            excluido = True;
+            fseek(arquivo_produto, (-1)*sizeof(arquivo_produto), SEEK_CUR);
+            fwrite(prod, sizeof(Produto), 1, arquivo_produto);
+            printf("\nProduto com o ID %d excluido com sucesso!", id_procurar);
+        }
+                 
+        
+    }
+    if (excluido == False) {
+        printf("\nNão existe nenhum Produto com o ID %d cadastrado...", id_procurar);
+    }
+    fclose(arquivo_produto);
+    free(prod);
+    getchar();
+}
