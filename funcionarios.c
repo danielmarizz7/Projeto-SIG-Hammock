@@ -153,10 +153,12 @@ void exibir_funcionarios(void){
 }
 
 
-void alterar_funcionarios(Funcionarios* func){
+void alterar_funcionarios(void){
     int id_procurar = 0;
     char opc_alterar;
-    FILE * arquivo_temporario;
+    int func_alterado = False;
+    Funcionarios* func;
+    func = (Funcionarios*) malloc(sizeof(Funcionarios));
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -173,67 +175,67 @@ void alterar_funcionarios(Funcionarios* func){
     scanf("%c", &opc_alterar);
     limpar_buffer();
 
-    arquivo_funcionario = fopen("funcionarios.csv", "rt");
+    arquivo_funcionario = fopen("funcionarios.dat", "rb");
 
-    arquivo_temporario = fopen("funcionarios_temp.csv", "wt");
 
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.csv", "wt");
+        arquivo_funcionario = fopen("funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.csv", "rt");
+        arquivo_funcionario = fopen("funcionarios.dat", "rb");
     }
 
-    while (fscanf(arquivo_funcionario, "%d", &func->id) == 1){
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", func->nome);
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", func->cpf);
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", func->email);
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^\n]", func->telefone);
-        fgetc(arquivo_funcionario);
+    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && func_alterado == False){
 
-        if (func->id == id_procurar){
+        if (func->id == id_procurar && func->status == True){
             switch (opc_alterar)
                         {
                         case '1':
                             printf("\nDigite o novo nome: ");
                             scanf("%[^\n]", func->nome);
+                            func_alterado = True;
                             limpar_buffer();
                             break;
                         case  '2':
                             printf("\nDigite o novo cpf: ");
                             scanf("%[^\n]", func->cpf);
+                            func_alterado = True;
                             limpar_buffer();
                             break;
                         case  '3':
                             printf("\nDigite o novo email: ");
                             scanf("%[^\n]", func->email);
+                            func_alterado = True;
                             limpar_buffer();
                             break;
                         case  '4':
                             printf("\nDigite o novo telefone: ");
                             scanf("%[^\n]", func->telefone);
+                            func_alterado = True;
                             limpar_buffer();
                             break;
                         default:
                             break;
-                        }
+            }
+            fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);
+            fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
 
+            system("clear || cls");
+            printf("\nFuncionário com o ID %d alterado com sucesso!", id_procurar);
+            printf("\n\n------------------------ Funcionário Alterado ------------------------");
+            printf("\nID do Funcionário: %d", func->id);
+            printf("\nNome do Funcionário: %s", func->nome);
+            printf("\nCPF do Funcionário: %s", func->cpf);
+            printf("\nEmail do Funcionário: %s", func->email);
+            printf("\nTelefone do Funcionário: %s", func->telefone);
+            getchar();
         }
-        fprintf(arquivo_temporario, "%d;", func->id);
-        fprintf(arquivo_temporario, "%s;", func->nome);
-        fprintf(arquivo_temporario, "%s;", func->cpf);
-        fprintf(arquivo_temporario, "%s;", func->email);
-        fprintf(arquivo_temporario, "%s\n", func->telefone);   
     }
-    fclose(arquivo_temporario);
+    if (func_alterado == False) {
+        printf("\nFuncionário com o ID %d não foi encontrado...", id_procurar);
+        getchar();
+    }
     fclose(arquivo_funcionario);
-    remove("funcionarios.csv");
-    rename("funcionarios_temp.csv", "funcionarios.csv");
-    printf("\nFuncionário com o ID %d alterado com sucesso!", id_procurar);
-    getchar();
+    free(func);
 }
 
 
