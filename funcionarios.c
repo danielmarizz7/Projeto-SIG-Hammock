@@ -239,52 +239,46 @@ void alterar_funcionarios(void){
 }
 
 
-void excluir_funcionarios(Funcionarios* func){
+void excluir_funcionarios(void){
     int id_procurar = 0;
-    FILE * arquivo_temporario;
+    int excluido = False;
+    Funcionarios* func;
+    func = (Funcionarios*) malloc(sizeof(Funcionarios));
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
-    printf("║                Excluir funcionários             ║\n");
+    printf("║              Excluir Funcionários               ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Digite o CPF do funcionário que deseja excluir: ");
+    printf("Digite o ID do Funcionário que deseja excluir: ");
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_funcionario = fopen("funcionarios.csv", "rt");
+    arquivo_funcionario = fopen("funcionarios.dat", "r+b");
 
-    arquivo_temporario = fopen("funcionarios_temp.csv", "wt");
-
+    //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.csv", "wt");
+        arquivo_funcionario = fopen("funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.csv", "rt");
+        arquivo_funcionario = fopen("funcionarios.dat", "r+b");
     }
-    
-    while (fscanf(arquivo_funcionario, "%d", &func->id) == 1){
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", func->nome);
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", func->cpf);
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", func->email);
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^\n]", func->telefone);
-        fgetc(arquivo_funcionario);
 
-        if (func->id != id_procurar){
-            fprintf(arquivo_temporario, "%d;", func->id);
-            fprintf(arquivo_temporario, "%s;", func->nome);
-            fprintf(arquivo_temporario, "%s;", func->cpf);
-            fprintf(arquivo_temporario, "%s;", func->email);
-            fprintf(arquivo_temporario, "%s\n", func->telefone);
-        }
+    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && (excluido == False)){
+        if (func->id == id_procurar && func->status == True){
+            func->status = False;
 
+            excluido = True;
+            fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);
+            fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
+            printf("\nFuncionário com o ID %d excluido com sucesso!", id_procurar);
         }
-        fclose(arquivo_temporario);
-        fclose(arquivo_funcionario);
-        remove("funcionarios.csv");
-        rename("funcionarios_temp.csv", "funcionarios.csv");
-        printf("\nFuncionário com o ID %d excluido com sucesso!", id_procurar);
-        getchar();
+                 
+        
+    }
+    if (excluido == False) {
+        printf("\nNão existe nenhum Funcionário com o ID %d cadastrado...", id_procurar);
+    }
+    fclose(arquivo_funcionario);
+    free(func);
+    getchar();
 }
+
