@@ -16,13 +16,13 @@ void modulo_produto(void){
     do {
         opcao = tela_de_produto();
         switch(opcao){
-            case '1':   cadastrar_produto(&prod);
+            case '1':   cadastrar_produto();
                         break;
-            case '2':   exibir_produto(&prod);
+            case '2':   exibir_produto();
                         break;
-            case '3':   alterar_produto(&prod);
+            case '3':   alterar_produto();
                         break;
-            case '4':   excluir_produto(&prod);
+            case '4':   excluir_produto();
                         break;
 
         }
@@ -52,9 +52,9 @@ char tela_de_produto(void){
     return op_produtos;
 }
 
-void cadastrar_produto(Produto* prod){
-    int id = 0;
-
+void cadastrar_produto(){
+    Produto* prod;
+    prod = (Produto*)malloc(sizeof(Produto));
     limpar_buffer();
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -77,35 +77,35 @@ void cadastrar_produto(Produto* prod){
     scanf("%[^\n]", prod->cor_rede);
     limpar_buffer();
 
-    arquivo_produto = fopen("produtos.csv", "rt");
+    arquivo_produto = fopen("produtos.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.csv", "wt");
+        arquivo_produto = fopen("produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.csv", "rt");
+        arquivo_produto = fopen("produtos.dat", "rb");
     }
 
-    prod->id = gerar_id(arquivo_produto, 2);
+    prod->id = gerar_id(arquivo_produto, 1);
 
     fclose(arquivo_produto);
+    prod->status = True;
 
-    arquivo_produto = fopen("produtos.csv", "at");
-    if (arquivo_produto == NULL) {
-        printf("\nO arquivo nao foi criado.");
+    arquivo_produto = fopen("produtos.dat", "ab");
+    if (arquivo_produto == NULL){
+        printf("\nO arquivo não foi criado.");
         getchar();
+    }
+    else
+    {
+        //escreve o novo produto no arquivo
+        fwrite(prod, sizeof(Produto), 1, arquivo_produto);
         fclose(arquivo_produto);
-    } else {
-        fprintf(arquivo_produto, "%d;", id);
-        fprintf(arquivo_produto, "%s;", prod->modelo_rede);
-        fprintf(arquivo_produto, "%s;", prod->valor_rede);
-        fprintf(arquivo_produto, "%s;", prod->tipo_rede);
-        fprintf(arquivo_produto, "%s\n", prod->cor_rede);
-        fclose(arquivo_produto);
-        printf("\nA rede de modelo %s foi cadastrada com sucesso!", prod->modelo_rede);
+        free(prod);
+        printf("\nProduto cadastrado com sucesso!");
         printf("\nPressione ENTER para continuar.");
     }
-    getchar();  // Apenas para pausar antes de sair
+    getchar();
 }
 
 
