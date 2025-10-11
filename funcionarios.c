@@ -104,8 +104,10 @@ void cadastrar_funcionarios(void){
     getchar();
 }
 
-void exibir_funcionarios(Funcionarios* func){
+void exibir_funcionarios(void){
     int id_procurar = 0;
+    Funcionarios* func;
+    func = (Funcionarios*)malloc(sizeof(Funcionarios));
     
 
     system("clear || cls");
@@ -116,37 +118,29 @@ void exibir_funcionarios(Funcionarios* func){
     printf("Digite o id do Funcionário que deseja buscar: ");
     scanf(" %d", &id_procurar);
 
-    arquivo_funcionario = fopen("funcionarios.csv", "rt");
+    arquivo_funcionario = fopen("funcionarios.dat", "rb");
 
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.csv", "wt");
+        arquivo_funcionario = fopen("funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.csv", "rt");
+        arquivo_funcionario = fopen("funcionarios.dat", "rb");
     }
 
-    while (fscanf(arquivo_funcionario, "%d", &func->id) == 1){
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", func->nome);
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", func->cpf);
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^;]", func->email);
-        fgetc(arquivo_funcionario);
-        fscanf(arquivo_funcionario, "%[^\n]", func->telefone);
-        fgetc(arquivo_funcionario);
-
-        if (func->id == id_procurar)
+    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
+        if (func->id == id_procurar && func->status == True)
         {
-            printf("\nID do funcionário: %d", func->id);
-            printf("\nNome do funcionário: %s", func->nome);
-            printf("\nCPF do funcionário: %s", func->cpf);
-            printf("\nEmail do funcionário: %s", func->email);
-            printf("\nTelefone do funcionário: %s", func->telefone);
+            printf("\nID do cliente: %d", func->id);
+            printf("\nNome do cliente: %s", func->nome);
+            printf("\nCPF do cliente: %s", func->cpf);
+            printf("\nEmail do cliente: %s", func->email);
+            printf("\nTelefone do cliente: %s", func->telefone);
 
             fclose(arquivo_funcionario);
+            free(func);
             limpar_buffer();
             getchar();
             return;
+            
         }
     }
 
