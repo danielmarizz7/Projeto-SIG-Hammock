@@ -317,7 +317,7 @@ void excluir_pedido(void){
             limpar_buffer();
 
             if (opc_confirmar == 's' || opc_confirmar == 'S') {
-                pedido->status = False;
+                pedido->status = 0;
                 pedido_excluido = True;
                 fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);
                 fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);

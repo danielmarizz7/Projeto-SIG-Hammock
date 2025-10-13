@@ -291,7 +291,7 @@ void excluir_funcionarios(void){
             limpar_buffer();
 
             if (opc_confirmar == 's' || opc_confirmar == 'S') {
-                func->status = False;
+                func->status = 0;
                 excluido = True;
 
                 fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);

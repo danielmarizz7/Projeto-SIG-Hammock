@@ -299,7 +299,7 @@ void excluir_cliente(void){
             limpar_buffer();
 
             if (opc_confirmar == 's' || opc_confirmar == 'S') {
-                cli->status = False;
+                cli->status = 0;
 
                 excluido = True;
                 fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);

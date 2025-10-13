@@ -258,6 +258,7 @@ void alterar_produto(void){
 void excluir_produto(void){
     int id_procurar = 0;
     int excluido = False;
+    char opc_confirmar;
     Produto* prod;
     prod = (Produto*) malloc(sizeof(Produto));
 
@@ -280,12 +281,27 @@ void excluir_produto(void){
 
     while (fread(prod, sizeof(Produto), 1, arquivo_produto) && (excluido == False)){
         if (prod->id == id_procurar && prod->status == True){
-            prod->status = False;
+            system("clear || cls");
+            printf("\n\n------------------------ Produto ------------------------");
+            printf("\nID do Produto: %d", prod->id);
+            printf("\nModelo do Produto: %s", prod->modelo_rede);
+            printf("\nValor do Produto: %s", prod->valor_rede);
+            printf("\nTipo do Produto: %s", prod->tipo_rede);
+            printf("\nCor do Produto: %s", prod->cor_rede);
+            printf("\n\nProduto de ID %d foi encontrado.\nTem certeza que deseja exclui-lo? (s/n)", id_procurar);
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
 
-            excluido = True;
-            fseek(arquivo_produto, (-1)*sizeof(arquivo_produto), SEEK_CUR);
-            fwrite(prod, sizeof(Produto), 1, arquivo_produto);
-            printf("\nProduto com o ID %d excluido com sucesso!", id_procurar);
+            if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                prod->status = 0;
+                excluido = True;
+                fseek(arquivo_produto, (-1)*sizeof(arquivo_produto), SEEK_CUR);
+                fwrite(prod, sizeof(Produto), 1, arquivo_produto);
+                printf("\nProduto com o ID %d excluido com sucesso!", id_procurar);
+            } else {
+                printf("\nExclusão cancelada.");
+                excluido = True;
+            }
         }
                  
         
