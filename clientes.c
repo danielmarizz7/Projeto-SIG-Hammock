@@ -168,6 +168,7 @@ void exibir_clientes(void){
 void alterar_cliente(void){
     int id_procurar = 0;
     char opc_alterar;
+    char opc_confirmar;
     int cli_alterado = False;
     Cliente* cli;
     cli = (Cliente*) malloc(sizeof(Cliente));
@@ -205,33 +206,26 @@ void alterar_cliente(void){
                         case '1':
                             printf("\nDigite o novo nome: ");
                             scanf("%[^\n]", cli->nome);
-                            cli_alterado = True;
                             limpar_buffer();
                             break;
                         case  '2':
                             printf("\nDigite o novo cpf: ");
                             scanf("%[^\n]", cli->cpf);
-                            cli_alterado = True;
                             limpar_buffer();
                             break;
                         case  '3':
                             printf("\nDigite o novo email: ");
                             scanf("%[^\n]", cli->email);
-                            cli_alterado = True;
                             limpar_buffer();
                             break;
                         case  '4':
                             printf("\nDigite o novo telefone: ");
                             scanf("%[^\n]", cli->telefone);
-                            cli_alterado = True;
                             limpar_buffer();
                             break;
                         default:
                             break;
             }
-            fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
-            fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
-
             system("clear || cls");
             printf("\nCliente com o ID %d alterado com sucesso!", id_procurar);
             printf("\n\n------------------------ Cliente Alterado ------------------------");
@@ -241,6 +235,25 @@ void alterar_cliente(void){
             printf("\nEmail do cliente: %s", cli->email);
             printf("\nTelefone do cliente: %s", cli->telefone);
             getchar();
+            
+            printf("\nDeseja alterar algum outro campo? (s/n)\n");
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+            fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
+            fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
+            if (opc_confirmar == 's' || opc_confirmar == 'S'){
+                system("clear || cls");
+                printf("\nO que deseja alterar desse cliente? ");
+                printf("\n1 - nome");
+                printf("\n2 - cpf");
+                printf("\n3 - email");
+                printf("\n4 - telefone\n");
+                scanf("%c", &opc_alterar);
+                limpar_buffer();
+                fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);     
+            } else {
+                cli_alterado = True;
+            }
         }
     }
     if (cli_alterado == False) {
