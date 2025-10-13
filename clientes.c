@@ -18,9 +18,11 @@ void modulo_clientes(void){
                         break;
             case '2':   exibir_clientes();
                         break;
-            case '3':   alterar_cliente();
+            case '3':   listar_clientes();
                         break;
-            case '4':   excluir_cliente();
+            case '4':   alterar_cliente();
+                        break;
+            case '5':   excluir_cliente();
                         break;
 
         }
@@ -37,8 +39,9 @@ char tela_de_clientes(void){
     printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 1 - Cadastrar Cliente                           ║\n");
     printf("║ 2 - Exibir Clientes                             ║\n");
-    printf("║ 3 - Editar Cliente                              ║\n");
-    printf("║ 4 - Excluir Cliente                             ║\n");
+    printf("║ 3 - Listar Cliente                              ║\n");
+    printf("║ 4 - Editar Cliente                              ║\n");
+    printf("║ 5 - Excluir Cliente                             ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -158,7 +161,38 @@ void exibir_clientes(void){
     getchar();
 }
 
+void listar_clientes(void) {
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
 
+    system("clear || cls");
+    limpar_buffer();
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Listar Clientes                   ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    arquivo_cliente = fopen("clientes.dat", "rb");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_cliente == NULL) {
+        arquivo_cliente = fopen("clientes.dat", "wb");
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.dat", "rb");
+    }
+
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente))
+    {
+        printf("\n\n------------------------ Cliente %d ------------------------", cli->id);
+        printf("\nID do Cliente: %d", cli->id);
+        printf("\nNome do Cliente: %s", cli->nome);
+        printf("\nCPF do Cliente: %s", cli->cpf);
+        printf("\nEmail do Cliente: %s", cli->email);
+        printf("\nTelefone do Cliente: %s", cli->telefone);
+        getchar();
+    }
+    fclose(arquivo_cliente);
+    free(cli);
+    
+}
 
 
 
