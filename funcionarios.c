@@ -19,9 +19,11 @@ void modulo_funcionarios(void) {
                         break;
             case '2': 	exibir_funcionarios();
                         break;
-            case '3': 	alterar_funcionarios();
+            case '3': 	listar_funcionarios();
                         break;
-            case '4': 	excluir_funcionarios();
+            case '4': 	alterar_funcionarios();
+                        break;
+            case '5': 	excluir_funcionarios();
                         break;
         } 		
     } while (opcao != '0');
@@ -35,9 +37,10 @@ char tela_de_funcionarios(void){
     printf("║               Módulo De Funcionarios            ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 1 - Cadastrar Funcionario                       ║\n");
-    printf("║ 2 - Exibir Funcionarios                         ║\n");
-    printf("║ 3 - Editar Funcionario                          ║\n");
-    printf("║ 4 - Excluir Funcionario                         ║\n");
+    printf("║ 2 - Exibir Funcionario                          ║\n");
+    printf("║ 3 - Listar Funcionarios                         ║\n");
+    printf("║ 4 - Editar Funcionario                          ║\n");
+    printf("║ 5 - Excluir Funcionario                         ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -152,6 +155,38 @@ void exibir_funcionarios(void){
     
 }
 
+void listar_funcionarios(void) {
+    Funcionarios* func;
+    func = (Funcionarios*) malloc(sizeof(Funcionarios));
+
+    system("clear || cls");
+    limpar_buffer();
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Listar Funcionários               ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    arquivo_funcionario = fopen("funcionarios.dat", "rb");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_funcionario == NULL) {
+        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    }
+
+    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario))
+    {
+        printf("\n\n------------------------ Funcionário %d ------------------------", func->id);
+        printf("\nID do Funcionário: %d", func->id);
+        printf("\nNome do Funcionário: %s", func->nome);
+        printf("\nCPF do Funcionário: %s", func->cpf);
+        printf("\nEmail do Funcionário: %s", func->email);
+        printf("\nTelefone do Funcionário: %s", func->telefone);
+        getchar();
+    }
+    fclose(arquivo_funcionario);
+    free(func);
+    
+}
 
 void alterar_funcionarios(void){
     int id_procurar = 0;

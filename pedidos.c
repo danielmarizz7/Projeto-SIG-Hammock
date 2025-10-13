@@ -19,9 +19,11 @@ void modulo_pedidos(void){
                         break;
             case '2':   exibir_pedidos();
                         break;
-            case '3':   alterar_pedido();
+            case '3':   listar_pedidos();
                         break;
-            case '4':   excluir_pedido();
+            case '4':   alterar_pedido();
+                        break;
+            case '5':   excluir_pedido();
                         break;
 
         }
@@ -39,8 +41,9 @@ char tela_de_pedidos(void){
     printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 1 - Cadastrar Pedido                            ║\n");
     printf("║ 2 - Exibir Pedido                               ║\n");
-    printf("║ 3 - Editar Pedido                               ║\n");
-    printf("║ 4 - Excluir Pedido                              ║\n");
+    printf("║ 3 - Listar Pedido                               ║\n");
+    printf("║ 4 - Editar Pedido                               ║\n");
+    printf("║ 5 - Excluir Pedido                              ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -163,8 +166,39 @@ void exibir_pedidos(void){
     getchar();
 }
 
+void listar_pedidos(void) {
+    Pedido* pedido;
+    pedido = (Pedido*) malloc(sizeof(Pedido));
 
+    system("clear || cls");
+    limpar_buffer();
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Listar Pedidos                    ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    arquivo_pedido = fopen("pedidos.dat", "rb");
 
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_pedido == NULL) {
+        arquivo_pedido = fopen("pedidos.dat", "wb");
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.dat", "rb");
+    }
+
+    while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido))
+    {
+        printf("\n\n------------------------ Pedido %d ------------------------", pedido->id_pedido);
+        printf("\nID do Pedido: %d", pedido->id_pedido);
+        printf("\nID do Cliente: %d", pedido->id_cliente);
+        printf("\nID do Produto: %d", pedido->id_produto);
+        printf("\nID do Funcionario: %d", pedido->id_funcionario);
+        printf("\nPreco do Pedido: %f", pedido->preco);
+        printf("\nData do Pedido: %s", pedido->data);
+        getchar();
+    }
+    fclose(arquivo_pedido);
+    free(pedido);
+    
+}
 
 
 void alterar_pedido(void){
