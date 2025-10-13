@@ -78,11 +78,11 @@ void cadastrar_funcionarios(void){
     if (arquivo_funcionario == NULL) {
         arquivo_funcionario = fopen("funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.csv", "rb");
+        arquivo_funcionario = fopen("funcionarios.dat", "rb");
     }
 
 
-    func->id = gerar_id(arquivo_funcionario, 1);
+    func->id = gerar_id(arquivo_funcionario, 3);
 
     fclose(arquivo_funcionario);
     func->status = True;
@@ -129,11 +129,11 @@ void exibir_funcionarios(void){
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
         if (func->id == id_procurar && func->status == True)
         {
-            printf("\nID do funcionário: %d", func->id);
-            printf("\nNome do funcionário: %s", func->nome);
-            printf("\nCPF do funcionário: %s", func->cpf);
-            printf("\nEmail do funcionário: %s", func->email);
-            printf("\nTelefone do funcionário: %s", func->telefone);
+            printf("\nID do Funcionário: %d", func->id);
+            printf("\nNome do Funcionário: %s", func->nome);
+            printf("\nCPF do Funcionário: %s", func->cpf);
+            printf("\nEmail do Funcionário: %s", func->email);
+            printf("\nTelefone do Funcionário: %s", func->telefone);
 
             fclose(arquivo_funcionario);
             free(func);

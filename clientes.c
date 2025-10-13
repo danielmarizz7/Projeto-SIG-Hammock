@@ -139,11 +139,11 @@ void exibir_clientes(void){
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
         if (cli->id == id_procurar && cli->status == True)
         {
-            printf("\nID do cliente: %d", cli->id);
-            printf("\nNome do cliente: %s", cli->nome);
-            printf("\nCPF do cliente: %s", cli->cpf);
-            printf("\nEmail do cliente: %s", cli->email);
-            printf("\nTelefone do cliente: %s", cli->telefone);
+            printf("\nID do Cliente: %d", cli->id);
+            printf("\nNome do Cliente: %s", cli->nome);
+            printf("\nCPF do Cliente: %s", cli->cpf);
+            printf("\nEmail do Cliente: %s", cli->email);
+            printf("\nTelefone do Cliente: %s", cli->telefone);
 
             fclose(arquivo_cliente);
             free(cli);

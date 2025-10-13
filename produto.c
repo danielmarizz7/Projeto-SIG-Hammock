@@ -11,7 +11,6 @@ FILE * arquivo_produto;
 
 void modulo_produto(void){
     char opcao;
-    Produto prod;
     
     do {
         opcao = tela_de_produto();
@@ -86,7 +85,7 @@ void cadastrar_produto(){
         arquivo_produto = fopen("produtos.dat", "rb");
     }
 
-    prod->id = gerar_id(arquivo_produto, 1);
+    prod->id = gerar_id(arquivo_produto, 2);
 
     fclose(arquivo_produto);
     prod->status = True;
@@ -112,7 +111,7 @@ void cadastrar_produto(){
 void exibir_produto(void){
     int id_procurar = 0;
     Produto* prod;
-    prod = (Produto*)malloc(sizeof(Produto));int id_procurar = 0;
+    prod = (Produto*)malloc(sizeof(Produto));
     
     system("clear || cls");
     limpar_buffer();
@@ -135,10 +134,10 @@ void exibir_produto(void){
         if (prod->id == id_procurar && prod->status == True)
         {
             printf("\nID do Produto: %d", prod->id);
-            printf("\nNome do Produto: %s", prod->modelo_rede);
-            printf("\nCPF do Produto: %s", prod->valor_rede);
-            printf("\nEmail do Produto: %s", prod->tipo_rede);
-            printf("\nTelefone do Produto: %s", prod->cor_rede);
+            printf("\nModelo do Produto: %s", prod->modelo_rede);
+            printf("\nValor do Produto: %s", prod->valor_rede);
+            printf("\nTipo do Produto: %s", prod->tipo_rede);
+            printf("\nCor do Produto: %s", prod->cor_rede);
 
             fclose(arquivo_produto);
             free(prod);
@@ -177,7 +176,7 @@ void alterar_produto(void){
     printf("\n1 - modelo");
     printf("\n2 - valor");
     printf("\n3 - tipo");
-    printf("\n4 - cor");
+    printf("\n4 - cor\n");
     scanf("%c", &opc_alterar);
     limpar_buffer();
 
@@ -235,7 +234,7 @@ void alterar_produto(void){
         }
     }
     if (prod_alterado == False) {
-        printf("\nFProduto com o ID %d não foi encontrado...", id_procurar);
+        printf("\nProduto com o ID %d não foi encontrado...", id_procurar);
         getchar();
     }
     fclose(arquivo_produto);

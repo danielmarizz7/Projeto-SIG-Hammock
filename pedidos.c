@@ -140,12 +140,12 @@ void exibir_pedidos(void){
     while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido)){
         if (pedido->id_pedido == id_procurar && pedido->status == True)
         {
-            printf("\nID do pedido: %d", pedido->id_pedido);
-            printf("\nID do cliente: %d", pedido->id_cliente);
-            printf("\nID do produto: %d", pedido->id_produto);
-            printf("\nID do funcionario: %d", pedido->id_funcionario);
-            printf("\nPreco do pedido: %f", pedido->preco);
-            printf("\nData do pedido: %s", pedido->data);
+            printf("\nID do Pedido: %d", pedido->id_pedido);
+            printf("\nID do Cliente: %d", pedido->id_cliente);
+            printf("\nID do Produto: %d", pedido->id_produto);
+            printf("\nID do Funcionario: %d", pedido->id_funcionario);
+            printf("\nPreco do Pedido: %f", pedido->preco);
+            printf("\nData do Pedido: %s", pedido->data);
 
             fclose(arquivo_pedido);
             free(pedido);
