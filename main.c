@@ -1,17 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "clientes.h"
-#include "funcionarios.h"
-#include "produto.h"
-#include "relatorio.h"
-#include "equipe.h"
-#include "sobre.h"
-#include "final.h"
-#include "utilidades.h"
-#include "pedidos.h"
+#include "include/clientes.h"
+#include "include/funcionarios.h"
+#include "include/produto.h"
+#include "include/pedidos.h"
+#include "include/relatorio.h"
+#include "include/equipe.h"
+#include "include/sobre.h"
+#include "include/final.h"
+#include "include/utilidades.h"
 
 char tela_principal(void);
-
 
 
 int main(void) {

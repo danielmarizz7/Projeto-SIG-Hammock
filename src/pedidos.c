@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h> //usar o "strcmp"
 #include <unistd.h>
-#include "utilidades.h"
-#include "pedidos.h"
+#include "../include/utilidades.h"
+#include "../include/pedidos.h"
 #include <locale.h>
 // #include <windows.h>
 

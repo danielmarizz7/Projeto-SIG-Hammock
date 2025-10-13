@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <unistd.h>
-#include "clientes.h"
-#include "produto.h"
-#include "funcionarios.h"
-#include "pedidos.h"
+#include "../include/clientes.h"
+#include "../include/produto.h"
+#include "../include/funcionarios.h"
+#include "../include/pedidos.h"
 
 void limpar_buffer(void) {
     int c;

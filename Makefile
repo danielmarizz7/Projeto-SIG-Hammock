@@ -1,7 +1,7 @@
 make:
-	gcc -c -Wall *.h
-	gcc -c -Wall *.c
-	gcc -o sighammock *.o
-	./sighammock
+	gcc -c -Wall src/*.c
+	gcc -o SIGhammock *.o
 clean:
-	rm -f *.o sighammock
+	rm *.o
+run:
+	./SIGhammock

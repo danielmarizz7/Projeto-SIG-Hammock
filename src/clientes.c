@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h> //usar o "strcmp"
 #include <unistd.h>
-#include "utilidades.h"
-#include "clientes.h"
+#include "../include/utilidades.h"
+#include "../include/clientes.h"
 #include <locale.h>
 
 FILE * arquivo_cliente; //Apontador do arquivo

@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include "utilidades.h"
-#include "produto.h"
+#include "../include/utilidades.h"
+#include "../include/produto.h"
 #include <locale.h>
 
 
