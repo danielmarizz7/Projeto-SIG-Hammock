@@ -156,6 +156,7 @@ void exibir_funcionarios(void){
 void alterar_funcionarios(void){
     int id_procurar = 0;
     char opc_alterar;
+    char opc_confirmar;
     int func_alterado = False;
     Funcionarios* func;
     func = (Funcionarios*) malloc(sizeof(Funcionarios));
@@ -167,6 +168,7 @@ void alterar_funcionarios(void){
     printf("Digite o ID do Funcionário que deseja alterar: ");
     scanf(" %d", &id_procurar);
     limpar_buffer();
+
     printf("\nO que deseja alterar desse Funcionário ?");
     printf("\n1 - nome");
     printf("\n2 - cpf");
@@ -175,13 +177,13 @@ void alterar_funcionarios(void){
     scanf("%c", &opc_alterar);
     limpar_buffer();
 
-    arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    arquivo_funcionario = fopen("funcionarios.dat", "r+b");
 
 
     if (arquivo_funcionario == NULL) {
         arquivo_funcionario = fopen("funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+        arquivo_funcionario = fopen("funcionarios.dat", "r+b");
     }
 
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && func_alterado == False){
@@ -192,33 +194,26 @@ void alterar_funcionarios(void){
                         case '1':
                             printf("\nDigite o novo nome: ");
                             scanf("%[^\n]", func->nome);
-                            func_alterado = True;
                             limpar_buffer();
                             break;
                         case  '2':
                             printf("\nDigite o novo cpf: ");
                             scanf("%[^\n]", func->cpf);
-                            func_alterado = True;
                             limpar_buffer();
                             break;
                         case  '3':
                             printf("\nDigite o novo email: ");
                             scanf("%[^\n]", func->email);
-                            func_alterado = True;
                             limpar_buffer();
                             break;
                         case  '4':
                             printf("\nDigite o novo telefone: ");
                             scanf("%[^\n]", func->telefone);
-                            func_alterado = True;
                             limpar_buffer();
                             break;
                         default:
                             break;
             }
-            fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);
-            fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
-
             system("clear || cls");
             printf("\nFuncionário com o ID %d alterado com sucesso!", id_procurar);
             printf("\n\n------------------------ Funcionário Alterado ------------------------");
@@ -228,6 +223,25 @@ void alterar_funcionarios(void){
             printf("\nEmail do Funcionário: %s", func->email);
             printf("\nTelefone do Funcionário: %s", func->telefone);
             getchar();
+
+            printf("\nDeseja alterar algum outro campo? (s/n)\n");
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+            fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);
+            fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
+            if (opc_confirmar == 's' || opc_confirmar == 'S'){
+                system("clear || cls");
+                printf("\nO que deseja alterar desse Funcionário ?");
+                printf("\n1 - nome");
+                printf("\n2 - cpf");
+                printf("\n3 - email");
+                printf("\n4 - telefone\n");
+                scanf("%c", &opc_alterar);
+                limpar_buffer();
+                fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);     
+            } else {
+                func_alterado = True;
+            }
         }
     }
     if (func_alterado == False) {

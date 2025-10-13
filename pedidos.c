@@ -170,6 +170,7 @@ void exibir_pedidos(void){
 void alterar_pedido(void){
     int id_procurar = 0;
     char opc_alterar;
+    char opc_confirmar;
     int pedido_alterado = False;
     Pedido* pedido;
     pedido = (Pedido*) malloc(sizeof(Pedido));
@@ -208,39 +209,31 @@ void alterar_pedido(void){
                         case '1':
                             printf("\nDigite o novo ID do cliente: ");
                             scanf("%d", &pedido->id_cliente);
-                            pedido_alterado = True;
                             limpar_buffer();
                             break;
                         case  '2':
                             printf("\nDigite o novo ID do produto: ");
                             scanf("%d", &pedido->id_produto);
-                            pedido_alterado = True;
                             limpar_buffer();
                             break;
                         case  '3':
                             printf("\nDigite o novo ID do funcionario: ");
                             scanf("%d", &pedido->id_funcionario);
-                            pedido_alterado = True;
                             limpar_buffer();
                             break;
                         case  '4':
                             printf("\nDigite o novo preco: ");
                             scanf("%f", &pedido->preco);
-                            pedido_alterado = True;
                             limpar_buffer();
                             break;
                         case '5':
                             printf("\nDigite a nova data: ");
                             scanf("%[^\n]", pedido->data);
-                            pedido_alterado = True;
                             limpar_buffer();
                             break;                            
                         default:
                             break;
             }
-            fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);
-            fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
-
             system("clear || cls");
             printf("\nPedido com o ID %d alterado com sucesso!", id_procurar);
             printf("\n\n------------------------ Pedido Alterado ------------------------");
@@ -251,6 +244,26 @@ void alterar_pedido(void){
             printf("\nPreco do pedido: %f", pedido->preco);
             printf("\nData do pedido: %s", pedido->data);
             getchar();
+
+            printf("\nDeseja alterar algum outro campo? (s/n)\n");
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+            fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);
+            fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
+            if (opc_confirmar == 's' || opc_confirmar == 'S'){
+                system("clear || cls");
+                printf("\nO que deseja alterar desse pedido? ");
+                printf("\n1 - ID_cliente");
+                printf("\n2 - ID_produto");
+                printf("\n3 - ID_funcionario");
+                printf("\n4 - Preco");    
+                printf("\n5 - Data\n");
+                scanf("%c", &opc_alterar);
+                limpar_buffer();
+                fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);     
+            } else {
+                pedido_alterado = True;
+            }
         }   
     }
     if (pedido_alterado == False) {

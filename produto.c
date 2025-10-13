@@ -160,6 +160,7 @@ void exibir_produto(void){
 void alterar_produto(void){
     int id_procurar = 0;
     char opc_alterar;
+    char opc_confirmar;
     int prod_alterado = False;
     Produto* prod;
     prod = (Produto*) malloc(sizeof(Produto));
@@ -172,6 +173,7 @@ void alterar_produto(void){
     printf("Digite o ID do produto que deseja alterar: ");
     scanf(" %d", &id_procurar);
     limpar_buffer();
+
     printf("\nO que deseja alterar desse Prodtuo ?");
     printf("\n1 - modelo");
     printf("\n2 - valor");
@@ -180,12 +182,12 @@ void alterar_produto(void){
     scanf("%c", &opc_alterar);
     limpar_buffer();
 
-    arquivo_produto = fopen("produtos.dat", "rb");
+    arquivo_produto = fopen("produtos.dat", "r+b");
 
     if (arquivo_produto == NULL) {
         arquivo_produto = fopen("produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "rb");
+        arquivo_produto = fopen("produtos.dat", "r+b");
     }
     while (fread(prod, sizeof(Produto), 1, arquivo_produto) && prod_alterado == False){
 
@@ -195,33 +197,26 @@ void alterar_produto(void){
                         case '1':
                             printf("\nDigite o novo modelo: ");
                             scanf("%[^\n]", prod->modelo_rede);
-                            prod_alterado = True;
                             limpar_buffer();
                             break;
                         case  '2':
                             printf("\nDigite o novo valor: ");
                             scanf("%[^\n]", prod->valor_rede);
-                            prod_alterado = True;
                             limpar_buffer();
                             break;
                         case  '3':
                             printf("\nDigite o novo tipo: ");
                             scanf("%[^\n]", prod->tipo_rede);
-                            prod_alterado = True;
                             limpar_buffer();
                             break;
                         case  '4':
                             printf("\nDigite a nova cor: ");
                             scanf("%[^\n]", prod->cor_rede);
-                            prod_alterado = True;
                             limpar_buffer();
                             break;
                         default:
                             break;
             }
-            fseek(arquivo_produto, (-1)*sizeof(Produto), SEEK_CUR);
-            fwrite(prod, sizeof(Produto), 1, arquivo_produto);
-
             system("clear || cls");
             printf("\nProduto com o ID %d alterado com sucesso!", id_procurar);
             printf("\n\n------------------------ Produto Alterado ------------------------");
@@ -231,6 +226,25 @@ void alterar_produto(void){
             printf("\nTipo do Produto: %s", prod->tipo_rede);
             printf("\nCor do Produto: %s", prod->cor_rede);
             getchar();
+
+            printf("\nDeseja alterar algum outro campo? (s/n)\n");
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+            fseek(arquivo_produto, (-1)*sizeof(Produto), SEEK_CUR);
+            fwrite(prod, sizeof(Produto), 1, arquivo_produto);
+            if (opc_confirmar == 's' || opc_confirmar == 'S'){
+                system("clear || cls");
+                printf("\nO que deseja alterar desse Prodtuo ?");
+                printf("\n1 - modelo");
+                printf("\n2 - valor");
+                printf("\n3 - tipo");
+                printf("\n4 - cor\n");
+                scanf("%c", &opc_alterar);
+                limpar_buffer();
+                fseek(arquivo_produto, (-1)*sizeof(Produto), SEEK_CUR);     
+            } else {
+                prod_alterado = True;
+            }
         }
     }
     if (prod_alterado == False) {
