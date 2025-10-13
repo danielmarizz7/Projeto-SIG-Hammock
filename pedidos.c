@@ -283,6 +283,7 @@ void excluir_pedido(void){
     Pedido* pedido;
     pedido = (Pedido*) malloc(sizeof(Pedido));
     int pedido_excluido = False;
+    char opc_confirmar;
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -303,14 +304,29 @@ void excluir_pedido(void){
 
     while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido) && pedido_excluido == False){
         if (pedido->id_pedido == id_procurar && pedido->status == True){
-            pedido->status = False;
-            pedido_excluido = True;
+            system("clear || cls");
+            printf("\n\n------------------------ Pedido ------------------------");
+            printf("\nID do pedido: %d", pedido->id_pedido);
+            printf("\nID do cliente: %d", pedido->id_cliente);
+            printf("\nID do produto: %d", pedido->id_produto);
+            printf("\nID do funcionario: %d", pedido->id_funcionario);
+            printf("\nPreco do pedido: %f", pedido->preco);
+            printf("\nData do pedido: %s", pedido->data);
+            printf("\n\nPedido de ID %d foi encontrado.\nTem certeza que deseja exclui-lo? (s/n)", id_procurar);
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
 
-            fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);
-            fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
-            printf("\nPedido com o ID %d excluido com sucesso!", id_procurar);
+            if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                pedido->status = False;
+                pedido_excluido = True;
+                fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);
+                fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
+                printf("\nPedido com o ID %d excluido com sucesso!", id_procurar);   
+            } else {
+                printf("\nExclusão cancelada.");
+                pedido_excluido = True;
+            }
         }
-                 
         
     }
     if (pedido_excluido == False) {

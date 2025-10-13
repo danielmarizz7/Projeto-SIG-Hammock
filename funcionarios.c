@@ -256,6 +256,7 @@ void alterar_funcionarios(void){
 void excluir_funcionarios(void){
     int id_procurar = 0;
     int excluido = False;
+    char opc_confirmar;
     Funcionarios* func;
     func = (Funcionarios*) malloc(sizeof(Funcionarios));
 
@@ -278,15 +279,29 @@ void excluir_funcionarios(void){
 
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && (excluido == False)){
         if (func->id == id_procurar && func->status == True){
-            func->status = False;
+            system("clear || cls");
+            printf("\n\n------------------------ Funcionário ------------------------");
+            printf("\nID do Funcionário: %d", func->id);
+            printf("\nNome do Funcionário: %s", func->nome);
+            printf("\nCPF do Funcionário: %s", func->cpf);
+            printf("\nEmail do Funcionário: %s", func->email);
+            printf("\nTelefone do Funcionário: %s", func->telefone);
+            printf("\n\nFuncionário de ID %d foi encontrado.\nTem certeza que deseja exclui-lo? (s/n)", id_procurar);
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
 
-            excluido = True;
-            fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);
-            fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
-            printf("\nFuncionário com o ID %d excluido com sucesso!", id_procurar);
-        }
-                 
-        
+            if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                func->status = False;
+                excluido = True;
+
+                fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);
+                fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
+                printf("\nFuncionário com o ID %d excluido com sucesso!", id_procurar);  
+            } else {
+                printf("\nExclusão cancelada.");
+                excluido = True;
+            }
+        }               
     }
     if (excluido == False) {
         printf("\nNão existe nenhum Funcionário com o ID %d cadastrado...", id_procurar);

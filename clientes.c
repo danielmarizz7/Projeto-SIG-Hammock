@@ -5,7 +5,6 @@
 #include "utilidades.h"
 #include "clientes.h"
 #include <locale.h>
-// #include <windows.h>
 
 FILE * arquivo_cliente; //Apontador do arquivo
 
@@ -30,8 +29,6 @@ void modulo_clientes(void){
 
 
 char tela_de_clientes(void){
-    // SetConsoleOutputCP(CP_UTF8);
-    // SetConsoleCP(CP_UTF8);
 
     char op_cliente;
     system("clear || cls");
@@ -267,6 +264,7 @@ void alterar_cliente(void){
 void excluir_cliente(void){
     int id_procurar = 0;
     int excluido = False;
+    char opc_confirmar;
     Cliente* cli;
     cli = (Cliente*) malloc(sizeof(Cliente));
 
@@ -289,15 +287,30 @@ void excluir_cliente(void){
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && (excluido == False)){
         if (cli->id == id_procurar && cli->status == True){
-            cli->status = False;
+            system("clear || cls");
+            printf("\n\n------------------------ Cliente ------------------------");
+            printf("\nID do cliente: %d", cli->id);
+            printf("\nNome do cliente: %s", cli->nome);
+            printf("\nCPF do cliente: %s", cli->cpf);
+            printf("\nEmail do cliente: %s", cli->email);
+            printf("\nTelefone do cliente: %s", cli->telefone);
+            printf("\n\nCliente de ID %d foi encontrado.\nTem certeza que deseja exclui-lo? (s/n)", id_procurar);
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
 
-            excluido = True;
-            fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
-            fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
-            printf("\nCliente com o ID %d excluido com sucesso!", id_procurar);
+            if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                cli->status = False;
+
+                excluido = True;
+                fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
+                fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
+                printf("\nCliente com o ID %d excluido com sucesso!", id_procurar);   
+            } else {
+                printf("\nExclusão cancelada.");
+                excluido = True;
+            }
         }
                  
-        
     }
     if (excluido == False) {
         printf("\nNão existe nenhum cliente com o ID %d cadastrado...", id_procurar);
