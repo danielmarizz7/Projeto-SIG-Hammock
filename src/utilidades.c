@@ -26,31 +26,43 @@ int gerar_id(FILE *arquivo, int estrutura) {
         cli = (Cliente*) malloc(sizeof(Cliente));
 
         fseek(arquivo, (-1)*sizeof(Cliente), SEEK_CUR);
-        fread(cli, sizeof(Cliente), 1, arquivo);
-        id = cli->id + 1;
+        if (fread(cli, sizeof(Cliente), 1, arquivo)) {
+            id = cli->id + 1;
+        } else {
+            id = 1;
+        }
     }
     else if (estrutura == 2){
         Produto* prod;
         prod = (Produto*) malloc(sizeof(Produto));
 
         fseek(arquivo, (-1)*sizeof(Produto), SEEK_CUR);
-        fread(prod, sizeof(Produto), 1, arquivo);
-        id = prod->id + 1;
+        if (fread(prod, sizeof(Produto), 1, arquivo)) {
+            id = prod->id + 1;
+        } else {
+            id = 1;
+        }
     }
     else if (estrutura == 3){
         Funcionarios* func;
         func = (Funcionarios*) malloc(sizeof(Funcionarios));
 
         fseek(arquivo, (-1)*sizeof(Funcionarios), SEEK_CUR);
-        fread(func, sizeof(Funcionarios), 1, arquivo);
-        id = func->id + 1;
+        if (fread(func, sizeof(Funcionarios), 1, arquivo)) {
+            id = func->id + 1;
+        } else {
+            id = 1;
+        }
     } else{
         Pedido* pedido;
         pedido = (Pedido*) malloc(sizeof(Pedido));
 
         fseek(arquivo, (-1)*sizeof(Pedido), SEEK_CUR);
-        fread(pedido, sizeof(Pedido), 1, arquivo);
-        id = pedido->id_pedido + 1;
+        if(fread(pedido, sizeof(Pedido), 1, arquivo)) {
+            id = pedido->id_pedido + 1;
+        } else {
+            id = 1;
+        }
     }
     return id;
 }
