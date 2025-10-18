@@ -169,6 +169,7 @@ void exibir_pedidos(void){
 void listar_pedidos(void) {
     Pedido* pedido;
     pedido = (Pedido*) malloc(sizeof(Pedido));
+    int arquivo_vazio = True;
 
     system("clear || cls");
     limpar_buffer();
@@ -184,7 +185,7 @@ void listar_pedidos(void) {
         arquivo_pedido = fopen("pedidos.dat", "rb");
     }
 
-    while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido))
+    while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido) && pedido->status == True)
     {
         printf("\n\n------------------------ Pedido %d ------------------------", pedido->id_pedido);
         printf("\nID do Pedido: %d", pedido->id_pedido);
@@ -197,6 +198,11 @@ void listar_pedidos(void) {
     }
     fclose(arquivo_pedido);
     free(pedido);
+            
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum funcionário cadastrado...");
+        getchar();
+    }
     
 }
 

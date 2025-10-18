@@ -167,6 +167,7 @@ void exibir_clientes(void){
 void listar_clientes(void) {
     Cliente* cli;
     cli = (Cliente*) malloc(sizeof(Cliente));
+    int arquivo_vazio = True;
 
     system("clear || cls");
     limpar_buffer();
@@ -182,7 +183,7 @@ void listar_clientes(void) {
         arquivo_cliente = fopen("clientes.dat", "rb");
     }
 
-    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente))
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && cli->status == True)
     {
         printf("\n\n------------------------ Cliente %d ------------------------", cli->id);
         printf("\nID do Cliente: %d", cli->id);
@@ -194,7 +195,12 @@ void listar_clientes(void) {
     }
     fclose(arquivo_cliente);
     free(cli);
-    
+        
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum cliente cadastrado...");
+        getchar();
+    }
+
 }
 
 

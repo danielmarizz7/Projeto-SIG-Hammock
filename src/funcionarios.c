@@ -158,6 +158,7 @@ void exibir_funcionarios(void){
 void listar_funcionarios(void) {
     Funcionarios* func;
     func = (Funcionarios*) malloc(sizeof(Funcionarios));
+    int arquivo_vazio = True;
 
     system("clear || cls");
     limpar_buffer();
@@ -173,7 +174,7 @@ void listar_funcionarios(void) {
         arquivo_funcionario = fopen("funcionarios.dat", "rb");
     }
 
-    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario))
+    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && func->status == True)
     {
         printf("\n\n------------------------ Funcionário %d ------------------------", func->id);
         printf("\nID do Funcionário: %d", func->id);
@@ -185,6 +186,12 @@ void listar_funcionarios(void) {
     }
     fclose(arquivo_funcionario);
     free(func);
+
+            
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum funcionário cadastrado...");
+        getchar();
+    }
     
 }
 

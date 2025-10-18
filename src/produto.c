@@ -161,6 +161,7 @@ void exibir_produto(void){
 void listar_produto(void) {
     Produto* prod;
     prod = (Produto*) malloc(sizeof(Produto));
+    int arquivo_vazio = True;
 
     system("clear || cls");
     limpar_buffer();
@@ -176,7 +177,7 @@ void listar_produto(void) {
         arquivo_produto = fopen("produtos.dat", "rb");
     }
 
-    while (fread(prod, sizeof(Produto), 1, arquivo_produto))
+    while (fread(prod, sizeof(Produto), 1, arquivo_produto) && prod->status == True)
     {
         printf("\n\n------------------------ Produto %d ------------------------", prod->id);
         printf("\nID do Produto: %d", prod->id);
@@ -188,6 +189,11 @@ void listar_produto(void) {
     }
     fclose(arquivo_produto);
     free(prod);
+            
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum funcionário cadastrado...");
+        getchar();
+    }
     
 }
 
