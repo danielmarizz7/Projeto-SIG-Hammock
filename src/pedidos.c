@@ -195,12 +195,13 @@ void listar_pedidos(void) {
         printf("\nPreco do Pedido: %f", pedido->preco);
         printf("\nData do Pedido: %s", pedido->data);
         getchar();
+        arquivo_vazio = False;
     }
     fclose(arquivo_pedido);
     free(pedido);
             
     if (arquivo_vazio == True) {
-        printf("Não tem nenhum funcionário cadastrado...");
+        printf("Não tem nenhum pedido cadastrado...");
         getchar();
     }
     

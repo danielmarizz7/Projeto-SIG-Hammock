@@ -186,12 +186,13 @@ void listar_produto(void) {
         printf("\nTipo do Produto: %s", prod->tipo_rede);
         printf("\nCor do Produto: %s", prod->cor_rede);
         getchar();
+        arquivo_vazio = False;
     }
     fclose(arquivo_produto);
     free(prod);
             
     if (arquivo_vazio == True) {
-        printf("Não tem nenhum funcionário cadastrado...");
+        printf("Não tem nenhum produto cadastrado...");
         getchar();
     }
     

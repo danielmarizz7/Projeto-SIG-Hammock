@@ -183,6 +183,7 @@ void listar_funcionarios(void) {
         printf("\nEmail do Funcionário: %s", func->email);
         printf("\nTelefone do Funcionário: %s", func->telefone);
         getchar();
+        arquivo_vazio = False;
     }
     fclose(arquivo_funcionario);
     free(func);

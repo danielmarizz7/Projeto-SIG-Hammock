@@ -192,6 +192,7 @@ void listar_clientes(void) {
         printf("\nEmail do Cliente: %s", cli->email);
         printf("\nTelefone do Cliente: %s", cli->telefone);
         getchar();
+        arquivo_vazio = False;
     }
     fclose(arquivo_cliente);
     free(cli);
