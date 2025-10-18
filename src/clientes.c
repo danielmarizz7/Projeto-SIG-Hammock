@@ -368,6 +368,7 @@ void perma_excluir_cliente(void) {
     int id_procurar = 0;
     int excluido = False;
     char opc_confirmar;
+    char opc_escolha;
     Cliente* cli;
     cli = (Cliente*) malloc(sizeof(Cliente));
     FILE * arquivo_novo;
@@ -376,8 +377,9 @@ void perma_excluir_cliente(void) {
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║        Excluir Permanentemente Clientes         ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Digite o ID do cliente que deseja excluir permanentemente: ");
-    scanf(" %d", &id_procurar);
+    printf("Deseja excluir um cliente específico ou todos os clientes inativos?");
+    printf("\n1 - Um cliente específico\n2 - Todos os clientes inativos\n");
+    scanf(" %c", &opc_escolha);
     limpar_buffer();
 
     arquivo_cliente = fopen("clientes.dat", "rb");
@@ -390,41 +392,60 @@ void perma_excluir_cliente(void) {
         arquivo_cliente = fopen("clientes.dat", "rb");
     }
 
-    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
-        if (cli->id == id_procurar && cli->status == False){
-            system("clear || cls");
-            printf("\n\n------------------------ Cliente ------------------------");
-            printf("\nID do cliente: %d", cli->id);
-            printf("\nNome do cliente: %s", cli->nome);
-            printf("\nCPF do cliente: %s", cli->cpf);
-            printf("\nEmail do cliente: %s", cli->email);
-            printf("\nTelefone do cliente: %s", cli->telefone);
-            printf("\n\nCliente de ID %d foi encontrado.\nTem certeza que deseja exclui-lo permanentemente? (s/n)", id_procurar);
-            scanf("%c", &opc_confirmar);
-            limpar_buffer();
+    if (opc_escolha == '1') {
+        printf("Digite o ID do cliente que deseja excluir permanentemente: ");
+        scanf(" %d", &id_procurar);
+        limpar_buffer();
 
-            if (opc_confirmar == 's' || opc_confirmar == 'S') {
-                printf("\nCliente com o ID %d excluido com sucesso!", id_procurar);
-                getchar();
-                excluido = True;
+        while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
+            if (cli->id == id_procurar && cli->status == False){
+                system("clear || cls");
+                printf("\n\n------------------------ Cliente ------------------------");
+                printf("\nID do cliente: %d", cli->id);
+                printf("\nNome do cliente: %s", cli->nome);
+                printf("\nCPF do cliente: %s", cli->cpf);
+                printf("\nEmail do cliente: %s", cli->email);
+                printf("\nTelefone do cliente: %s", cli->telefone);
+                printf("\n\nCliente de ID %d foi encontrado.\nTem certeza que deseja exclui-lo permanentemente? (s/n)", id_procurar);
+                scanf("%c", &opc_confirmar);
+                limpar_buffer();
+
+                if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                    printf("\nCliente com o ID %d excluido com sucesso!", id_procurar);
+                    getchar();
+                    excluido = True;
+                } else {
+                    fwrite(cli, sizeof(Cliente), 1, arquivo_novo);
+                    printf("\nExclusão cancelada.");
+                    getchar();
+                    excluido = True;
+                }
             } else {
                 fwrite(cli, sizeof(Cliente), 1, arquivo_novo);
-                printf("\nExclusão cancelada.");
-                getchar();
-                excluido = True;
             }
-        } else {
-            fwrite(cli, sizeof(Cliente), 1, arquivo_novo);
+                    
         }
-                 
+        if (excluido == False) {
+            printf("\nNão existe nenhum cliente inativo com o ID %d...", id_procurar);
+            getchar();
+        }
     }
-    if (excluido == False) {
-        printf("\nNão existe nenhum cliente com o ID %d desativado...", id_procurar);
+    else if (opc_escolha == '2') {
+        while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)) {
+            if (cli->status == True){
+                fwrite(cli, sizeof(Cliente), 1, arquivo_novo);
+            }     
+        }
+        printf("Todos os clientes inativos foram deletados permanentemente.");
+        getchar();
+    }
+    else {
+        printf("Opção inválida.");
+        getchar();
     }
     fclose(arquivo_cliente);
     fclose(arquivo_novo);
     free(cli);
     remove("clientes.dat");
     rename("clientes_novo.dat", "clientes.dat");
-    getchar();
 }
