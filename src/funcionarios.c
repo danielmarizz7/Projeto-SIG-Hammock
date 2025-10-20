@@ -354,3 +354,91 @@ void excluir_funcionarios(void){
     getchar();
 }
 
+
+
+void perma_excluir_funcionario(void) {
+    int id_procurar = 0;
+    int excluido = False;
+    char opc_confirmar;
+    char opc_escolha;
+    Funcionarios* func;
+    func = (Funcionarios*) malloc(sizeof(Funcionarios));
+    FILE * arquivo_novo;
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║      Excluir Funcionários Permanentemente       ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Deseja excluir um funcionário específico ou todos os funcionários inativos?");
+    printf("\n1 - Um funcionário específico\n2 - Todos os funcionários inativos\n");
+    scanf(" %c", &opc_escolha);
+    limpar_buffer();
+
+    arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    arquivo_novo = fopen("funcionarios.dat", "wb");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_funcionario == NULL) {
+        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    }
+
+    if (opc_escolha == '1') {
+        printf("Digite o ID do funcionário que deseja excluir permanentemente: ");
+        scanf(" %d", &id_procurar);
+        limpar_buffer();
+
+        while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
+            if (func->id == id_procurar && func->status == False){
+                system("clear || cls");
+                printf("\n\n------------------------ Funcionário ------------------------");
+                printf("\nID do Funcionário: %d", func->id);
+                printf("\nNome do Funcionário: %s", func->nome);
+                printf("\nCPF do Funcionário: %s", func->cpf);
+                printf("\nEmail do Funcionário: %s", func->email);
+                printf("\nTelefone do Funcionário: %s", func->telefone);
+                printf("\n\nFuncionário de ID %d foi encontrado.\nTem certeza que deseja exclui-lo permanentemente? (s/n)", id_procurar);
+                scanf("%c", &opc_confirmar);
+                limpar_buffer();
+
+                if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                    printf("\nFuncionário com o ID %d excluido com sucesso!", id_procurar);
+                    getchar();
+                    excluido = True;
+                } else {
+                    fwrite(func, sizeof(Funcionarios), 1, arquivo_novo);
+                    printf("\nExclusão cancelada.");
+                    getchar();
+                    excluido = True;
+                }
+            } else {
+                fwrite(func, sizeof(Funcionarios), 1, arquivo_novo);
+            }
+                    
+        }
+        if (excluido == False) {
+            printf("\nNão existe nenhum Funcionário inativo com o ID %d...", id_procurar);
+            getchar();
+        }
+    }
+    else if (opc_escolha == '2') {
+        while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)) {
+            if (func->status == True){
+                fwrite(func, sizeof(Funcionarios), 1, arquivo_novo);
+            }     
+        }
+        printf("Todos os Funcionários inativos foram deletados permanentemente.");
+        getchar();
+    }
+    else {
+        printf("Opção inválida.");
+        getchar();
+    }
+    fclose(arquivo_funcionario);
+    fclose(arquivo_novo);
+    free(func);
+    remove("funcionarios.dat");
+    rename("funcionarios_novo.dat", "funcionarios.dat");
+}
+
