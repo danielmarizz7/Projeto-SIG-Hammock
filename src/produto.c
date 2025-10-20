@@ -341,7 +341,7 @@ void excluir_produto(void){
             if (opc_confirmar == 's' || opc_confirmar == 'S') {
                 prod->status = 0;
                 excluido = True;
-                fseek(arquivo_produto, (-1)*sizeof(arquivo_produto), SEEK_CUR);
+                fseek(arquivo_produto, (-1)*sizeof(Produto), SEEK_CUR);
                 fwrite(prod, sizeof(Produto), 1, arquivo_produto);
                 printf("\nProduto com o ID %d excluido com sucesso!", id_procurar);
             } else {
