@@ -18,4 +18,5 @@ void exibir_produto(void);
 void listar_produto(void);
 void alterar_produto(void);
 void excluir_produto(void);
+void perma_excluir_produto(void);
 void modulo_produto(void);
