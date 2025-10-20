@@ -27,6 +27,8 @@ void modulo_pedidos(void){
                         break;
             case '6':   perma_excluir_pedido();
                         break;
+            case '7':   restaurar_pedido();
+                        break;
 
         }
     } while (opcao != '0');
@@ -47,6 +49,7 @@ char tela_de_pedidos(void){
     printf("║ 4 - Editar Pedido                               ║\n");
     printf("║ 5 - Excluir Pedido                              ║\n");
     printf("║ 6 - Excluir permanentemente Pedido              ║\n");
+    printf("║ 7 - Restaurar Pedido                            ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -320,10 +323,6 @@ void alterar_pedido(void){
     free(pedido);
 }
 
-
-
-
-
 void excluir_pedido(void){
     int id_procurar = 0;
     Pedido* pedido;
@@ -377,6 +376,65 @@ void excluir_pedido(void){
     }
     if (pedido_excluido == False) {
         printf("\nNão existe nenhum pedido com o ID %d cadastrado...", id_procurar);
+    }
+    fclose(arquivo_pedido);
+    free(pedido);
+    getchar();
+}
+
+void restaurar_pedido(void){
+    int id_procurar = 0;
+    Pedido* pedido;
+    pedido = (Pedido*) malloc(sizeof(Pedido));
+    int pedido_restaurado = False;
+    char opc_confirmar;
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║                Restaurar Pedidos                ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o ID do pedido que deseja restaurar: ");
+    scanf(" %d", &id_procurar);
+    limpar_buffer();
+
+    arquivo_pedido = fopen("pedidos.dat", "r+b");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_pedido == NULL) {
+        arquivo_pedido = fopen("pedidos.dat", "wb");
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.dat", "r+b");
+    }
+
+    while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido) && pedido_restaurado == False){
+        if (pedido->id_pedido == id_procurar && pedido->status == False){
+            system("clear || cls");
+            printf("\n\n------------------------ Pedido ------------------------");
+            printf("\nID do pedido: %d", pedido->id_pedido);
+            printf("\nID do cliente: %d", pedido->id_cliente);
+            printf("\nID do produto: %d", pedido->id_produto);
+            printf("\nID do funcionario: %d", pedido->id_funcionario);
+            printf("\nPreco do pedido: %f", pedido->preco);
+            printf("\nData do pedido: %s", pedido->data);
+            printf("\n\nPedido de ID %d foi encontrado.\nTem certeza que deseja reativa-lo? (s/n)", id_procurar);
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+
+            if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                pedido->status = 1;
+                pedido_restaurado = True;
+                fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);
+                fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
+                printf("\nPedido com o ID %d reativado com sucesso!", id_procurar);   
+            } else {
+                printf("\nRestauração cancelada.");
+                pedido_restaurado = True;
+            }
+        }
+        
+    }
+    if (pedido_restaurado == False) {
+        printf("\nNão existe nenhum pedido desativado com o ID %d...", id_procurar);
     }
     fclose(arquivo_pedido);
     free(pedido);

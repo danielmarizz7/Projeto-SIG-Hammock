@@ -16,5 +16,6 @@ void exibir_pedidos(void);
 void listar_pedidos(void);
 void alterar_pedido(void);
 void excluir_pedido(void);
+void restaurar_pedido(void);
 void perma_excluir_pedido(void);
 void modulo_pedidos(void);
