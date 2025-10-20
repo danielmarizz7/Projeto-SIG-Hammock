@@ -25,6 +25,8 @@ void modulo_produto(void){
                         break;
             case '5':   excluir_produto();
                         break;
+            case '6':   perma_excluir_produto();
+                        break;
 
         }
     } while (opcao != '0');
@@ -45,6 +47,7 @@ char tela_de_produto(void){
     printf("║ 3 - Listar Produto                              ║\n");
     printf("║ 4 - Editar Produto                              ║\n");
     printf("║ 5 - Excluir Produto                             ║\n");
+    printf("║ 6 - Excluir Permanentemente Produto             ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Para voltar à tela inicial                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -177,16 +180,17 @@ void listar_produto(void) {
         arquivo_produto = fopen("produtos.dat", "rb");
     }
 
-    while (fread(prod, sizeof(Produto), 1, arquivo_produto) && prod->status == True)
-    {
-        printf("\n\n------------------------ Produto %d ------------------------", prod->id);
-        printf("\nID do Produto: %d", prod->id);
-        printf("\nModelo do Produto: %s", prod->modelo_rede);
-        printf("\nValor do Produto: %s", prod->valor_rede);
-        printf("\nTipo do Produto: %s", prod->tipo_rede);
-        printf("\nCor do Produto: %s", prod->cor_rede);
-        getchar();
-        arquivo_vazio = False;
+    while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
+        if (prod->status == True){
+            printf("\n\n------------------------ Produto %d ------------------------", prod->id);
+            printf("\nID do Produto: %d", prod->id);
+            printf("\nModelo do Produto: %s", prod->modelo_rede);
+            printf("\nValor do Produto: %s", prod->valor_rede);
+            printf("\nTipo do Produto: %s", prod->tipo_rede);
+            printf("\nCor do Produto: %s", prod->cor_rede);
+            getchar();
+            arquivo_vazio = False;
+        }
     }
     fclose(arquivo_produto);
     free(prod);

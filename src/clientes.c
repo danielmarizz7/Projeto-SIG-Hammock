@@ -183,16 +183,17 @@ void listar_clientes(void) {
         arquivo_cliente = fopen("clientes.dat", "rb");
     }
 
-    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && cli->status == True)
-    {
-        printf("\n\n------------------------ Cliente %d ------------------------", cli->id);
-        printf("\nID do Cliente: %d", cli->id);
-        printf("\nNome do Cliente: %s", cli->nome);
-        printf("\nCPF do Cliente: %s", cli->cpf);
-        printf("\nEmail do Cliente: %s", cli->email);
-        printf("\nTelefone do Cliente: %s", cli->telefone);
-        getchar();
-        arquivo_vazio = False;
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
+        if (cli->status == True){
+            printf("\n\n------------------------ Cliente %d ------------------------", cli->id);
+            printf("\nID do Cliente: %d", cli->id);
+            printf("\nNome do Cliente: %s", cli->nome);
+            printf("\nCPF do Cliente: %s", cli->cpf);
+            printf("\nEmail do Cliente: %s", cli->email);
+            printf("\nTelefone do Cliente: %s", cli->telefone);
+            getchar();
+            arquivo_vazio = False;
+        }
     }
     fclose(arquivo_cliente);
     free(cli);

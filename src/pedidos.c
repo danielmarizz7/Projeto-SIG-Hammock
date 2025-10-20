@@ -188,17 +188,19 @@ void listar_pedidos(void) {
         arquivo_pedido = fopen("pedidos.dat", "rb");
     }
 
-    while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido) && pedido->status == True)
-    {
-        printf("\n\n------------------------ Pedido %d ------------------------", pedido->id_pedido);
-        printf("\nID do Pedido: %d", pedido->id_pedido);
-        printf("\nID do Cliente: %d", pedido->id_cliente);
-        printf("\nID do Produto: %d", pedido->id_produto);
-        printf("\nID do Funcionario: %d", pedido->id_funcionario);
-        printf("\nPreco do Pedido: %f", pedido->preco);
-        printf("\nData do Pedido: %s", pedido->data);
-        getchar();
-        arquivo_vazio = False;
+    while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido)){
+        if (pedido->status == True)
+        {
+            printf("\n\n------------------------ Pedido %d ------------------------", pedido->id_pedido);
+            printf("\nID do Pedido: %d", pedido->id_pedido);
+            printf("\nID do Cliente: %d", pedido->id_cliente);
+            printf("\nID do Produto: %d", pedido->id_produto);
+            printf("\nID do Funcionario: %d", pedido->id_funcionario);
+            printf("\nPreco do Pedido: %f", pedido->preco);
+            printf("\nData do Pedido: %s", pedido->data);
+            getchar();
+            arquivo_vazio = False;
+        }
     }
     fclose(arquivo_pedido);
     free(pedido);

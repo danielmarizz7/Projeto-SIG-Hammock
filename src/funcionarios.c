@@ -43,7 +43,7 @@ char tela_de_funcionarios(void){
     printf("║ 3 - Listar Funcionarios                         ║\n");
     printf("║ 4 - Editar Funcionario                          ║\n");
     printf("║ 5 - Excluir Funcionario                         ║\n");
-    printf("║ 5 - Excluir Permanentemente Funcionario         ║\n");
+    printf("║ 6 - Excluir Permanentemente Funcionario         ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -177,16 +177,17 @@ void listar_funcionarios(void) {
         arquivo_funcionario = fopen("funcionarios.dat", "rb");
     }
 
-    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && func->status == True)
-    {
-        printf("\n\n------------------------ Funcionário %d ------------------------", func->id);
-        printf("\nID do Funcionário: %d", func->id);
-        printf("\nNome do Funcionário: %s", func->nome);
-        printf("\nCPF do Funcionário: %s", func->cpf);
-        printf("\nEmail do Funcionário: %s", func->email);
-        printf("\nTelefone do Funcionário: %s", func->telefone);
-        getchar();
-        arquivo_vazio = False;
+    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
+        if (func->status == True){
+            printf("\n\n------------------------ Funcionário %d ------------------------", func->id);
+            printf("\nID do Funcionário: %d", func->id);
+            printf("\nNome do Funcionário: %s", func->nome);
+            printf("\nCPF do Funcionário: %s", func->cpf);
+            printf("\nEmail do Funcionário: %s", func->email);
+            printf("\nTelefone do Funcionário: %s", func->telefone);
+            getchar();
+            arquivo_vazio = False;
+        }
     }
     fclose(arquivo_funcionario);
     free(func);
