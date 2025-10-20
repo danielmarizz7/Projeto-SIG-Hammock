@@ -27,6 +27,8 @@ void modulo_produto(void){
                         break;
             case '6':   perma_excluir_produto();
                         break;
+            case '7':   restaurar_produto();
+                        break;
 
         }
     } while (opcao != '0');
@@ -48,6 +50,7 @@ char tela_de_produto(void){
     printf("║ 4 - Editar Produto                              ║\n");
     printf("║ 5 - Excluir Produto                             ║\n");
     printf("║ 6 - Excluir Permanentemente Produto             ║\n");
+    printf("║ 7 - Restaurar Produto                           ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Para voltar à tela inicial                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -360,6 +363,64 @@ void excluir_produto(void){
     getchar();
 }
 
+void restaurar_produto(void){
+    int id_procurar = 0;
+    int restaurado = False;
+    char opc_confirmar;
+    Produto* prod;
+    prod = (Produto*) malloc(sizeof(Produto));
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║                 Restaurar Produtos              ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o ID do Produto que deseja restaurar: ");
+    scanf(" %d", &id_procurar);
+    limpar_buffer();
+
+    arquivo_produto = fopen("produtos.dat", "r+b");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_produto == NULL) {
+        arquivo_produto = fopen("produtos.dat", "wb");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.dat", "r+b");
+    }
+
+    while (fread(prod, sizeof(Produto), 1, arquivo_produto) && (restaurado == False)){
+        if (prod->id == id_procurar && prod->status == False){
+            system("clear || cls");
+            printf("\n\n------------------------ Produto ------------------------");
+            printf("\nID do Produto: %d", prod->id);
+            printf("\nModelo do Produto: %s", prod->modelo_rede);
+            printf("\nValor do Produto: %s", prod->valor_rede);
+            printf("\nTipo do Produto: %s", prod->tipo_rede);
+            printf("\nCor do Produto: %s", prod->cor_rede);
+            printf("\n\nProduto de ID %d foi encontrado.\nTem certeza que deseja reativa-lo? (s/n)", id_procurar);
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+
+            if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                prod->status = 1;
+                restaurado = True;
+                fseek(arquivo_produto, (-1)*sizeof(Produto), SEEK_CUR);
+                fwrite(prod, sizeof(Produto), 1, arquivo_produto);
+                printf("\nProduto com o ID %d restaurado com sucesso!", id_procurar);
+            } else {
+                printf("\nRestauração cancelada.");
+                restaurado = True;
+            }
+        }
+                 
+        
+    }
+    if (restaurado == False) {
+        printf("\nNão existe nenhum produto desativado com o ID %d...", id_procurar);
+    }
+    fclose(arquivo_produto);
+    free(prod);
+    getchar();
+}
 
 void perma_excluir_produto(void) {
     int id_procurar = 0;
