@@ -355,3 +355,90 @@ void excluir_produto(void){
     free(prod);
     getchar();
 }
+
+
+void perma_excluir_produto(void) {
+    int id_procurar = 0;
+    int excluido = False;
+    char opc_confirmar;
+    char opc_escolha;
+    Produto* prod;
+    prod = (Produto*) malloc(sizeof(Produto));
+    FILE * arquivo_novo;
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║        Excluir Produtos Permanentemente         ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Deseja excluir um Produto específico ou todos os Produtos inativos?");
+    printf("\n1 - Um Produto específico\n2 - Todos os Produtos inativos\n");
+    scanf(" %c", &opc_escolha);
+    limpar_buffer();
+
+    arquivo_produto = fopen("produtos.dat", "rb");
+    arquivo_novo = fopen("produtos_novo.dat", "wb");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_produto == NULL) {
+        arquivo_produto = fopen("produtos.dat", "wb");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.dat", "rb");
+    }
+
+    if (opc_escolha == '1') {
+        printf("Digite o ID do Produto que deseja excluir permanentemente: ");
+        scanf(" %d", &id_procurar);
+        limpar_buffer();
+
+        while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
+            if (prod->id == id_procurar && prod->status == False){
+                system("clear || cls");
+                printf("\n\n------------------------ Produto ------------------------");
+                printf("\nID do Produto: %d", prod->id);
+                printf("\nModelo do Produto: %s", prod->modelo_rede);
+                printf("\nValor do Produto: %s", prod->valor_rede);
+                printf("\nTipo do Produto: %s", prod->tipo_rede);
+                printf("\nCor do Produto: %s", prod->cor_rede);
+                printf("\n\nProduto de ID %d foi encontrado.\nTem certeza que deseja exclui-lo permanentemente? (s/n)", id_procurar);
+                scanf("%c", &opc_confirmar);
+                limpar_buffer();
+
+                if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                    printf("\nProduto com o ID %d excluido com sucesso!", id_procurar);
+                    getchar();
+                    excluido = True;
+                } else {
+                    fwrite(prod, sizeof(Produto), 1, arquivo_novo);
+                    printf("\nExclusão cancelada.");
+                    getchar();
+                    excluido = True;
+                }
+            } else {
+                fwrite(prod, sizeof(Produto), 1, arquivo_novo);
+            }
+                    
+        }
+        if (excluido == False) {
+            printf("\nNão existe nenhum Produto inativo com o ID %d...", id_procurar);
+            getchar();
+        }
+    }
+    else if (opc_escolha == '2') {
+        while (fread(prod, sizeof(Produto), 1, arquivo_produto)) {
+            if (prod->status == True){
+                fwrite(prod, sizeof(Produto), 1, arquivo_novo);
+            }     
+        }
+        printf("Todos os produtos inativos foram deletados permanentemente.");
+        getchar();
+    }
+    else {
+        printf("Opção inválida.");
+        getchar();
+    }
+    fclose(arquivo_produto);
+    fclose(arquivo_novo);
+    free(prod);
+    remove("produtos.dat");
+    rename("produtos_novo.dat", "produtos.dat");
+}
