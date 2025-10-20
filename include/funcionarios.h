@@ -17,5 +17,6 @@ void exibir_funcionarios(void);
 void listar_funcionarios(void);
 void alterar_funcionarios(void);
 void excluir_funcionarios(void);
+void restaurar_funcionarios(void);
 void perma_excluir_funcionario(void);
 void modulo_funcionarios(void);

@@ -27,6 +27,8 @@ void modulo_funcionarios(void) {
                         break;
             case '6': 	perma_excluir_funcionario();
                         break;
+            case '7': 	restaurar_funcionarios();
+                        break;
         } 		
     } while (opcao != '0');
 }
@@ -44,6 +46,7 @@ char tela_de_funcionarios(void){
     printf("║ 4 - Editar Funcionario                          ║\n");
     printf("║ 5 - Excluir Funcionario                         ║\n");
     printf("║ 6 - Excluir Permanentemente Funcionario         ║\n");
+    printf("║ 7 - Restaurar Funcionario                       ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -358,7 +361,63 @@ void excluir_funcionarios(void){
     getchar();
 }
 
+void restaurar_funcionarios(void){
+    int id_procurar = 0;
+    int restaurado = False;
+    char opc_confirmar;
+    Funcionarios* func;
+    func = (Funcionarios*) malloc(sizeof(Funcionarios));
 
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║              Restaurar Funcionários             ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o ID do Funcionário que deseja reativar: ");
+    scanf(" %d", &id_procurar);
+    limpar_buffer();
+
+    arquivo_funcionario = fopen("funcionarios.dat", "r+b");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_funcionario == NULL) {
+        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.dat", "r+b");
+    }
+
+    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && (restaurado == False)){
+        if (func->id == id_procurar && func->status == False){
+            system("clear || cls");
+            printf("\n\n------------------------ Funcionário ------------------------");
+            printf("\nID do Funcionário: %d", func->id);
+            printf("\nNome do Funcionário: %s", func->nome);
+            printf("\nCPF do Funcionário: %s", func->cpf);
+            printf("\nEmail do Funcionário: %s", func->email);
+            printf("\nTelefone do Funcionário: %s", func->telefone);
+            printf("\n\nFuncionário de ID %d foi encontrado.\nTem certeza que deseja reativa-lo? (s/n)", id_procurar);
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+
+            if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                func->status = 1;
+                restaurado = True;
+
+                fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);
+                fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
+                printf("\nFuncionário com o ID %d restaurado com sucesso!", id_procurar);  
+            } else {
+                printf("\nRestauração cancelada.");
+                restaurado = True;
+            }
+        }               
+    }
+    if (restaurado == False) {
+        printf("\nNão existe nenhum Funcionário desativado com o ID %d...", id_procurar);
+    }
+    fclose(arquivo_funcionario);
+    free(func);
+    getchar();
+}
 
 void perma_excluir_funcionario(void) {
     int id_procurar = 0;
