@@ -370,8 +370,8 @@ void perma_excluir_produto(void) {
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║        Excluir Produtos Permanentemente         ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Deseja excluir um Produto específico ou todos os Produtos inativos?");
-    printf("\n1 - Um Produto específico\n2 - Todos os Produtos inativos\n");
+    printf("Deseja excluir um produto específico ou todos os produtos inativos?");
+    printf("\n1 - Um produto específico\n2 - Todos os produtos inativos\n");
     scanf(" %c", &opc_escolha);
     limpar_buffer();
 
@@ -386,7 +386,7 @@ void perma_excluir_produto(void) {
     }
 
     if (opc_escolha == '1') {
-        printf("Digite o ID do Produto que deseja excluir permanentemente: ");
+        printf("Digite o ID do produto que deseja excluir permanentemente: ");
         scanf(" %d", &id_procurar);
         limpar_buffer();
 
@@ -419,7 +419,7 @@ void perma_excluir_produto(void) {
                     
         }
         if (excluido == False) {
-            printf("\nNão existe nenhum Produto inativo com o ID %d...", id_procurar);
+            printf("\nNão existe nenhum produto inativo com o ID %d...", id_procurar);
             getchar();
         }
     }

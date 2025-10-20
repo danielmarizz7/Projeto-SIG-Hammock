@@ -25,6 +25,8 @@ void modulo_pedidos(void){
                         break;
             case '5':   excluir_pedido();
                         break;
+            case '6':   perma_excluir_pedido();
+                        break;
 
         }
     } while (opcao != '0');
@@ -44,6 +46,7 @@ char tela_de_pedidos(void){
     printf("║ 3 - Listar Pedido                               ║\n");
     printf("║ 4 - Editar Pedido                               ║\n");
     printf("║ 5 - Excluir Pedido                              ║\n");
+    printf("║ 6 - Excluir permanentemente Pedido              ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -376,4 +379,91 @@ void excluir_pedido(void){
     fclose(arquivo_pedido);
     free(pedido);
     getchar();
+}
+
+void perma_excluir_pedido(void) {
+    int id_procurar = 0;
+    int excluido = False;
+    char opc_confirmar;
+    char opc_escolha;
+    Pedido* pedido;
+    pedido = (Pedido*) malloc(sizeof(Pedido));
+    FILE * arquivo_novo;
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║        Excluir Permanentemente Pedidos          ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Deseja excluir um pedido específico ou todos os pedidos inativos?");
+    printf("\n1 - Um pedido específico\n2 - Todos os pedidos inativos\n");
+    scanf(" %c", &opc_escolha);
+    limpar_buffer();
+
+    arquivo_pedido = fopen("pedidos.dat", "rb");
+    arquivo_novo = fopen("pedidos_novo.dat", "wb");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_pedido == NULL) {
+        arquivo_pedido = fopen("pedidos.dat", "wb");
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.dat", "rb");
+    }
+
+    if (opc_escolha == '1') {
+        printf("Digite o ID do pedido que deseja excluir permanentemente: ");
+        scanf(" %d", &id_procurar);
+        limpar_buffer();
+
+        while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido)){
+            if (pedido->id_pedido == id_procurar && pedido->status == False){
+                system("clear || cls");
+                printf("\n\n------------------------ Pedido ------------------------");
+                printf("\nID do pedido: %d", pedido->id_pedido);
+                printf("\nID do cliente: %d", pedido->id_cliente);
+                printf("\nID do produto: %d", pedido->id_produto);
+                printf("\nID do funcionario: %d", pedido->id_funcionario);
+                printf("\nPreco do pedido: %f", pedido->preco);
+                printf("\nData do pedido: %s", pedido->data);
+                printf("\n\nPedido de ID %d foi encontrado.\nTem certeza que deseja exclui-lo permanentemente? (s/n)", id_procurar);
+                scanf("%c", &opc_confirmar);
+                limpar_buffer();
+
+                if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                    printf("\nPedido com o ID %d excluido com sucesso!", id_procurar);
+                    getchar();
+                    excluido = True;
+                } else {
+                    fwrite(pedido, sizeof(Pedido), 1, arquivo_novo);
+                    printf("\nExclusão cancelada.");
+                    getchar();
+                    excluido = True;
+                }
+            } else {
+                fwrite(pedido, sizeof(Pedido), 1, arquivo_novo);
+            }
+                    
+        }
+        if (excluido == False) {
+            printf("\nNão existe nenhum pedido inativo com o ID %d...", id_procurar);
+            getchar();
+        }
+    }
+    else if (opc_escolha == '2') {
+        while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido)) {
+            if (pedido->status == True){
+                fwrite(pedido, sizeof(Pedido), 1, arquivo_novo);
+            }     
+        }
+        printf("Todos os pedidos inativos foram deletados permanentemente.");
+        getchar();
+    }
+    else {
+        printf("Opção inválida.");
+        getchar();
+    }
+    fclose(arquivo_pedido);
+    fclose(arquivo_novo);
+    free(pedido);
+    remove("pedidos.dat");
+    rename("pedidos_novo.dat", "pedidos.dat");
 }

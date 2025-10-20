@@ -25,6 +25,8 @@ void modulo_funcionarios(void) {
                         break;
             case '5': 	excluir_funcionarios();
                         break;
+            case '6': 	perma_excluir_funcionario();
+                        break;
         } 		
     } while (opcao != '0');
 }
@@ -41,6 +43,7 @@ char tela_de_funcionarios(void){
     printf("║ 3 - Listar Funcionarios                         ║\n");
     printf("║ 4 - Editar Funcionario                          ║\n");
     printf("║ 5 - Excluir Funcionario                         ║\n");
+    printf("║ 5 - Excluir Permanentemente Funcionario         ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -375,7 +378,7 @@ void perma_excluir_funcionario(void) {
     limpar_buffer();
 
     arquivo_funcionario = fopen("funcionarios.dat", "rb");
-    arquivo_novo = fopen("funcionarios.dat", "wb");
+    arquivo_novo = fopen("funcionarios_novo.dat", "wb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_funcionario == NULL) {
