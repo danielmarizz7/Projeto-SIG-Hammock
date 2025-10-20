@@ -15,5 +15,6 @@ void exibir_clientes(void);
 void listar_clientes(void);
 void alterar_cliente(void);
 void excluir_cliente(void);
+void restaurar_cliente(void);
 void perma_excluir_cliente(void);
 void modulo_clientes(void);

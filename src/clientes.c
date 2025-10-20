@@ -26,6 +26,8 @@ void modulo_clientes(void){
                         break;
             case '6':   perma_excluir_cliente();
                         break;
+            case '7':   restaurar_cliente();
+                        break;
 
         }
     } while (opcao != '0');
@@ -45,6 +47,7 @@ char tela_de_clientes(void){
     printf("║ 4 - Editar Cliente                              ║\n");
     printf("║ 5 - Excluir Cliente                             ║\n");
     printf("║ 6 - Excluir Permanentemente Cliente             ║\n");
+    printf("║ 7 - Restaurar Cliente                           ║\n");
     printf("║                                                 ║\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
@@ -359,6 +362,65 @@ void excluir_cliente(void){
     }
     if (excluido == False) {
         printf("\nNão existe nenhum cliente com o ID %d cadastrado...", id_procurar);
+    }
+    fclose(arquivo_cliente);
+    free(cli);
+    getchar();
+}
+
+void restaurar_cliente(void) {
+    int id_procurar = 0;
+    int restaurado = False;
+    char opc_confirmar;
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║                Restaurar Clientes               ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("Digite o ID do cliente que deseja reativar: ");
+    scanf(" %d", &id_procurar);
+    limpar_buffer();
+
+    arquivo_cliente = fopen("clientes.dat", "r+b");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_cliente == NULL) {
+        arquivo_cliente = fopen("clientes.dat", "wb");
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.dat", "r+b");
+    }
+
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && (restaurado == False)){
+        if (cli->id == id_procurar && cli->status == False){
+            system("clear || cls");
+            printf("\n\n------------------------ Cliente ------------------------");
+            printf("\nID do cliente: %d", cli->id);
+            printf("\nNome do cliente: %s", cli->nome);
+            printf("\nCPF do cliente: %s", cli->cpf);
+            printf("\nEmail do cliente: %s", cli->email);
+            printf("\nTelefone do cliente: %s", cli->telefone);
+            printf("\n\nCliente de ID %d foi encontrado.\nTem certeza que deseja restaura-lo? (s/n)", id_procurar);
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+
+            if (opc_confirmar == 's' || opc_confirmar == 'S') {
+                cli->status = 1;
+
+                restaurado = True;
+                fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
+                fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
+                printf("\nCliente com o ID %d restaurado com sucesso!", id_procurar);   
+            } else {
+                printf("\nRestauração cancelada.");
+                restaurado = True;
+            }
+        }
+                 
+    }
+    if (restaurado == False) {
+        printf("\nNão existe nenhum cliente desativado com o ID %d...", id_procurar);
     }
     fclose(arquivo_cliente);
     free(cli);
