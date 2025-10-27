@@ -7,6 +7,7 @@
 #include "../include/clientes.h"
 #include "../include/produto.h"
 #include "../include/funcionarios.h"
+#include <time.h>
 #include <locale.h>
 // #include <windows.h>
 
@@ -101,9 +102,12 @@ void cadastrar_pedidos(void){
     while (verificar_id_funcionario(id) == 0);
     pedido->id_funcionario = id; 
 
-    printf("Digite a data do pedido: ");
-    scanf("%[^\n]", pedido->data);
-    limpar_buffer();    
+    time_t agora;
+    struct tm *info_data;
+    time(&agora);
+    info_data = localtime(&agora);
+    strftime(pedido->data, sizeof(pedido->data), "%d/%m/%Y", info_data);
+
 
     arquivo_pedido = fopen("pedidos.dat", "rb");
 
