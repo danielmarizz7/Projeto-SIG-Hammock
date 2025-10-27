@@ -7,3 +7,6 @@ void limpar_buffer(void);
 int gerar_id(FILE *, int);
 int validar_cpf(char*);
 int validar_email(char*);
+int validar_valor(char*);
+int validar_nome(char*);
+int validar_telefone(char*);

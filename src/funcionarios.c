@@ -60,6 +60,8 @@ void cadastrar_funcionarios(void){
     Funcionarios* func;
     char cpf[30];
     char email[26];
+    char nome[51];
+    char telefone[12];
     func = (Funcionarios*) malloc(sizeof(Funcionarios));
     limpar_buffer();
 
@@ -67,9 +69,12 @@ void cadastrar_funcionarios(void){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║              Cadastrar Funcionários             ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Digite o nome do funcionario: ");
-    scanf("%[^\n]", func->nome);
-    limpar_buffer();
+    do {
+        printf("Digite o nome do funcionario: ");
+        scanf("%[^\n]", nome);
+        limpar_buffer();
+    } while(validar_nome(nome) == 0);
+    memcpy(func->nome, nome, sizeof(func->nome));
 
     do {
         printf("Digite o CPF do funcionario: ");
@@ -87,9 +92,12 @@ void cadastrar_funcionarios(void){
     while (validar_email(email) == 0);
     memcpy(func->email, email, sizeof(func->email));
 
-    printf("Digite o telefone do funcionario: ");
-    scanf("%[^\n]", func->telefone);
-    limpar_buffer();
+    do {
+        printf("Digite o telefone do funcionario: ");
+        scanf("%[^\n]", telefone);
+        limpar_buffer();
+    } while (validar_telefone(telefone) == 0);
+    memcpy(func->telefone, telefone, sizeof(func->telefone));
     
     arquivo_funcionario = fopen("funcionarios.dat", "rb");
     

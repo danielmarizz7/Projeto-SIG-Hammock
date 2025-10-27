@@ -90,6 +90,8 @@ void cadastrar_pedidos(void){
     }
     while (verificar_id_produto(id) == 0);
     pedido->id_produto = id;
+    
+    pedido->preco = verificar_valor_produto(id);
 
     do {
         printf("Digite o ID do funcionario que fez o pedido: ");
@@ -98,10 +100,6 @@ void cadastrar_pedidos(void){
     }
     while (verificar_id_funcionario(id) == 0);
     pedido->id_funcionario = id; 
-
-    printf("Digite o preco do pedido: ");
-    scanf("%f", &pedido->preco);
-    limpar_buffer();
 
     printf("Digite a data do pedido: ");
     scanf("%[^\n]", pedido->data);

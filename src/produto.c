@@ -63,6 +63,9 @@ char tela_de_produto(void){
 void cadastrar_produto(){
     Produto* prod;
     prod = (Produto*)malloc(sizeof(Produto));
+    char valor[20];
+    char cor[26];
+
     limpar_buffer();
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -73,17 +76,24 @@ void cadastrar_produto(){
     scanf("%[^\n]", prod->modelo_rede);
     limpar_buffer();
 
-    printf("Digite o valor da rede: ");
-    scanf("%[^\n]", prod->valor_rede);
-    limpar_buffer();
+    do {
+        printf("Digite o valor da rede: ");
+        scanf("%[^\n]", valor);
+        limpar_buffer();
+    } while(validar_valor(valor) == 0);
+    // atof serve para converter string em float
+    prod->valor_rede = atof(valor);
 
     printf("Digite o tipo da rede: ");
     scanf("%[^\n]", prod->tipo_rede);
     limpar_buffer();
 
-    printf("Digite a cor da rede: ");
-    scanf("%[^\n]", prod->cor_rede);
-    limpar_buffer();
+    do {
+        printf("Digite a cor da rede: ");
+        scanf("%[^\n]", cor);
+        limpar_buffer();
+    } while(validar_nome(cor) == 0);
+    memcpy(prod->cor_rede, cor, sizeof(prod->cor_rede));
 
     arquivo_produto = fopen("produtos.dat", "rb");
 
@@ -144,7 +154,7 @@ void exibir_produto(void){
         {
             printf("\nID do Produto: %d", prod->id);
             printf("\nModelo do Produto: %s", prod->modelo_rede);
-            printf("\nValor do Produto: %s", prod->valor_rede);
+            printf("\nValor do Produto: %f", prod->valor_rede);
             printf("\nTipo do Produto: %s", prod->tipo_rede);
             printf("\nCor do Produto: %s", prod->cor_rede);
 
@@ -188,7 +198,7 @@ void listar_produto(void) {
             printf("\n\n------------------------ Produto %d ------------------------", prod->id);
             printf("\nID do Produto: %d", prod->id);
             printf("\nModelo do Produto: %s", prod->modelo_rede);
-            printf("\nValor do Produto: %s", prod->valor_rede);
+            printf("\nValor do Produto: %f", prod->valor_rede);
             printf("\nTipo do Produto: %s", prod->tipo_rede);
             printf("\nCor do Produto: %s", prod->cor_rede);
             getchar();
@@ -211,6 +221,7 @@ void alterar_produto(void){
     char opc_alterar;
     char opc_confirmar;
     int prod_alterado = False;
+    char valor[20];
     Produto* prod;
     prod = (Produto*) malloc(sizeof(Produto));
 
@@ -249,8 +260,13 @@ void alterar_produto(void){
                             limpar_buffer();
                             break;
                         case  '2':
-                            printf("\nDigite o novo valor: ");
-                            scanf("%[^\n]", prod->valor_rede);
+                            do {
+                                printf("Digite o novo valor da rede: ");
+                                scanf("%[^\n]", valor);
+                                limpar_buffer();
+                            } while(validar_valor(valor) == 0);
+                            // atof serve para converter string em float
+                            prod->valor_rede = atof(valor);
                             limpar_buffer();
                             break;
                         case  '3':
@@ -271,7 +287,7 @@ void alterar_produto(void){
             printf("\n\n------------------------ Produto Alterado ------------------------");
             printf("\nID do Produto: %d", prod->id);
             printf("\nModelo do Produto: %s", prod->modelo_rede);
-            printf("\nValor do Produto: %s", prod->valor_rede);
+            printf("\nValor do Produto: %f", prod->valor_rede);
             printf("\nTipo do Produto: %s", prod->tipo_rede);
             printf("\nCor do Produto: %s", prod->cor_rede);
             getchar();
@@ -334,7 +350,7 @@ void excluir_produto(void){
             printf("\n\n------------------------ Produto ------------------------");
             printf("\nID do Produto: %d", prod->id);
             printf("\nModelo do Produto: %s", prod->modelo_rede);
-            printf("\nValor do Produto: %s", prod->valor_rede);
+            printf("\nValor do Produto: %f", prod->valor_rede);
             printf("\nTipo do Produto: %s", prod->tipo_rede);
             printf("\nCor do Produto: %s", prod->cor_rede);
             printf("\n\nProduto de ID %d foi encontrado.\nTem certeza que deseja exclui-lo? (s/n)", id_procurar);
@@ -393,7 +409,7 @@ void restaurar_produto(void){
             printf("\n\n------------------------ Produto ------------------------");
             printf("\nID do Produto: %d", prod->id);
             printf("\nModelo do Produto: %s", prod->modelo_rede);
-            printf("\nValor do Produto: %s", prod->valor_rede);
+            printf("\nValor do Produto: %f", prod->valor_rede);
             printf("\nTipo do Produto: %s", prod->tipo_rede);
             printf("\nCor do Produto: %s", prod->cor_rede);
             printf("\n\nProduto de ID %d foi encontrado.\nTem certeza que deseja reativa-lo? (s/n)", id_procurar);
@@ -461,7 +477,7 @@ void perma_excluir_produto(void) {
                 printf("\n\n------------------------ Produto ------------------------");
                 printf("\nID do Produto: %d", prod->id);
                 printf("\nModelo do Produto: %s", prod->modelo_rede);
-                printf("\nValor do Produto: %s", prod->valor_rede);
+                printf("\nValor do Produto: %f", prod->valor_rede);
                 printf("\nTipo do Produto: %s", prod->tipo_rede);
                 printf("\nCor do Produto: %s", prod->cor_rede);
                 printf("\n\nProduto de ID %d foi encontrado.\nTem certeza que deseja exclui-lo permanentemente? (s/n)", id_procurar);
@@ -533,4 +549,28 @@ int verificar_id_produto(int id) {
     printf("\nUm produto com o ID %d não existe", id);
     getchar();
     return 0;
+}
+
+float verificar_valor_produto(int id) {
+    Produto* prod;
+    prod = (Produto*) malloc(sizeof(Produto));
+    arquivo_produto = fopen("produtos.dat", "rb");
+    float valor = 0;
+
+    if (arquivo_produto == NULL) {
+        arquivo_produto = fopen("produtos.dat", "wb");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.dat", "rb");
+    }
+
+    while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
+        if (prod->status == True){
+            if (prod->id == id) {
+                valor = prod->valor_rede;
+            }
+        }
+    }   
+    fclose(arquivo_produto);
+    free(prod);
+    return valor;
 }

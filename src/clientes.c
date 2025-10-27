@@ -63,6 +63,8 @@ void cadastrar_clientes(void){
     Cliente* cli;
     char cpf[30];
     char email[26];
+    char nome[51];
+    char telefone[12];
     cli = (Cliente*) malloc(sizeof(Cliente));
     limpar_buffer();
 
@@ -70,9 +72,12 @@ void cadastrar_clientes(void){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Cadastrar Clientes                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Digite o nome do cliente: ");
-    scanf("%[^\n]", cli->nome);
-    limpar_buffer();
+    do {
+        printf("Digite o nome do cliente: ");
+        scanf("%[^\n]", nome);
+        limpar_buffer();
+    } while (validar_nome(nome) == 0);
+    memcpy(cli->nome, nome, sizeof(cli->nome));
 
     do {
         printf("Digite o CPF do cliente: ");
@@ -90,9 +95,12 @@ void cadastrar_clientes(void){
     while (validar_email(email) == 0);
     memcpy(cli->email, email, sizeof(cli->email));
 
-    printf("Digite o telefone do cliente: ");
-    scanf("%[^\n]", cli->telefone);
-    limpar_buffer();
+    do {
+        printf("Digite o telefone do cliente: ");
+        scanf("%[^\n]", telefone);
+        limpar_buffer();
+    } while(validar_telefone(telefone) == 0);
+    memcpy(cli->telefone, telefone, sizeof(cli->telefone));
 
     arquivo_cliente = fopen("clientes.dat", "rb");
 
