@@ -123,6 +123,85 @@ int validar_cpf(char *cpf) {
 
 }
 
+int validar_valor(char *valor) {
+    if (valor == NULL || strlen(valor) == 0) {
+        printf("\nDigite um preco para a rede.");
+        getchar();
+        return 0;
+    }
+
+    for (int i = 0; valor[i] != '\0'; i++) {
+        if (!isdigit((unsigned char)valor[i])) {
+            printf("\nDigite apenas numeros (0-9).");
+            getchar();
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+int validar_nome(char *nome) {
+    int len = strlen(nome);
+    int contem_letra = 0;
+
+    if (len == 0) {
+        printf("\nO nome não pode estar vazio.");
+        getchar();
+        return 0;
+    }
+
+    for (int i = 0; i < len; i++) {
+        if (!isalpha((unsigned char)nome[i]) && nome[i] != ' ') {
+            printf("\nO nome deve conter apenas letras e espaços.");
+            getchar();
+            return 0;
+        }
+        if (nome[i] != ' ') {
+            contem_letra ++;
+        }
+    }
+    if (contem_letra == 0) {
+            printf("\nO nome não deve conter apenas espaços.");
+            getchar();
+            return 0;  
+    }
+    return 1;
+}
+int validar_telefone(char *telefone) {
+    if (telefone == NULL) {
+        printf("\nO telefone não pode estar vazio.");
+        getchar();
+        return 0;
+    }
+
+    int digitos[15];
+    int len = 0;
+
+    // Extrai apenas os números
+    for (const char *p = telefone; *p != '\0'; ++p) {
+        if (isdigit((unsigned char)*p)) {
+            digitos[len++] = *p - '0';
+        }
+    }
+
+    // Verifica quantidade de dígitos
+    if (len < 10 || len > 11) {
+        printf("\nO telefone deve conter 10 ou 11 dígitos (DDD + número).");
+        getchar();
+        return 0;
+    }
+
+    // Se tiver 11 dígitos, o 3º deve ser 9 (celular no Brasil)
+    if (len == 11 && digitos[2] != 9) {
+        printf("\nNúmeros de celular com 11 dígitos devem ter '9' após o DDD.");
+        getchar();
+        return 0;
+    }
+
+    return 1;
+}
+
 int validar_email(char *email) {
     if (email == NULL) {
         return 0;
