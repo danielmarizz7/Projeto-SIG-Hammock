@@ -5,3 +5,4 @@
 
 void limpar_buffer(void);
 int gerar_id(FILE *, int);
+int validar_cpf(char*);

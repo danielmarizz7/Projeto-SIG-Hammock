@@ -58,6 +58,7 @@ char tela_de_funcionarios(void){
 
 void cadastrar_funcionarios(void){
     Funcionarios* func;
+    char cpf[30];
     func = (Funcionarios*) malloc(sizeof(Funcionarios));
     limpar_buffer();
 
@@ -69,9 +70,13 @@ void cadastrar_funcionarios(void){
     scanf("%[^\n]", func->nome);
     limpar_buffer();
 
-    printf("Digite o CPF do funcionario: ");
-    scanf("%[^\n]", func->cpf);
-    limpar_buffer();
+    do {
+        printf("Digite o CPF do funcionario: ");
+        scanf("%[^\n]", cpf);
+        limpar_buffer();
+    }
+    while (validar_cpf(cpf) == 0);
+    memcpy(func->cpf, cpf, sizeof(func->cpf));
 
     printf("Digite o email do funcionario: ");
     scanf("%[^\n]", func->email);
