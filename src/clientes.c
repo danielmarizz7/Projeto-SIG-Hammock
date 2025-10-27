@@ -523,3 +523,31 @@ void perma_excluir_cliente(void) {
     remove("clientes.dat");
     rename("clientes_novo.dat", "clientes.dat");
 }
+
+int verificar_id_cliente(int id) {
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
+
+    arquivo_cliente = fopen("clientes.dat", "rb");
+
+    if (arquivo_cliente == NULL) {
+        arquivo_cliente = fopen("clientes.dat", "wb");
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.dat", "rb");
+    }
+
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
+        if (cli->status == True){
+            if (cli->id == id) {
+                fclose(arquivo_cliente);
+                free(cli);
+                return 1;
+            }
+        }
+    }
+    fclose(arquivo_cliente);
+    free(cli);
+    printf("\nUm cliente com o ID %d não existe", id);
+    getchar();
+    return 0;
+}

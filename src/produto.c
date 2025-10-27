@@ -507,3 +507,30 @@ void perma_excluir_produto(void) {
     remove("produtos.dat");
     rename("produtos_novo.dat", "produtos.dat");
 }
+
+int verificar_id_produto(int id) {
+    Produto* prod;
+    prod = (Produto*) malloc(sizeof(Produto));
+    arquivo_produto = fopen("produtos.dat", "rb");
+
+    if (arquivo_produto == NULL) {
+        arquivo_produto = fopen("produtos.dat", "wb");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.dat", "rb");
+    }
+
+    while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
+        if (prod->status == True){
+            if (prod->id == id) {
+                fclose(arquivo_produto);
+                free(prod);
+                return 1;
+            }
+        }
+    }
+    fclose(arquivo_produto);
+    free(prod);
+    printf("\nUm produto com o ID %d não existe", id);
+    getchar();
+    return 0;
+}

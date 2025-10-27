@@ -515,3 +515,29 @@ void perma_excluir_funcionario(void) {
     rename("funcionarios_novo.dat", "funcionarios.dat");
 }
 
+int verificar_id_funcionario(int id) {
+    Funcionarios* func;
+    func = (Funcionarios*) malloc(sizeof(Funcionarios));
+    arquivo_funcionario = fopen("funcionarios.dat", "rb");
+
+    if (arquivo_funcionario == NULL) {
+        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    }
+
+    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
+        if (func->status == True){
+            if (func->id == id) {
+                fclose(arquivo_funcionario);
+                free(func);
+                return 1;
+            }
+        }
+    }
+    fclose(arquivo_funcionario);
+    free(func);
+    printf("\nUm funcionario com o ID %d não existe", id);
+    getchar();
+    return 0;
+}

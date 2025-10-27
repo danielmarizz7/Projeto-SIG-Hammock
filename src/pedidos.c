@@ -4,6 +4,9 @@
 #include <unistd.h>
 #include "../include/utilidades.h"
 #include "../include/pedidos.h"
+#include "../include/clientes.h"
+#include "../include/produto.h"
+#include "../include/funcionarios.h"
 #include <locale.h>
 // #include <windows.h>
 
@@ -65,22 +68,36 @@ void cadastrar_pedidos(void){
     limpar_buffer();
     Pedido* pedido;
     pedido = (Pedido*) malloc(sizeof(Pedido));
+    int id;
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Cadastrar Pedidos                 ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    printf("Digite o ID do cliente que fez o pedido: ");
-    scanf("%d", &pedido->id_cliente);
-    limpar_buffer();
 
-    printf("Digite o ID do produto que faz parte do pedido: ");
-    scanf("%d", &pedido->id_produto);
-    limpar_buffer();
+    do {
+        printf("Digite o ID do cliente que fez o pedido: ");
+        scanf("%d", &id);
+        limpar_buffer();
+    }
+    while (verificar_id_cliente(id) == 0);
+    pedido->id_cliente = id;
 
-    printf("Digite o ID do funcionario que fez a venda: ");
-    scanf("%d", &pedido->id_funcionario);
-    limpar_buffer();
+    do {
+        printf("Digite o ID do produto que fez o pedido: ");
+        scanf("%d", &id);
+        limpar_buffer();
+    }
+    while (verificar_id_produto(id) == 0);
+    pedido->id_produto = id;
+
+    do {
+        printf("Digite o ID do funcionario que fez o pedido: ");
+        scanf("%d", &id);
+        limpar_buffer();
+    }
+    while (verificar_id_funcionario(id) == 0);
+    pedido->id_funcionario = id; 
 
     printf("Digite o preco do pedido: ");
     scanf("%f", &pedido->preco);
