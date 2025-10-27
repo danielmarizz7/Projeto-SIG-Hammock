@@ -141,6 +141,34 @@ int validar_valor(char *valor) {
     return 1;
 }
 
+int validar_nome(char *nome) {
+    int len = strlen(nome);
+    int contem_letra = 0;
+
+    if (len == 0) {
+        printf("\nO nome não pode estar vazio.");
+        getchar();
+        return 0;
+    }
+
+    for (int i = 0; i < len; i++) {
+        if (!isalpha((unsigned char)nome[i]) && nome[i] != ' ') {
+            printf("\nO nome deve conter apenas letras e espaços.");
+            getchar();
+            return 0;
+        }
+        if (nome[i] != ' ') {
+            contem_letra ++;
+        }
+    }
+    if (contem_letra == 0) {
+            printf("\nO nome não deve conter apenas espaços.");
+            getchar();
+            return 0;  
+    }
+    return 1;
+}
+
 int validar_email(char *email) {
     if (email == NULL) {
         return 0;
