@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <string.h>
 #include <unistd.h>
 #include <ctype.h>
 #include "../include/clientes.h"
@@ -120,4 +121,57 @@ int validar_cpf(char *cpf) {
 
     return 1;
 
+}
+
+int validar_email(char *email) {
+    if (email == NULL) {
+        return 0;
+    }
+
+    int tam = strlen(email);
+    int antes_arroba = 0;
+    int arroba = 0;
+    int depois_arroba = 0;
+
+    for (int i = 0; i < tam; i++) {
+        if (email[i] == '@') {
+            if (antes_arroba == 0) {
+                printf("\nDeve haver texto antes do '@'");
+                getchar();
+                return 0;
+            }
+            else if (arroba == 1) {
+                printf("\nDeve haver apenas um '@'");
+                getchar();
+                return 0;
+            }
+            else {
+                arroba ++;
+            }
+        }
+        else if (email[i] != '@') {
+            if (arroba == 1) {
+                depois_arroba ++;
+            }
+            else {
+                antes_arroba ++;
+            }
+        }
+    }
+    if (arroba == 0) {
+        printf("\nDeve haver um '@'");
+        getchar();
+        return 0;
+    }
+    if (depois_arroba == 0) {
+        printf("\nDeve haver texto após '@'");
+        getchar();
+        return 0;
+    }
+    if (antes_arroba == 0) {
+        printf("\nDeve haver texto antes do '@'");
+        getchar();
+        return 0;
+    }
+    return 1;
 }

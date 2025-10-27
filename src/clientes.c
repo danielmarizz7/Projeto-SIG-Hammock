@@ -62,6 +62,7 @@ char tela_de_clientes(void){
 void cadastrar_clientes(void){
     Cliente* cli;
     char cpf[30];
+    char email[26];
     cli = (Cliente*) malloc(sizeof(Cliente));
     limpar_buffer();
 
@@ -81,9 +82,13 @@ void cadastrar_clientes(void){
     while (validar_cpf(cpf) == 0);
     memcpy(cli->cpf, cpf, sizeof(cli->cpf));
 
-    printf("Digite o email do cliente: ");
-    scanf("%[^\n]", cli->email);
-    limpar_buffer();
+    do {
+        printf("Digite o email do cliente: ");
+        scanf("%[^\n]", email);
+        limpar_buffer();
+    }
+    while (validar_email(email) == 0);
+    memcpy(cli->email, email, sizeof(cli->email));
 
     printf("Digite o telefone do cliente: ");
     scanf("%[^\n]", cli->telefone);
