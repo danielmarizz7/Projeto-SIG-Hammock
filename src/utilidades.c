@@ -123,6 +123,24 @@ int validar_cpf(char *cpf) {
 
 }
 
+int validar_valor(char *valor) {
+    if (valor == NULL || strlen(valor) == 0) {
+        printf("\nDigite um preco para a rede.");
+        getchar();
+        return 0;
+    }
+
+    for (int i = 0; valor[i] != '\0'; i++) {
+        if (!isdigit((unsigned char)valor[i])) {
+            printf("\nDigite apenas numeros (0-9).");
+            getchar();
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
 int validar_email(char *email) {
     if (email == NULL) {
         return 0;
