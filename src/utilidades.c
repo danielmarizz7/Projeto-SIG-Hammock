@@ -151,11 +151,19 @@ int validar_nome(char *nome) {
         return 0;
     }
 
+    if (len > 50) {
+        printf("\nO número de caracteres do nome não pode ser maior que 50.");
+        getchar();
+        return 0;  
+    }
+
     for (int i = 0; i < len; i++) {
-        if (!isalpha((unsigned char)nome[i]) && nome[i] != ' ') {
-            printf("\nO nome deve conter apenas letras e espaços.");
-            getchar();
-            return 0;
+        if (nome[i] >= 0) { // Verifica o código do caractere para saber se é especial, ex: Ç, ã, â, ê
+            if (!isalpha(nome[i]) && nome[i] != ' ') {
+                printf("\nO nome deve conter apenas letras e espaços.");
+                getchar();
+                return 0;
+            }
         }
         if (nome[i] != ' ') {
             contem_letra ++;
