@@ -67,81 +67,80 @@ char tela_de_pedidos(void){
 
 void cadastrar_pedidos(void){
     limpar_buffer();
-    Pedido* pedido;
-    pedido = (Pedido*) malloc(sizeof(Pedido));
-    int id;
-
-    system("clear || cls");
-    printf("╔═════════════════════════════════════════════════╗\n");
-    printf("║               Cadastrar Pedidos                 ║\n");
-    printf("╚═════════════════════════════════════════════════╝\n");
-
-    do {
-        printf("Digite o ID do cliente que fez o pedido: ");
-        scanf("%d", &id);
+    if (verificar_criacao_pedidos() == 1) {
         limpar_buffer();
-    }
-    while (verificar_id_cliente(id) == 0);
-    pedido->id_cliente = id;
+        Pedido* pedido;
+        pedido = (Pedido*) malloc(sizeof(Pedido));
+        int id;
 
-    do {
-        printf("Digite o ID do produto que fez o pedido: ");
-        scanf("%d", &id);
-        limpar_buffer();
-    }
-    while (verificar_id_produto(id) == 0);
-    pedido->id_produto = id;
-    
-    pedido->preco = verificar_valor_produto(id);
+        system("clear || cls");
+        printf("╔═════════════════════════════════════════════════╗\n");
+        printf("║               Cadastrar Pedidos                 ║\n");
+        printf("╚═════════════════════════════════════════════════╝\n");
 
-    do {
-        printf("Digite o ID do funcionario que fez o pedido: ");
-        scanf("%d", &id);
-        limpar_buffer();
-    }
-    while (verificar_id_funcionario(id) == 0);
-    pedido->id_funcionario = id; 
+        do {
+            printf("Digite o ID do cliente que fez o pedido: ");
+            scanf("%d", &id);
+            limpar_buffer();
+        }
+        while (verificar_id_cliente(id) == 0);
+        pedido->id_cliente = id;
 
-    time_t agora;
-    struct tm *info_data;
-    time(&agora);
-    info_data = localtime(&agora);
-    strftime(pedido->data, sizeof(pedido->data), "%d/%m/%Y", info_data);
+        do {
+            printf("Digite o ID do produto que fez o pedido: ");
+            scanf("%d", &id);
+            limpar_buffer();
+        }
+        while (verificar_id_produto(id) == 0);
+        pedido->id_produto = id;
+        
+        pedido->preco = verificar_valor_produto(id);
+
+        do {
+            printf("Digite o ID do funcionario que fez o pedido: ");
+            scanf("%d", &id);
+            limpar_buffer();
+        }
+        while (verificar_id_funcionario(id) == 0);
+        pedido->id_funcionario = id; 
+
+        time_t agora;
+        struct tm *info_data;
+        time(&agora);
+        info_data = localtime(&agora);
+        strftime(pedido->data, sizeof(pedido->data), "%d/%m/%Y", info_data);
 
 
-    arquivo_pedido = fopen("pedidos.dat", "rb");
-
-    if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.dat", "wb");
-        fclose(arquivo_pedido);
         arquivo_pedido = fopen("pedidos.dat", "rb");
-    }
 
-    pedido->id_pedido = gerar_id(arquivo_pedido, 4);
+        if (arquivo_pedido == NULL) {
+            arquivo_pedido = fopen("pedidos.dat", "wb");
+            fclose(arquivo_pedido);
+            arquivo_pedido = fopen("pedidos.dat", "rb");
+        }
 
-    fclose(arquivo_pedido);
-    pedido->status = True;
-    
-    arquivo_pedido = fopen("pedidos.dat", "ab"); //Cria o arquivo
-    if (arquivo_pedido == NULL) {
-        printf("\nO arquivo nao foi criado.");
+        pedido->id_pedido = gerar_id(arquivo_pedido, 4);
+
+        fclose(arquivo_pedido);
+        pedido->status = True;
+        
+        arquivo_pedido = fopen("pedidos.dat", "ab"); //Cria o arquivo
+        if (arquivo_pedido == NULL) {
+            printf("\nO arquivo nao foi criado.");
+            getchar();
+        }
+        else
+        {
+            //Escreve o novo pedido no arquivo
+            fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
+            fclose(arquivo_pedido);
+            printf("\nPedido de numero %d cadastrado com sucesso!", pedido->id_pedido);
+            printf("\nPressione ENTER para continuar.");
+            free(pedido);
+        }
         getchar();
     }
-    else
-    {
-        //Escreve o novo pedido no arquivo
-        fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
-        fclose(arquivo_pedido);
-        printf("\nPedido de numero %d cadastrado com sucesso!", pedido->id_pedido);
-        printf("\nPressione ENTER para continuar.");
-        free(pedido);
-    }
-    getchar();
 }
-
-
-
-
 
 
 void exibir_pedidos(void){
@@ -545,4 +544,83 @@ void perma_excluir_pedido(void) {
     free(pedido);
     remove("pedidos.dat");
     rename("pedidos_novo.dat", "pedidos.dat");
+}
+
+int verificar_criacao_pedidos(void) {
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
+
+    int arquivo_vazio = True;
+
+    FILE * arquivo_cliente = fopen("clientes.dat", "rb");
+    if (arquivo_cliente == NULL) {
+        arquivo_cliente = fopen("clientes.dat", "wb");
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.dat", "rb");
+    }
+
+    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
+        if (cli->status == True){
+            arquivo_vazio = False;
+        }
+    }
+    fclose(arquivo_cliente);
+    free(cli);
+        
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum cliente cadastrado, então não é possível criar o pedido...");
+        getchar();
+        return 0;
+    }
+    arquivo_vazio = True;
+    Funcionarios* func;
+    func = (Funcionarios*) malloc(sizeof(Funcionarios));
+
+    FILE * arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    if (arquivo_funcionario == NULL) {
+        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    }
+
+    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
+        if (func->status == True){
+            arquivo_vazio = False;
+        }
+    }
+    fclose(arquivo_funcionario);
+    free(func);
+            
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum funcionário cadastrado, então não é possível criar o pedido...");
+        getchar();
+        return 0;
+    }
+    arquivo_vazio = True;
+    Produto* prod;
+    prod = (Produto*) malloc(sizeof(Produto));
+
+    FILE * arquivo_produto = fopen("produtos.dat", "rb");
+    if (arquivo_produto == NULL) {
+        arquivo_produto = fopen("produtos.dat", "wb");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.dat", "rb");
+    }
+
+    while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
+        if (prod->status == True){
+            arquivo_vazio = False;
+        }
+    }
+    fclose(arquivo_produto);
+    free(prod);
+            
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum produto cadastrado, então não é possível criar o pedido...");
+        getchar();
+        return 0;
+    }
+
+    return 1;
+
 }

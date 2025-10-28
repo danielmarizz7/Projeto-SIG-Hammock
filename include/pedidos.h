@@ -19,3 +19,4 @@ void excluir_pedido(void);
 void restaurar_pedido(void);
 void perma_excluir_pedido(void);
 void modulo_pedidos(void);
+int verificar_criacao_pedidos(void);
