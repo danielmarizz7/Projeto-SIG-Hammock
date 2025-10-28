@@ -71,6 +71,8 @@ int gerar_id(FILE *arquivo, int estrutura) {
 
 int validar_cpf(char *cpf) {
     if (cpf == NULL) {
+        printf("\nO CPF não pode estar vazio.");
+        getchar();
         return 0;
     }
 
@@ -212,6 +214,8 @@ int validar_telefone(char *telefone) {
 
 int validar_email(char *email) {
     if (email == NULL) {
+        printf("\nO email não deve estar vazio");
+        getchar();
         return 0;
     }
 
@@ -219,6 +223,14 @@ int validar_email(char *email) {
     int antes_arroba = 0;
     int arroba = 0;
     int depois_arroba = 0;
+    int ponto = 0;
+    int antes_ponto = 0;
+
+    if (tam > 50) {
+        printf("\nO número de caracteres do email não pode ser maior que 50");
+        getchar();
+        return 0;  
+    }
 
     for (int i = 0; i < tam; i++) {
         if (email[i] == '@') {
@@ -236,12 +248,23 @@ int validar_email(char *email) {
                 arroba ++;
             }
         }
-        else if (email[i] != '@') {
+        if (email[i] == '.') {
+            if (antes_ponto == 0) {
+                printf("\nDeve haver texto antes do '.'");
+                getchar();
+                return 0;
+            }
+            if (arroba == 1) {
+                ponto ++;
+            }
+        }
+        else if (email[i] != '@' && email[i] != '.') {
             if (arroba == 1) {
                 depois_arroba ++;
             }
             else {
                 antes_arroba ++;
+                antes_ponto ++;
             }
         }
     }
@@ -250,15 +273,21 @@ int validar_email(char *email) {
         getchar();
         return 0;
     }
+    if (ponto == 0) {
+        printf("\nDeve haver um '.' depois do '@'");
+        getchar();
+        return 0;    
+    }
     if (depois_arroba == 0) {
-        printf("\nDeve haver texto após '@'");
+        printf("\nDeve haver texto após '@' (diferente de um '.')");
         getchar();
         return 0;
     }
-    if (antes_arroba == 0) {
-        printf("\nDeve haver texto antes do '@'");
+    if (email[tam - 1] == '.') {
+        printf("\nO email não pode terminar com '.'\n");
         getchar();
         return 0;
     }
+
     return 1;
 }

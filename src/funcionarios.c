@@ -59,7 +59,7 @@ char tela_de_funcionarios(void){
 void cadastrar_funcionarios(void){
     Funcionarios* func;
     char cpf[30];
-    char email[26];
+    char email[51];
     char nome[51];
     char telefone[12];
     func = (Funcionarios*) malloc(sizeof(Funcionarios));

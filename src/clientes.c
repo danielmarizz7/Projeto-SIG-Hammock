@@ -62,7 +62,7 @@ char tela_de_clientes(void){
 void cadastrar_clientes(void){
     Cliente* cli;
     char cpf[30];
-    char email[26];
+    char email[51];
     char nome[51];
     char telefone[12];
     cli = (Cliente*) malloc(sizeof(Cliente));

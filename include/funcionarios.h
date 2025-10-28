@@ -4,7 +4,7 @@ struct funcionarios {
     int id;
     char nome[51];
     char cpf[30];
-    char email[26];
+    char email[51];
     char telefone[12];
     int status;
 };
