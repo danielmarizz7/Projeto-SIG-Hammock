@@ -34,7 +34,6 @@ void modulo_clientes(void){
     } while (opcao != '0');
 }
 
-
 char tela_de_clientes(void){
 
     char op_cliente;
@@ -57,8 +56,6 @@ char tela_de_clientes(void){
     scanf(" %c", &op_cliente);
     return op_cliente;
 }
-
-
 
 void cadastrar_clientes(void){
     Cliente* cli;
@@ -87,11 +84,6 @@ void cadastrar_clientes(void){
     getchar();  // Apenas para pausar antes de sair
 }
 
-
-
-
-
-
 void exibir_clientes(void){
     int id_procurar = 0;
     Cliente* cli;
@@ -115,8 +107,7 @@ void exibir_clientes(void){
     }
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
-        if (cli->id == id_procurar && cli->status == True)
-        {
+        if (cli->id == id_procurar && cli->status == True){
             printf("\nID do Cliente: %d", cli->id);
             printf("\nNome do Cliente: %s", cli->nome);
             printf("\nCPF do Cliente: %s", cli->cpf);
@@ -128,7 +119,6 @@ void exibir_clientes(void){
             limpar_buffer();
             getchar();
             return;
-            
         }
         
     }
@@ -180,8 +170,6 @@ void listar_clientes(void) {
 
 }
 
-
-
 void alterar_cliente(void){
     int id_procurar = 0;
     char opc_alterar;
@@ -189,10 +177,6 @@ void alterar_cliente(void){
     int cli_alterado = False;
     Cliente* cli;
     cli = (Cliente*) malloc(sizeof(Cliente));
-    char cpf[30];
-    char email[51];
-    char nome[51];
-    char telefone[12];
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -200,14 +184,6 @@ void alterar_cliente(void){
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("Digite o ID do cliente que deseja alterar: ");
     scanf(" %d", &id_procurar);
-    limpar_buffer();
-
-    printf("\nO que deseja alterar desse cliente? ");
-    printf("\n1 - nome");
-    printf("\n2 - cpf");
-    printf("\n3 - email");
-    printf("\n4 - telefone\n");
-    scanf("%c", &opc_alterar);
     limpar_buffer();
 
     arquivo_cliente = fopen("clientes.dat", "r+b");
@@ -220,71 +196,24 @@ void alterar_cliente(void){
     }
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && cli_alterado == False){
+        if (cli->id == id_procurar && cli->status == True) {
+            printf("\nO que deseja alterar desse cliente? ");
+            printf("\n1 - nome");
+            printf("\n2 - cpf");
+            printf("\n3 - email");
+            printf("\n4 - telefone\n");
+            scanf("%c", &opc_alterar);
+            limpar_buffer();
 
-        if (cli->id == id_procurar && cli->status == True){
-            switch (opc_alterar)
-                        {
-                        case '1':
-                            do {
-                                printf("Digite o nome do cliente: ");
-                                scanf("%[^\n]", nome);
-                                limpar_buffer();
-                            } while (validar_nome(nome) == 0);
-                            memcpy(cli->nome, nome, sizeof(cli->nome));
-                            break;
-                        case  '2':
-                            do {
-                                printf("Digite o CPF do cliente: ");
-                                scanf("%[^\n]", cpf);
-                                limpar_buffer();   
-                            }
-                            while (validar_cpf(cpf) == 0);
-                            memcpy(cli->cpf, cpf, sizeof(cli->cpf));
-                            break;
-                        case  '3':
-                            do {
-                                printf("Digite o email do cliente: ");
-                                scanf("%[^\n]", email);
-                                limpar_buffer();
-                            }
-                            while (validar_email(email) == 0);
-                            memcpy(cli->email, email, sizeof(cli->email));
-                            break;
-                        case  '4':
-                            do {
-                                printf("Digite o telefone do cliente: ");
-                                scanf("%[^\n]", telefone);
-                                limpar_buffer();
-                            } while(validar_telefone(telefone) == 0);
-                            memcpy(cli->telefone, telefone, sizeof(cli->telefone));
-                            break;
-                        default:
-                            break;
-            }
-            system("clear || cls");
-            printf("\nCliente com o ID %d alterado com sucesso!", id_procurar);
-            printf("\n\n------------------------ Cliente Alterado ------------------------");
-            printf("\nID do cliente: %d", cli->id);
-            printf("\nNome do cliente: %s", cli->nome);
-            printf("\nCPF do cliente: %s", cli->cpf);
-            printf("\nEmail do cliente: %s", cli->email);
-            printf("\nTelefone do cliente: %s", cli->telefone);
-            getchar();
-            
+            alterar_campo_cliente(cli, opc_alterar);
+
             printf("\nDeseja alterar algum outro campo? (s/n)\n");
             scanf("%c", &opc_confirmar);
             limpar_buffer();
             fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);
             fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
+            
             if (opc_confirmar == 's' || opc_confirmar == 'S'){
-                system("clear || cls");
-                printf("\nO que deseja alterar desse cliente? ");
-                printf("\n1 - nome");
-                printf("\n2 - cpf");
-                printf("\n3 - email");
-                printf("\n4 - telefone\n");
-                scanf("%c", &opc_alterar);
-                limpar_buffer();
                 fseek(arquivo_cliente, (-1)*sizeof(Cliente), SEEK_CUR);     
             } else {
                 cli_alterado = True;
@@ -598,4 +527,60 @@ void receber_dados_cliente(Cliente* cli) {
 
     fclose(arquivo_cliente);
     cli->status = True;
+}
+
+void alterar_campo_cliente(Cliente* cli, char opc_alterar) {
+    char cpf[30];
+    char email[51];
+    char nome[51];
+    char telefone[12];
+
+    switch (opc_alterar){
+        case '1':
+            do {
+                printf("Digite o nome do cliente: ");
+                scanf("%[^\n]", nome);
+                limpar_buffer();
+            } while (validar_nome(nome) == 0);
+            memcpy(cli->nome, nome, sizeof(cli->nome));
+            break;
+        case  '2':
+            do {
+                printf("Digite o CPF do cliente: ");
+                scanf("%[^\n]", cpf);
+                limpar_buffer();   
+            }
+            while (validar_cpf(cpf) == 0);
+            memcpy(cli->cpf, cpf, sizeof(cli->cpf));
+            break;
+        case  '3':
+            do {
+                printf("Digite o email do cliente: ");
+                scanf("%[^\n]", email);
+                limpar_buffer();
+            }
+            while (validar_email(email) == 0);
+            memcpy(cli->email, email, sizeof(cli->email));
+            break;
+        case  '4':
+            do {
+                printf("Digite o telefone do cliente: ");
+                scanf("%[^\n]", telefone);
+                limpar_buffer();
+            } while(validar_telefone(telefone) == 0);
+            memcpy(cli->telefone, telefone, sizeof(cli->telefone));
+            break;
+        default:
+            break;
+    }
+
+    system("clear || cls");
+    printf("\nCliente com o ID %d alterado com sucesso!", cli->id);
+    printf("\n\n------------------------ Cliente Alterado ------------------------");
+    printf("\nID do cliente: %d", cli->id);
+    printf("\nNome do cliente: %s", cli->nome);
+    printf("\nCPF do cliente: %s", cli->cpf);
+    printf("\nEmail do cliente: %s", cli->email);
+    printf("\nTelefone do cliente: %s", cli->telefone);
+    getchar();
 }
