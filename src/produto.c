@@ -43,6 +43,7 @@ char tela_de_produto(void){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║              Módulo De Produtos                 ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║                                                 ║\n");
     printf("║ 1 - Cadastrar Produto                           ║\n");
     printf("║ 2 - Exibir Produto                              ║\n");
     printf("║ 3 - Listar Produto                              ║\n");
@@ -51,6 +52,7 @@ char tela_de_produto(void){
     printf("║ 6 - Excluir Permanentemente Produto             ║\n");
     printf("║ 7 - Restaurar Produto                           ║\n");
     printf("║                                                 ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 0 - Para voltar à tela inicial                  ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("\n");
