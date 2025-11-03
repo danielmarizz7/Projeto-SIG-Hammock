@@ -44,6 +44,7 @@ char tela_de_pedidos(void){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Módulo De Pedidos                 ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║                                                 ║\n");
     printf("║ 1 - Cadastrar Pedido                            ║\n");
     printf("║ 2 - Exibir Pedido                               ║\n");
     printf("║ 3 - Listar Pedido                               ║\n");
@@ -52,10 +53,11 @@ char tela_de_pedidos(void){
     printf("║ 6 - Excluir permanentemente Pedido              ║\n");
     printf("║ 7 - Restaurar Pedido                            ║\n");
     printf("║                                                 ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf("Pressione 0 para voltar à tela inicial: ");
+    printf("Escolha uma opção: ");
     scanf(" %c", &op_pedido);
     return op_pedido;
 }
