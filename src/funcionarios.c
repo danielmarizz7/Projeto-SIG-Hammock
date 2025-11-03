@@ -41,6 +41,7 @@ char tela_de_funcionarios(void){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Módulo De Funcionarios            ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║                                                 ║\n");
     printf("║ 1 - Cadastrar Funcionario                       ║\n");
     printf("║ 2 - Exibir Funcionario                          ║\n");
     printf("║ 3 - Listar Funcionarios                         ║\n");
@@ -49,10 +50,11 @@ char tela_de_funcionarios(void){
     printf("║ 6 - Excluir Permanentemente Funcionario         ║\n");
     printf("║ 7 - Restaurar Funcionario                       ║\n");
     printf("║                                                 ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf("Escolhar uma Opção desejada: ");
+    printf("Escolhar uma opção: ");
     scanf(" %c", &op_funcionario);
     return op_funcionario;
 }
