@@ -20,17 +20,25 @@ Com foco na simplicidade e eficiência, o sistema oferece uma interface intuitiv
 
 ### Pré-requisitos
 - Compilador C (GCC recomendado)
-- Sistema operacional compatível (Windows/Linux/macOS)
+- Sistema operacional compatível (Linux/macOS)
 
 ### Execução
 Clone o repositório:
 ```bash
 git clone https://github.com/usuario/sig-hammock.git
+```
+Entre na pasta:
+```bash
 cd sig-hammock
+```
+Compile o código:
+```bash
 make
+```
+Rode o código:
+```bash
 make run
 ```
-
 --- 
 
 ## Status do Desenvolvimento
