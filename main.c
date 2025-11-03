@@ -61,7 +61,6 @@ char tela_principal(void){
     printf("║                          6- Equipe                                    ║\n");
     printf("║                          7- Sobre                                     ║\n");
     printf("║                          8- Final e Agradecimentos                    ║\n");
-    printf("║                          0- Encerrar Sistema                          ║\n");
     printf("║                                                                       ║\n");
     printf("╠═══════════════════════════════════════════════════════════════════════╣\n");
     printf("║                          0- Encerrar Sistema                          ║\n");
