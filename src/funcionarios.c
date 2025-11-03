@@ -89,7 +89,6 @@ void exibir_funcionarios(void){
     Funcionarios* func;
     func = (Funcionarios*)malloc(sizeof(Funcionarios));
     
-
     system("clear || cls");
     limpar_buffer();
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -199,7 +198,6 @@ void alterar_funcionarios(void){
     }
 
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && func_alterado == False){
-
         if (func->id == id_procurar && func->status == True){
             do {
                 system("clear || cls");
@@ -210,7 +208,7 @@ void alterar_funcionarios(void){
                 printf("\n4 - telefone\n");
                 scanf("%c", &opc_alterar);
                 limpar_buffer();
-            } while (opc_alterar != '1' && opc_alterar != '2' && opc_alterar != '3' && opc_alterar != '4' && opc_alterar != '5');
+            } while (opc_alterar != '1' && opc_alterar != '2' && opc_alterar != '3' && opc_alterar != '4');
 
             alterar_campo_funcionario(func, opc_alterar);
 
@@ -234,7 +232,6 @@ void alterar_funcionarios(void){
     fclose(arquivo_funcionario);
     free(func);
 }
-
 
 void excluir_funcionarios(void){
     int id_procurar = 0;
@@ -540,42 +537,42 @@ void alterar_campo_funcionario(Funcionarios *func, char opc_alterar) {
     char telefone[12];
 
     switch (opc_alterar){
-            case '1':
-                do {
-                    printf("Digite o nome do funcionario: ");
-                    scanf("%[^\n]", nome);
-                    limpar_buffer();
-                } while(validar_nome(nome) == 0);
-                memcpy(func->nome, nome, sizeof(func->nome));
-                break;
-            case  '2':
-                do {
-                    printf("Digite o CPF do funcionario: ");
-                    scanf("%[^\n]", cpf);
-                    limpar_buffer();
-                }
-                while (validar_cpf(cpf) == 0);
-                memcpy(func->cpf, cpf, sizeof(func->cpf));
-                break;
-            case  '3':
-                do {
-                    printf("Digite o email do funcionario: ");
-                    scanf("%[^\n]", email);
-                    limpar_buffer();
-                }
-                while (validar_email(email) == 0);
-                memcpy(func->email, email, sizeof(func->email));
-                break;
-            case  '4':
-                do {
-                    printf("Digite o telefone do funcionario: ");
-                    scanf("%[^\n]", telefone);
-                    limpar_buffer();
-                } while (validar_telefone(telefone) == 0);
-                memcpy(func->telefone, telefone, sizeof(func->telefone));
-                break;
-            default:
-                break;
+        case '1':
+            do {
+                printf("Digite o nome do funcionario: ");
+                scanf("%[^\n]", nome);
+                limpar_buffer();
+            } while(validar_nome(nome) == 0);
+            memcpy(func->nome, nome, sizeof(func->nome));
+            break;
+        case  '2':
+            do {
+                printf("Digite o CPF do funcionario: ");
+                scanf("%[^\n]", cpf);
+                limpar_buffer();
+            }
+            while (validar_cpf(cpf) == 0);
+            memcpy(func->cpf, cpf, sizeof(func->cpf));
+            break;
+        case  '3':
+            do {
+                printf("Digite o email do funcionario: ");
+                scanf("%[^\n]", email);
+                limpar_buffer();
+            }
+            while (validar_email(email) == 0);
+            memcpy(func->email, email, sizeof(func->email));
+            break;
+        case  '4':
+            do {
+                printf("Digite o telefone do funcionario: ");
+                scanf("%[^\n]", telefone);
+                limpar_buffer();
+            } while (validar_telefone(telefone) == 0);
+            memcpy(func->telefone, telefone, sizeof(func->telefone));
+            break;
+        default:
+            break;
     }
     system("clear || cls");
     printf("\nFuncionário com o ID %d alterado com sucesso!", func->id);

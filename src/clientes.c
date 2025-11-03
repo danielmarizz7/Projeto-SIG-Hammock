@@ -206,7 +206,7 @@ void alterar_cliente(void){
                 printf("\n4 - telefone\n");
                 scanf("%c", &opc_alterar);
                 limpar_buffer();
-            } while(opc_alterar != '1' && opc_alterar != '2' && opc_alterar != '3' && opc_alterar != '4' && opc_alterar != '5');
+            } while(opc_alterar != '1' && opc_alterar != '2' && opc_alterar != '3' && opc_alterar != '4');
 
             alterar_campo_cliente(cli, opc_alterar);
 
@@ -348,7 +348,6 @@ void restaurar_cliente(void) {
     free(cli);
     getchar();
 }
-
 
 void perma_excluir_cliente(void) {
     int id_procurar = 0;

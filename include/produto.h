@@ -23,3 +23,5 @@ void perma_excluir_produto(void);
 void modulo_produto(void);
 int verificar_id_produto(char*);
 float verificar_valor_produto(int);
+void receber_dados_produto(Produto*);
+void alterar_campo_produto(Produto*, char);

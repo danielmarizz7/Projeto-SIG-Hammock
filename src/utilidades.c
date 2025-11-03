@@ -17,7 +17,6 @@ void limpar_buffer(void) {
     };
 }
 
-
 int gerar_id(FILE *arquivo, int estrutura) {
     int id = 0;
 
@@ -75,7 +74,6 @@ int validar_cpf(char *cpf) {
         getchar();
         return 0;
     }
-
     int digitos[11];
     int len = 0;
     int soma = 0;
@@ -88,7 +86,6 @@ int validar_cpf(char *cpf) {
             return 0;
         }
     }
-
 
     // Extrai os números
     for (const char *p = cpf; *p != '\0'; ++p) {
@@ -138,7 +135,6 @@ int validar_cpf(char *cpf) {
     }
 
     return 1;
-
 }
 
 int validar_valor(char *valor) {
@@ -194,6 +190,7 @@ int validar_nome(char *nome) {
     }
     return 1;
 }
+
 int validar_telefone(char *telefone) {
     int len = strlen(telefone);
     if (telefone == NULL) {

@@ -37,8 +37,6 @@ void modulo_produto(void){
 
 
 char tela_de_produto(void){
-    // SetConsoleOutputCP(CP_UTF8);
-    // SetConsoleCP(CP_UTF8);
 
     char op_produtos;
     system("clear || cls");
@@ -64,59 +62,13 @@ char tela_de_produto(void){
 void cadastrar_produto(){
     Produto* prod;
     prod = (Produto*)malloc(sizeof(Produto));
-    char valor[20];
-    char cor[51];
-    char modelo[51];
-    char tipo[51];
 
     limpar_buffer();
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                Cadastrar Produto                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-
-    do {
-        printf("Digite o modelo da rede: ");
-        scanf("%[^\n]", modelo);
-        limpar_buffer();
-    } while(validar_nome(modelo) == 0);
-    memcpy(prod->modelo_rede, modelo, sizeof(prod->modelo_rede));
-
-    do {
-        printf("Digite o valor da rede: ");
-        scanf("%[^\n]", valor);
-        limpar_buffer();
-    } while(validar_valor(valor) == 0);
-    // atof serve para converter string em float
-    prod->valor_rede = atof(valor);
-
-    do {
-        printf("Digite o tipo da rede: ");
-        scanf("%[^\n]", tipo);
-        limpar_buffer();
-    } while (validar_nome(tipo) == 0);
-    memcpy(prod->tipo_rede, tipo, sizeof(prod->tipo_rede));
-
-    do {
-        printf("Digite a cor da rede: ");
-        scanf("%[^\n]", cor);
-        limpar_buffer();
-    } while(validar_nome(cor) == 0);
-    memcpy(prod->cor_rede, cor, sizeof(prod->cor_rede));
-
-    arquivo_produto = fopen("produtos.dat", "rb");
-
-    //testa se o arquivo existe, se não existe, cria o arquivo
-    if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
-        fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "rb");
-    }
-
-    prod->id = gerar_id(arquivo_produto, 2);
-
-    fclose(arquivo_produto);
-    prod->status = True;
+    receber_dados_produto(prod);
 
     arquivo_produto = fopen("produtos.dat", "ab");
     if (arquivo_produto == NULL){
@@ -230,10 +182,6 @@ void alterar_produto(void){
     char opc_alterar;
     char opc_confirmar;
     int prod_alterado = False;
-    char valor[20];
-    char cor[51];
-    char modelo[51];
-    char tipo[51];
     Produto* prod;
     prod = (Produto*) malloc(sizeof(Produto));
 
@@ -246,14 +194,6 @@ void alterar_produto(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    printf("\nO que deseja alterar desse Prodtuo ?");
-    printf("\n1 - modelo");
-    printf("\n2 - valor");
-    printf("\n3 - tipo");
-    printf("\n4 - cor\n");
-    scanf("%c", &opc_alterar);
-    limpar_buffer();
-
     arquivo_produto = fopen("produtos.dat", "r+b");
 
     if (arquivo_produto == NULL) {
@@ -264,69 +204,26 @@ void alterar_produto(void){
     while (fread(prod, sizeof(Produto), 1, arquivo_produto) && prod_alterado == False){
 
         if (prod->id == id_procurar && prod->status == True){
-            switch (opc_alterar)
-                        {
-                        case '1':
-                            do {
-                                printf("Digite o modelo da rede: ");
-                                scanf("%[^\n]", modelo);
-                                limpar_buffer();
-                            } while(validar_nome(modelo) == 0);
-                            memcpy(prod->modelo_rede, modelo, sizeof(prod->modelo_rede));
-                            break;
-                        case  '2':
-                            do {
-                                printf("Digite o novo valor da rede: ");
-                                scanf("%[^\n]", valor);
-                                limpar_buffer();
-                            } while(validar_valor(valor) == 0);
-                            // atof serve para converter string em float
-                            prod->valor_rede = atof(valor);
-                            limpar_buffer();
-                            break;
-                        case  '3':
-                            do {
-                                printf("Digite o tipo da rede: ");
-                                scanf("%[^\n]", tipo);
-                                limpar_buffer();
-                            } while (validar_nome(tipo) == 0);
-                            memcpy(prod->tipo_rede, tipo, sizeof(prod->tipo_rede));
-                            break;
-                        case  '4':
-                            do {
-                                printf("Digite a cor da rede: ");
-                                scanf("%[^\n]", cor);
-                                limpar_buffer();
-                            } while(validar_nome(cor) == 0);
-                            memcpy(prod->cor_rede, cor, sizeof(prod->cor_rede));
-                            break;
-                        default:
-                            break;
-            }
-            system("clear || cls");
-            printf("\nProduto com o ID %d alterado com sucesso!", id_procurar);
-            printf("\n\n------------------------ Produto Alterado ------------------------");
-            printf("\nID do Produto: %d", prod->id);
-            printf("\nModelo do Produto: %s", prod->modelo_rede);
-            printf("\nValor do Produto: %f", prod->valor_rede);
-            printf("\nTipo do Produto: %s", prod->tipo_rede);
-            printf("\nCor do Produto: %s", prod->cor_rede);
-            getchar();
-
-            printf("\nDeseja alterar algum outro campo? (s/n)\n");
-            scanf("%c", &opc_confirmar);
-            limpar_buffer();
-            fseek(arquivo_produto, (-1)*sizeof(Produto), SEEK_CUR);
-            fwrite(prod, sizeof(Produto), 1, arquivo_produto);
-            if (opc_confirmar == 's' || opc_confirmar == 'S'){
+            do {
                 system("clear || cls");
-                printf("\nO que deseja alterar desse Prodtuo ?");
+                printf("\nO que deseja alterar desse Produto (Digite 1,2,3 OU 4)?");
                 printf("\n1 - modelo");
                 printf("\n2 - valor");
                 printf("\n3 - tipo");
                 printf("\n4 - cor\n");
                 scanf("%c", &opc_alterar);
                 limpar_buffer();
+            } while (opc_alterar != '1' && opc_alterar != '2' && opc_alterar != '3' && opc_alterar != '4');
+
+            alterar_campo_produto(prod, opc_alterar);
+
+            printf("\nDeseja alterar algum outro campo? (s/n)\n");
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+            fseek(arquivo_produto, (-1)*sizeof(Produto), SEEK_CUR);
+            fwrite(prod, sizeof(Produto), 1, arquivo_produto);
+
+            if (opc_confirmar == 's' || opc_confirmar == 'S'){
                 fseek(arquivo_produto, (-1)*sizeof(Produto), SEEK_CUR);     
             } else {
                 prod_alterado = True;
@@ -612,4 +509,109 @@ float verificar_valor_produto(int id) {
     fclose(arquivo_produto);
     free(prod);
     return valor;
+}
+
+void receber_dados_produto(Produto *prod) {
+    char valor[20];
+    char cor[51];
+    char modelo[51];
+    char tipo[51];
+
+    do {
+        printf("Digite o modelo da rede: ");
+        scanf("%[^\n]", modelo);
+        limpar_buffer();
+    } while(validar_nome(modelo) == 0);
+    memcpy(prod->modelo_rede, modelo, sizeof(prod->modelo_rede));
+
+    do {
+        printf("Digite o valor da rede: ");
+        scanf("%[^\n]", valor);
+        limpar_buffer();
+    } while(validar_valor(valor) == 0);
+    // atof serve para converter string em float
+    prod->valor_rede = atof(valor);
+
+    do {
+        printf("Digite o tipo da rede: ");
+        scanf("%[^\n]", tipo);
+        limpar_buffer();
+    } while (validar_nome(tipo) == 0);
+    memcpy(prod->tipo_rede, tipo, sizeof(prod->tipo_rede));
+
+    do {
+        printf("Digite a cor da rede: ");
+        scanf("%[^\n]", cor);
+        limpar_buffer();
+    } while(validar_nome(cor) == 0);
+    memcpy(prod->cor_rede, cor, sizeof(prod->cor_rede));
+
+    arquivo_produto = fopen("produtos.dat", "rb");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_produto == NULL) {
+        arquivo_produto = fopen("produtos.dat", "wb");
+        fclose(arquivo_produto);
+        arquivo_produto = fopen("produtos.dat", "rb");
+    }
+
+    prod->id = gerar_id(arquivo_produto, 2);
+
+    fclose(arquivo_produto);
+    prod->status = True;
+}
+
+void alterar_campo_produto(Produto *prod, char opc_alterar) {
+    char valor[20];
+    char cor[51];
+    char modelo[51];
+    char tipo[51];
+
+    switch (opc_alterar){
+        case '1':
+            do {
+                printf("Digite o modelo da rede: ");
+                scanf("%[^\n]", modelo);
+                limpar_buffer();
+            } while(validar_nome(modelo) == 0);
+            memcpy(prod->modelo_rede, modelo, sizeof(prod->modelo_rede));
+            break;
+        case  '2':
+            do {
+                printf("Digite o novo valor da rede: ");
+                scanf("%[^\n]", valor);
+                limpar_buffer();
+            } while(validar_valor(valor) == 0);
+            // atof serve para converter string em float
+            prod->valor_rede = atof(valor);
+            limpar_buffer();
+            break;
+        case  '3':
+            do {
+                printf("Digite o tipo da rede: ");
+                scanf("%[^\n]", tipo);
+                limpar_buffer();
+            } while (validar_nome(tipo) == 0);
+            memcpy(prod->tipo_rede, tipo, sizeof(prod->tipo_rede));
+            break;
+        case  '4':
+            do {
+                printf("Digite a cor da rede: ");
+                scanf("%[^\n]", cor);
+                limpar_buffer();
+            } while(validar_nome(cor) == 0);
+            memcpy(prod->cor_rede, cor, sizeof(prod->cor_rede));
+            break;
+        default:
+            break;
+    }
+    system("clear || cls");
+    printf("\nProduto com o ID %d alterado com sucesso!", prod->id);
+    printf("\n\n------------------------ Produto Alterado ------------------------");
+    printf("\nID do Produto: %d", prod->id);
+    printf("\nModelo do Produto: %s", prod->modelo_rede);
+    printf("\nValor do Produto: %f", prod->valor_rede);
+    printf("\nTipo do Produto: %s", prod->tipo_rede);
+    printf("\nCor do Produto: %s", prod->cor_rede);
+    getchar();
 }
