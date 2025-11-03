@@ -65,6 +65,7 @@ void cadastrar_produto(){
     prod = (Produto*)malloc(sizeof(Produto));
     char valor[20];
     char cor[26];
+    char modelo[31];
 
     limpar_buffer();
     system("clear || cls");
@@ -72,9 +73,12 @@ void cadastrar_produto(){
     printf("║                Cadastrar Produto                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
 
-    printf("Digite o modelo da rede: ");
-    scanf("%[^\n]", prod->modelo_rede);
-    limpar_buffer();
+    do {
+        printf("Digite o modelo da rede: ");
+        scanf("%[^\n]", modelo);
+        limpar_buffer();
+    } while(validar_modelo_rede(modelo) == 0);
+    memcpy(prod->modelo_rede, modelo, sizeof(prod->modelo_rede));
 
     do {
         printf("Digite o valor da rede: ");

@@ -314,3 +314,43 @@ int validar_email(char *email) {
 
     return 1;
 }
+
+int validar_modelo_rede(char *modelo_rede) {
+    int len = strlen(modelo_rede);
+    int contem_letra = 0;
+
+    if (len == 0) {
+        printf("\nO modelo da rede não pode estar vazio.");
+        getchar();
+        return 0;
+    }
+
+    if (len > 30) {
+        printf("\nO modelo da rede não pode ultrapassar 30 caracteres.");
+        getchar();
+        return 0;
+    }
+
+    for (int i = 0; i < len; i++) {
+        if (modelo_rede[i] != ' ') {
+            contem_letra ++;
+        }
+    }
+    if (contem_letra == 0) {
+        printf("\nO modelo da rede não deve conter apenas espaços.");
+        getchar();
+        return 0;
+    }
+
+    // Verifica caracteres inválidos
+    for (int i = 0; i < len; i++) {
+        char c = modelo_rede[i];
+        if (!(isalnum((unsigned char)c) || c == ' ' || c == '-' || c == '.')) {
+            printf("\nO modelo da rede contém caracteres inválidos (use apenas letras, números, espaço, '-' ou '.').");
+            getchar();
+            return 0;
+        }
+    }
+
+    return 1;
+}
