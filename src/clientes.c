@@ -41,6 +41,7 @@ char tela_de_clientes(void){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Módulo De Clientes                ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║                                                 ║\n");
     printf("║ 1 - Cadastrar Cliente                           ║\n");
     printf("║ 2 - Exibir Clientes                             ║\n");
     printf("║ 3 - Listar Cliente                              ║\n");
@@ -49,10 +50,11 @@ char tela_de_clientes(void){
     printf("║ 6 - Excluir Permanentemente Cliente             ║\n");
     printf("║ 7 - Restaurar Cliente                           ║\n");
     printf("║                                                 ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf("Pressione 0 para voltar à tela inicial: ");
+    printf("Escolha uma opção: ");
     scanf(" %c", &op_cliente);
     return op_cliente;
 }
