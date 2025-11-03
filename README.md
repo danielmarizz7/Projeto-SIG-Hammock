@@ -25,7 +25,7 @@ Com foco na simplicidade e eficiência, o sistema oferece uma interface intuitiv
 ### Execução
 Clone o repositório:
 ```bash
-git clone https://github.com/usuario/sig-hammock.git
+git clone https://github.com/danielmarizz7/Projeto-SIG-Hammock.git
 ```
 Entre na pasta:
 ```bash
