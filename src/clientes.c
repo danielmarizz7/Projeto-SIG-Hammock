@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h> //usar o "strcmp"
 #include <unistd.h>
+#include <ctype.h>
 #include "../include/utilidades.h"
 #include "../include/clientes.h"
 #include <locale.h>
@@ -235,6 +236,10 @@ void alterar_cliente(void){
     int cli_alterado = False;
     Cliente* cli;
     cli = (Cliente*) malloc(sizeof(Cliente));
+    char cpf[30];
+    char email[51];
+    char nome[51];
+    char telefone[12];
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -267,24 +272,38 @@ void alterar_cliente(void){
             switch (opc_alterar)
                         {
                         case '1':
-                            printf("\nDigite o novo nome: ");
-                            scanf("%[^\n]", cli->nome);
-                            limpar_buffer();
+                            do {
+                                printf("Digite o nome do cliente: ");
+                                scanf("%[^\n]", nome);
+                                limpar_buffer();
+                            } while (validar_nome(nome) == 0);
+                            memcpy(cli->nome, nome, sizeof(cli->nome));
                             break;
                         case  '2':
-                            printf("\nDigite o novo cpf: ");
-                            scanf("%[^\n]", cli->cpf);
-                            limpar_buffer();
+                            do {
+                                printf("Digite o CPF do cliente: ");
+                                scanf("%[^\n]", cpf);
+                                limpar_buffer();   
+                            }
+                            while (validar_cpf(cpf) == 0);
+                            memcpy(cli->cpf, cpf, sizeof(cli->cpf));
                             break;
                         case  '3':
-                            printf("\nDigite o novo email: ");
-                            scanf("%[^\n]", cli->email);
-                            limpar_buffer();
+                            do {
+                                printf("Digite o email do cliente: ");
+                                scanf("%[^\n]", email);
+                                limpar_buffer();
+                            }
+                            while (validar_email(email) == 0);
+                            memcpy(cli->email, email, sizeof(cli->email));
                             break;
                         case  '4':
-                            printf("\nDigite o novo telefone: ");
-                            scanf("%[^\n]", cli->telefone);
-                            limpar_buffer();
+                            do {
+                                printf("Digite o telefone do cliente: ");
+                                scanf("%[^\n]", telefone);
+                                limpar_buffer();
+                            } while(validar_telefone(telefone) == 0);
+                            memcpy(cli->telefone, telefone, sizeof(cli->telefone));
                             break;
                         default:
                             break;
@@ -532,7 +551,24 @@ void perma_excluir_cliente(void) {
     rename("clientes_novo.dat", "clientes.dat");
 }
 
-int verificar_id_cliente(int id) {
+int verificar_id_cliente(char *valor) {
+    int id;
+    if (valor == NULL || strlen(valor) == 0) {
+        printf("\nDigite o id.");
+        getchar();
+        return 0;
+    }
+
+    for (int i = 0; valor[i] != '\0'; i++) {
+        if (!isdigit((unsigned char)valor[i])) {
+            printf("\nDigite apenas numeros (0-9).");
+            getchar();
+            return 0;
+        }
+    }
+
+    id = atoi(valor);
+
     Cliente* cli;
     cli = (Cliente*) malloc(sizeof(Cliente));
 

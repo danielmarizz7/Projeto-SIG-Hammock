@@ -21,5 +21,5 @@ void excluir_produto(void);
 void restaurar_produto(void);
 void perma_excluir_produto(void);
 void modulo_produto(void);
-int verificar_id_produto(int);
+int verificar_id_produto(char*);
 float verificar_valor_produto(int);

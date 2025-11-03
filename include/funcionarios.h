@@ -20,4 +20,4 @@ void excluir_funcionarios(void);
 void restaurar_funcionarios(void);
 void perma_excluir_funcionario(void);
 void modulo_funcionarios(void);
-int verificar_id_funcionario(int);
+int verificar_id_funcionario(char*);

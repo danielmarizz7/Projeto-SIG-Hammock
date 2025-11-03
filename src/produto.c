@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
 #include "../include/utilidades.h"
 #include "../include/produto.h"
 #include <locale.h>
@@ -544,7 +545,25 @@ void perma_excluir_produto(void) {
     rename("produtos_novo.dat", "produtos.dat");
 }
 
-int verificar_id_produto(int id) {
+int verificar_id_produto(char *valor) {
+    
+    int id;
+    if (valor == NULL || strlen(valor) == 0) {
+        printf("\nDigite o id.");
+        getchar();
+        return 0;
+    }
+
+    for (int i = 0; valor[i] != '\0'; i++) {
+        if (!isdigit((unsigned char)valor[i])) {
+            printf("\nDigite apenas numeros (0-9).");
+            getchar();
+            return 0;
+        }
+    }
+
+    id = atoi(valor);
+    
     Produto* prod;
     prod = (Produto*) malloc(sizeof(Produto));
     arquivo_produto = fopen("produtos.dat", "rb");

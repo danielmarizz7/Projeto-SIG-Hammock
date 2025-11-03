@@ -70,7 +70,7 @@ void cadastrar_pedidos(void){
         limpar_buffer();
         Pedido* pedido;
         pedido = (Pedido*) malloc(sizeof(Pedido));
-        int id;
+        char id[20];
 
         system("clear || cls");
         printf("╔═════════════════════════════════════════════════╗\n");
@@ -79,29 +79,29 @@ void cadastrar_pedidos(void){
 
         do {
             printf("Digite o ID do cliente que fez o pedido: ");
-            scanf("%d", &id);
+            scanf("%[^\n]", id);
             limpar_buffer();
         }
         while (verificar_id_cliente(id) == 0);
-        pedido->id_cliente = id;
+        pedido->id_cliente = atoi(id);
 
         do {
             printf("Digite o ID do produto que fez o pedido: ");
-            scanf("%d", &id);
+            scanf("%[^\n]", id);
             limpar_buffer();
         }
         while (verificar_id_produto(id) == 0);
-        pedido->id_produto = id;
+        pedido->id_produto = atoi(id);
         
-        pedido->preco = verificar_valor_produto(id);
+        pedido->preco = verificar_valor_produto(atoi(id));
 
         do {
             printf("Digite o ID do funcionario que fez o pedido: ");
-            scanf("%d", &id);
+            scanf("%[^\n]", id);
             limpar_buffer();
         }
         while (verificar_id_funcionario(id) == 0);
-        pedido->id_funcionario = id; 
+        pedido->id_funcionario = atoi(id); 
 
         time_t agora;
         struct tm *info_data;
