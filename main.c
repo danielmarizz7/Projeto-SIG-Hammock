@@ -63,6 +63,8 @@ char tela_principal(void){
     printf("║                          8- Final e Agradecimentos                    ║\n");
     printf("║                          0- Encerrar Sistema                          ║\n");
     printf("║                                                                       ║\n");
+    printf("╠═══════════════════════════════════════════════════════════════════════╣\n");
+    printf("║                          0- Encerrar Sistema                          ║\n");
     printf("╚═══════════════════════════════════════════════════════════════════════╝\n");
     printf("Escolha uma opção: ");
     scanf(" %c", &op_prin);
