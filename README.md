@@ -29,7 +29,7 @@ git clone https://github.com/danielmarizz7/Projeto-SIG-Hammock.git
 ```
 Entre na pasta:
 ```bash
-cd sig-hammock
+cd Projeto-SIG-Hammock
 ```
 Compile o código:
 ```bash
