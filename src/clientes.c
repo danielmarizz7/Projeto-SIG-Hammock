@@ -68,7 +68,7 @@ void cadastrar_clientes(void){
     printf("╚═════════════════════════════════════════════════╝\n");
     receber_dados_cliente(cli);
     
-    arquivo_cliente = fopen("clientes.dat", "ab"); //Cria o arquivo
+    arquivo_cliente = fopen("database/clientes.dat", "ab"); //Cria o arquivo
     if (arquivo_cliente == NULL) {
         printf("\nO arquivo nao foi criado.");
         getchar();
@@ -97,13 +97,13 @@ void exibir_clientes(void){
     printf("Digite o ID do cliente que deseja buscar: ");
     scanf(" %d", &id_procurar);
 
-    arquivo_cliente = fopen("clientes.dat", "rb");
+    arquivo_cliente = fopen("database/clientes.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.dat", "wb");
+        arquivo_cliente = fopen("database/clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.dat", "rb");
+        arquivo_cliente = fopen("database/clientes.dat", "rb");
     }
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
@@ -139,13 +139,13 @@ void listar_clientes(void) {
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Listar Clientes                   ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    arquivo_cliente = fopen("clientes.dat", "rb");
+    arquivo_cliente = fopen("database/clientes.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.dat", "wb");
+        arquivo_cliente = fopen("database/clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.dat", "rb");
+        arquivo_cliente = fopen("database/clientes.dat", "rb");
     }
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
@@ -186,13 +186,13 @@ void alterar_cliente(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_cliente = fopen("clientes.dat", "r+b");
+    arquivo_cliente = fopen("database/clientes.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.dat", "wb");
+        arquivo_cliente = fopen("database/clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.dat", "r+b");
+        arquivo_cliente = fopen("database/clientes.dat", "r+b");
     }
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && cli_alterado == False){
@@ -246,13 +246,13 @@ void excluir_cliente(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_cliente = fopen("clientes.dat", "r+b");
+    arquivo_cliente = fopen("database/clientes.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.dat", "wb");
+        arquivo_cliente = fopen("database/clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.dat", "r+b");
+        arquivo_cliente = fopen("database/clientes.dat", "r+b");
     }
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && (excluido == False)){
@@ -305,13 +305,13 @@ void restaurar_cliente(void) {
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_cliente = fopen("clientes.dat", "r+b");
+    arquivo_cliente = fopen("database/clientes.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.dat", "wb");
+        arquivo_cliente = fopen("database/clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.dat", "r+b");
+        arquivo_cliente = fopen("database/clientes.dat", "r+b");
     }
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && (restaurado == False)){
@@ -367,14 +367,14 @@ void perma_excluir_cliente(void) {
     scanf(" %c", &opc_escolha);
     limpar_buffer();
 
-    arquivo_cliente = fopen("clientes.dat", "rb");
-    arquivo_novo = fopen("clientes_novo.dat", "wb");
+    arquivo_cliente = fopen("database/clientes.dat", "rb");
+    arquivo_novo = fopen("database/clientes_novo.dat", "wb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.dat", "wb");
+        arquivo_cliente = fopen("database/clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.dat", "rb");
+        arquivo_cliente = fopen("database/clientes.dat", "rb");
     }
 
     if (opc_escolha == '1') {
@@ -431,8 +431,8 @@ void perma_excluir_cliente(void) {
     fclose(arquivo_cliente);
     fclose(arquivo_novo);
     free(cli);
-    remove("clientes.dat");
-    rename("clientes_novo.dat", "clientes.dat");
+    remove("database/clientes.dat");
+    rename("database/clientes_novo.dat", "database/clientes.dat");
 }
 
 int verificar_id_cliente(char *valor) {
@@ -456,12 +456,12 @@ int verificar_id_cliente(char *valor) {
     Cliente* cli;
     cli = (Cliente*) malloc(sizeof(Cliente));
 
-    arquivo_cliente = fopen("clientes.dat", "rb");
+    arquivo_cliente = fopen("database/clientes.dat", "rb");
 
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.dat", "wb");
+        arquivo_cliente = fopen("database/clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.dat", "rb");
+        arquivo_cliente = fopen("database/clientes.dat", "rb");
     }
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
@@ -516,13 +516,13 @@ void receber_dados_cliente(Cliente* cli) {
     } while(validar_telefone(telefone) == 0);
     memcpy(cli->telefone, telefone, sizeof(cli->telefone));
 
-    arquivo_cliente = fopen("clientes.dat", "rb");
+    arquivo_cliente = fopen("database/clientes.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.dat", "wb");
+        arquivo_cliente = fopen("database/clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.dat", "rb");
+        arquivo_cliente = fopen("database/clientes.dat", "rb");
     }
 
     cli->id = gerar_id(arquivo_cliente, 1);

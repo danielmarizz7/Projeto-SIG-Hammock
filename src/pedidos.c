@@ -72,7 +72,7 @@ void cadastrar_pedidos(void){
         printf("╚═════════════════════════════════════════════════╝\n");
         receber_dados_pedido(pedido);
         
-        arquivo_pedido = fopen("pedidos.dat", "ab"); //Cria o arquivo
+        arquivo_pedido = fopen("database/pedidos.dat", "ab"); //Cria o arquivo
         if (arquivo_pedido == NULL) {
             printf("\nO arquivo nao foi criado.");
             getchar();
@@ -102,12 +102,12 @@ void exibir_pedidos(void){
     printf("Digite o ID do pedido que deseja buscar: ");
     scanf(" %d", &id_procurar);
 
-    arquivo_pedido = fopen("pedidos.dat", "rb");
+    arquivo_pedido = fopen("database/pedidos.dat", "rb");
 
     if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.dat", "wb");
+        arquivo_pedido = fopen("database/pedidos.dat", "wb");
         fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.dat", "rb");
+        arquivo_pedido = fopen("database/pedidos.dat", "rb");
     }
 
     while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido)){
@@ -146,13 +146,13 @@ void listar_pedidos(void) {
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Listar Pedidos                    ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    arquivo_pedido = fopen("pedidos.dat", "rb");
+    arquivo_pedido = fopen("database/pedidos.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.dat", "wb");
+        arquivo_pedido = fopen("database/pedidos.dat", "wb");
         fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.dat", "rb");
+        arquivo_pedido = fopen("database/pedidos.dat", "rb");
     }
 
     while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido)){
@@ -195,7 +195,7 @@ void alterar_pedido(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_pedido = fopen("pedidos.dat", "r+b");
+    arquivo_pedido = fopen("database/pedidos.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_pedido == NULL) {
@@ -256,13 +256,13 @@ void excluir_pedido(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_pedido = fopen("pedidos.dat", "r+b");
+    arquivo_pedido = fopen("database/pedidos.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.dat", "wb");
+        arquivo_pedido = fopen("database/pedidos.dat", "wb");
         fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.dat", "r+b");
+        arquivo_pedido = fopen("database/pedidos.dat", "r+b");
     }
 
     while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido) && pedido_excluido == False){
@@ -315,13 +315,13 @@ void restaurar_pedido(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_pedido = fopen("pedidos.dat", "r+b");
+    arquivo_pedido = fopen("database/pedidos.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.dat", "wb");
+        arquivo_pedido = fopen("database/pedidos.dat", "wb");
         fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.dat", "r+b");
+        arquivo_pedido = fopen("database/pedidos.dat", "r+b");
     }
 
     while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido) && pedido_restaurado == False){
@@ -377,14 +377,14 @@ void perma_excluir_pedido(void) {
     scanf(" %c", &opc_escolha);
     limpar_buffer();
 
-    arquivo_pedido = fopen("pedidos.dat", "rb");
-    arquivo_novo = fopen("pedidos_novo.dat", "wb");
+    arquivo_pedido = fopen("database/pedidos.dat", "rb");
+    arquivo_novo = fopen("database/pedidos_novo.dat", "wb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.dat", "wb");
+        arquivo_pedido = fopen("database/pedidos.dat", "wb");
         fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.dat", "rb");
+        arquivo_pedido = fopen("database/pedidos.dat", "rb");
     }
 
     if (opc_escolha == '1') {
@@ -442,8 +442,8 @@ void perma_excluir_pedido(void) {
     fclose(arquivo_pedido);
     fclose(arquivo_novo);
     free(pedido);
-    remove("pedidos.dat");
-    rename("pedidos_novo.dat", "pedidos.dat");
+    remove("database/pedidos.dat");
+    rename("database/pedidos_novo.dat", "database/pedidos.dat");
 }
 
 int verificar_criacao_pedidos(void) {
@@ -452,11 +452,11 @@ int verificar_criacao_pedidos(void) {
 
     int arquivo_vazio = True;
 
-    FILE * arquivo_cliente = fopen("clientes.dat", "rb");
+    FILE * arquivo_cliente = fopen("database/clientes.dat", "rb");
     if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.dat", "wb");
+        arquivo_cliente = fopen("database/clientes.dat", "wb");
         fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.dat", "rb");
+        arquivo_cliente = fopen("database/clientes.dat", "rb");
     }
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
@@ -468,7 +468,9 @@ int verificar_criacao_pedidos(void) {
     free(cli);
         
     if (arquivo_vazio == True) {
-        printf("Não tem nenhum cliente cadastrado, então não é possível criar o pedido...");
+        system("clear || cls");
+        printf("\nNão tem nenhum cliente cadastrado, então não é possível criar o pedido...");
+        getchar();
         getchar();
         return 0;
     }
@@ -476,11 +478,11 @@ int verificar_criacao_pedidos(void) {
     Funcionarios* func;
     func = (Funcionarios*) malloc(sizeof(Funcionarios));
 
-    FILE * arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    FILE * arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
     }
 
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
@@ -492,7 +494,9 @@ int verificar_criacao_pedidos(void) {
     free(func);
             
     if (arquivo_vazio == True) {
-        printf("Não tem nenhum funcionário cadastrado, então não é possível criar o pedido...");
+        system("clear || cls");
+        printf("\nNão tem nenhum funcionário cadastrado, então não é possível criar o pedido...");
+        getchar();
         getchar();
         return 0;
     }
@@ -500,11 +504,11 @@ int verificar_criacao_pedidos(void) {
     Produto* prod;
     prod = (Produto*) malloc(sizeof(Produto));
 
-    FILE * arquivo_produto = fopen("produtos.dat", "rb");
+    FILE * arquivo_produto = fopen("database/produtos.dat", "rb");
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
+        arquivo_produto = fopen("database/produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "rb");
+        arquivo_produto = fopen("database/produtos.dat", "rb");
     }
 
     while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
@@ -516,7 +520,9 @@ int verificar_criacao_pedidos(void) {
     free(prod);
             
     if (arquivo_vazio == True) {
-        printf("Não tem nenhum produto cadastrado, então não é possível criar o pedido...");
+        system("clear || cls");
+        printf("\nNão tem nenhum produto cadastrado, então não é possível criar o pedido...");
+        getchar();
         getchar();
         return 0;
     }
@@ -560,12 +566,12 @@ void receber_dados_pedido(Pedido* pedido) {
     info_data = localtime(&agora);
     strftime(pedido->data, sizeof(pedido->data), "%d/%m/%Y", info_data);
 
-    arquivo_pedido = fopen("pedidos.dat", "rb");
+    arquivo_pedido = fopen("database/pedidos.dat", "rb");
 
     if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("pedidos.dat", "wb");
+        arquivo_pedido = fopen("database/pedidos.dat", "wb");
         fclose(arquivo_pedido);
-        arquivo_pedido = fopen("pedidos.dat", "rb");
+        arquivo_pedido = fopen("database/pedidos.dat", "rb");
     }
 
     pedido->id_pedido = gerar_id(arquivo_pedido, 4);

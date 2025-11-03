@@ -68,7 +68,7 @@ void cadastrar_funcionarios(void){
     printf("╚═════════════════════════════════════════════════╝\n");
     receber_dados_funcionario(func);
 
-    arquivo_funcionario = fopen("funcionarios.dat", "ab"); //Cria o arquivo
+    arquivo_funcionario = fopen("database/funcionarios.dat", "ab"); //Cria o arquivo
     if (arquivo_funcionario == NULL){
         printf("\nO arquivo não foi criado.");
         getchar();
@@ -97,12 +97,12 @@ void exibir_funcionarios(void){
     printf("Digite o id do Funcionário que deseja buscar: ");
     scanf(" %d", &id_procurar);
 
-    arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
 
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
     }
 
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
@@ -141,13 +141,13 @@ void listar_funcionarios(void) {
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Listar Funcionários               ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
     }
 
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
@@ -189,12 +189,12 @@ void alterar_funcionarios(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_funcionario = fopen("funcionarios.dat", "r+b");
+    arquivo_funcionario = fopen("database/funcionarios.dat", "r+b");
 
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "r+b");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "r+b");
     }
 
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && func_alterado == False){
@@ -248,13 +248,13 @@ void excluir_funcionarios(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_funcionario = fopen("funcionarios.dat", "r+b");
+    arquivo_funcionario = fopen("database/funcionarios.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "r+b");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "r+b");
     }
 
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && (excluido == False)){
@@ -306,13 +306,13 @@ void restaurar_funcionarios(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_funcionario = fopen("funcionarios.dat", "r+b");
+    arquivo_funcionario = fopen("database/funcionarios.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "r+b");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "r+b");
     }
 
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && (restaurado == False)){
@@ -367,14 +367,14 @@ void perma_excluir_funcionario(void) {
     scanf(" %c", &opc_escolha);
     limpar_buffer();
 
-    arquivo_funcionario = fopen("funcionarios.dat", "rb");
-    arquivo_novo = fopen("funcionarios_novo.dat", "wb");
+    arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
+    arquivo_novo = fopen("database/funcionarios_novo.dat", "wb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
     }
 
     if (opc_escolha == '1') {
@@ -431,8 +431,8 @@ void perma_excluir_funcionario(void) {
     fclose(arquivo_funcionario);
     fclose(arquivo_novo);
     free(func);
-    remove("funcionarios.dat");
-    rename("funcionarios_novo.dat", "funcionarios.dat");
+    remove("database/funcionarios.dat");
+    rename("database/funcionarios_novo.dat", "database/funcionarios.dat");
 }
 
 int verificar_id_funcionario(char *valor) {
@@ -456,12 +456,12 @@ int verificar_id_funcionario(char *valor) {
     
     Funcionarios* func;
     func = (Funcionarios*) malloc(sizeof(Funcionarios));
-    arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
 
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
     }
 
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
@@ -516,13 +516,13 @@ void receber_dados_funcionario(Funcionarios *func) {
     } while (validar_telefone(telefone) == 0);
     memcpy(func->telefone, telefone, sizeof(func->telefone));
     
-    arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
     
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "wb");
         fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+        arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
     }
 
     func->id = gerar_id(arquivo_funcionario, 3);

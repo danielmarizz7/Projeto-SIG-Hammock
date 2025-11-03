@@ -70,7 +70,7 @@ void cadastrar_produto(){
     printf("╚═════════════════════════════════════════════════╝\n");
     receber_dados_produto(prod);
 
-    arquivo_produto = fopen("produtos.dat", "ab");
+    arquivo_produto = fopen("database/produtos.dat", "ab");
     if (arquivo_produto == NULL){
         printf("\nO arquivo não foi criado.");
         getchar();
@@ -100,13 +100,13 @@ void exibir_produto(void){
     printf("Digite o ID do Produto que deseja buscar: ");
     scanf(" %d", &id_procurar);
 
-    arquivo_produto = fopen("produtos.dat", "rb");
+    arquivo_produto = fopen("database/produtos.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
+        arquivo_produto = fopen("database/produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "rb");
+        arquivo_produto = fopen("database/produtos.dat", "rb");
     }
 
     while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
@@ -144,13 +144,13 @@ void listar_produto(void) {
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Listar Produtos                   ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    arquivo_produto = fopen("produtos.dat", "rb");
+    arquivo_produto = fopen("database/produtos.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
+        arquivo_produto = fopen("database/produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "rb");
+        arquivo_produto = fopen("database/produtos.dat", "rb");
     }
 
     while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
@@ -192,12 +192,12 @@ void alterar_produto(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_produto = fopen("produtos.dat", "r+b");
+    arquivo_produto = fopen("database/produtos.dat", "r+b");
 
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
+        arquivo_produto = fopen("database/produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "r+b");
+        arquivo_produto = fopen("database/produtos.dat", "r+b");
     }
     while (fread(prod, sizeof(Produto), 1, arquivo_produto) && prod_alterado == False){
 
@@ -251,13 +251,13 @@ void excluir_produto(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_produto = fopen("produtos.dat", "r+b");
+    arquivo_produto = fopen("database/produtos.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
+        arquivo_produto = fopen("database/produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "r+b");
+        arquivo_produto = fopen("database/produtos.dat", "r+b");
     }
 
     while (fread(prod, sizeof(Produto), 1, arquivo_produto) && (excluido == False)){
@@ -310,13 +310,13 @@ void restaurar_produto(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    arquivo_produto = fopen("produtos.dat", "r+b");
+    arquivo_produto = fopen("database/produtos.dat", "r+b");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
+        arquivo_produto = fopen("database/produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "r+b");
+        arquivo_produto = fopen("database/produtos.dat", "r+b");
     }
 
     while (fread(prod, sizeof(Produto), 1, arquivo_produto) && (restaurado == False)){
@@ -372,14 +372,14 @@ void perma_excluir_produto(void) {
     scanf(" %c", &opc_escolha);
     limpar_buffer();
 
-    arquivo_produto = fopen("produtos.dat", "rb");
-    arquivo_novo = fopen("produtos_novo.dat", "wb");
+    arquivo_produto = fopen("database/produtos.dat", "rb");
+    arquivo_novo = fopen("database/produtos_novo.dat", "wb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
+        arquivo_produto = fopen("database/produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "rb");
+        arquivo_produto = fopen("database/produtos.dat", "rb");
     }
 
     if (opc_escolha == '1') {
@@ -436,8 +436,8 @@ void perma_excluir_produto(void) {
     fclose(arquivo_produto);
     fclose(arquivo_novo);
     free(prod);
-    remove("produtos.dat");
-    rename("produtos_novo.dat", "produtos.dat");
+    remove("database/produtos.dat");
+    rename("database/produtos_novo.dat", "database/produtos.dat");
 }
 
 int verificar_id_produto(char *valor) {
@@ -461,12 +461,12 @@ int verificar_id_produto(char *valor) {
     
     Produto* prod;
     prod = (Produto*) malloc(sizeof(Produto));
-    arquivo_produto = fopen("produtos.dat", "rb");
+    arquivo_produto = fopen("database/produtos.dat", "rb");
 
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
+        arquivo_produto = fopen("database/produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "rb");
+        arquivo_produto = fopen("database/produtos.dat", "rb");
     }
 
     while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
@@ -488,13 +488,13 @@ int verificar_id_produto(char *valor) {
 float verificar_valor_produto(int id) {
     Produto* prod;
     prod = (Produto*) malloc(sizeof(Produto));
-    arquivo_produto = fopen("produtos.dat", "rb");
+    arquivo_produto = fopen("database/produtos.dat", "rb");
     float valor = 0;
 
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
+        arquivo_produto = fopen("database/produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "rb");
+        arquivo_produto = fopen("database/produtos.dat", "rb");
     }
 
     while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
@@ -544,13 +544,13 @@ void receber_dados_produto(Produto *prod) {
     } while(validar_nome(cor) == 0);
     memcpy(prod->cor_rede, cor, sizeof(prod->cor_rede));
 
-    arquivo_produto = fopen("produtos.dat", "rb");
+    arquivo_produto = fopen("database/produtos.dat", "rb");
 
     //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("produtos.dat", "wb");
+        arquivo_produto = fopen("database/produtos.dat", "wb");
         fclose(arquivo_produto);
-        arquivo_produto = fopen("produtos.dat", "rb");
+        arquivo_produto = fopen("database/produtos.dat", "rb");
     }
 
     prod->id = gerar_id(arquivo_produto, 2);
