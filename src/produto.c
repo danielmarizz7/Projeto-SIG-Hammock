@@ -64,8 +64,9 @@ void cadastrar_produto(){
     Produto* prod;
     prod = (Produto*)malloc(sizeof(Produto));
     char valor[20];
-    char cor[26];
-    char modelo[31];
+    char cor[51];
+    char modelo[51];
+    char tipo[51];
 
     limpar_buffer();
     system("clear || cls");
@@ -77,7 +78,7 @@ void cadastrar_produto(){
         printf("Digite o modelo da rede: ");
         scanf("%[^\n]", modelo);
         limpar_buffer();
-    } while(validar_modelo_rede(modelo) == 0);
+    } while(validar_nome(modelo) == 0);
     memcpy(prod->modelo_rede, modelo, sizeof(prod->modelo_rede));
 
     do {
@@ -88,9 +89,12 @@ void cadastrar_produto(){
     // atof serve para converter string em float
     prod->valor_rede = atof(valor);
 
-    printf("Digite o tipo da rede: ");
-    scanf("%[^\n]", prod->tipo_rede);
-    limpar_buffer();
+    do {
+        printf("Digite o tipo da rede: ");
+        scanf("%[^\n]", tipo);
+        limpar_buffer();
+    } while (validar_nome(tipo) == 0);
+    memcpy(prod->tipo_rede, tipo, sizeof(prod->tipo_rede));
 
     do {
         printf("Digite a cor da rede: ");
@@ -226,6 +230,9 @@ void alterar_produto(void){
     char opc_confirmar;
     int prod_alterado = False;
     char valor[20];
+    char cor[51];
+    char modelo[51];
+    char tipo[51];
     Produto* prod;
     prod = (Produto*) malloc(sizeof(Produto));
 
@@ -259,9 +266,12 @@ void alterar_produto(void){
             switch (opc_alterar)
                         {
                         case '1':
-                            printf("\nDigite o novo modelo: ");
-                            scanf("%[^\n]", prod->modelo_rede);
-                            limpar_buffer();
+                            do {
+                                printf("Digite o modelo da rede: ");
+                                scanf("%[^\n]", modelo);
+                                limpar_buffer();
+                            } while(validar_nome(modelo) == 0);
+                            memcpy(prod->modelo_rede, modelo, sizeof(prod->modelo_rede));
                             break;
                         case  '2':
                             do {
@@ -274,14 +284,20 @@ void alterar_produto(void){
                             limpar_buffer();
                             break;
                         case  '3':
-                            printf("\nDigite o novo tipo: ");
-                            scanf("%[^\n]", prod->tipo_rede);
-                            limpar_buffer();
+                            do {
+                                printf("Digite o tipo da rede: ");
+                                scanf("%[^\n]", tipo);
+                                limpar_buffer();
+                            } while (validar_nome(tipo) == 0);
+                            memcpy(prod->tipo_rede, tipo, sizeof(prod->tipo_rede));
                             break;
                         case  '4':
-                            printf("\nDigite a nova cor: ");
-                            scanf("%[^\n]", prod->cor_rede);
-                            limpar_buffer();
+                            do {
+                                printf("Digite a cor da rede: ");
+                                scanf("%[^\n]", cor);
+                                limpar_buffer();
+                            } while(validar_nome(cor) == 0);
+                            memcpy(prod->cor_rede, cor, sizeof(prod->cor_rede));
                             break;
                         default:
                             break;

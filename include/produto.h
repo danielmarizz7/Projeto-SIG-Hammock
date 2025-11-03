@@ -2,10 +2,10 @@ typedef struct  produto Produto;
 
 struct produto{
     int id;
-    char modelo_rede[31];
+    char modelo_rede[51];
     float valor_rede;
-    char tipo_rede[15]; 
-    char cor_rede [26];
+    char tipo_rede[51]; 
+    char cor_rede [51];
     int status;
 };
 

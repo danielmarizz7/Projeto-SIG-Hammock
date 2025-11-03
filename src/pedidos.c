@@ -66,7 +66,6 @@ char tela_de_pedidos(void){
 
 
 void cadastrar_pedidos(void){
-    limpar_buffer();
     if (verificar_criacao_pedidos() == 1) {
         limpar_buffer();
         Pedido* pedido;
