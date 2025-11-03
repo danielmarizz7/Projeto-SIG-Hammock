@@ -15,7 +15,7 @@ void modulo_relatorio(void) {
             printf("Voltando ao menu inicial\n");
             break;
         default:
-            printf("Opção inválida! Tente novamente.\n");
+            printf("Esta funcionalidade ainda não está pronta.\n");
             printf("Pressione Enter para voltar a tela incial...");
             getchar();
     }

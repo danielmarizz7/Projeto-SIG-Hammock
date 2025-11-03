@@ -80,9 +80,25 @@ int validar_cpf(char *cpf) {
     int len = 0;
     int soma = 0;
 
+    for (int i = 0; cpf[i] != '\0'; i++) {
+        if (!isdigit((unsigned char)cpf[i]) &&
+            cpf[i] != '.' && cpf[i] != '-') {
+            printf("\nCPF contém caracteres inválidos (somente números, '.' e '-').");
+            getchar();
+            return 0;
+        }
+    }
+
+
     // Extrai os números
-    for (const char *p = cpf; *p != '\0' && len < 11; ++p) {
-        if (isdigit((unsigned char)*p)) {
+    for (const char *p = cpf; *p != '\0'; ++p) {
+        if (isdigit((unsigned char)*p)
+    ) {
+            if (len >= 11) {
+                printf("\nO CPF contém mais de 11 dígitos numéricos.");
+                getchar();
+                return 0;
+            }
             digitos[len++] = *p - '0';
         }
     }
@@ -133,8 +149,8 @@ int validar_valor(char *valor) {
     }
 
     for (int i = 0; valor[i] != '\0'; i++) {
-        if (!isdigit((unsigned char)valor[i])) {
-            printf("\nDigite apenas numeros (0-9).");
+        if (!isdigit((unsigned char)valor[i]) && valor[i] != '.') {
+            printf("\nDigite apenas numeros (0-9) ou '.' para decimais.");
             getchar();
             return 0;
         }
@@ -179,14 +195,21 @@ int validar_nome(char *nome) {
     return 1;
 }
 int validar_telefone(char *telefone) {
+    int len = strlen(telefone);
     if (telefone == NULL) {
         printf("\nO telefone não pode estar vazio.");
         getchar();
         return 0;
     }
 
+    if (len > 11) {
+        printf("\nO telefone não pode ter mais de 11 digitos.");
+        getchar();
+        return 0;
+    }
+
     int digitos[15];
-    int len = 0;
+    len = 0;
 
     // Extrai apenas os números
     for (const char *p = telefone; *p != '\0'; ++p) {
