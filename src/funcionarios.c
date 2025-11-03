@@ -54,7 +54,7 @@ char tela_de_funcionarios(void){
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("\n");
-    printf("Escolhar uma opção: ");
+    printf("Escolha uma opção: ");
     scanf(" %c", &op_funcionario);
     return op_funcionario;
 }
