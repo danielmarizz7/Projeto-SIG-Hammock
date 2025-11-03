@@ -9,7 +9,7 @@ Com foco na simplicidade e eficiência, o sistema oferece uma interface intuitiv
 ## Funcionalidades Principais
 
 - **Gestão de Produtos**: Cadastro e gerenciamento de redes produzidas  
-- **Controle de Estoque**: Gerenciamento de produtos disponiveis e finalizados  
+- **Controle de Pedidos**: Gerenciamento de pedidos ordenados  
 - **Cadastro de Clientes**: Organização dos contatos comerciais  
 - **Relatórios Simples**: Analise dos dados da empresa e estatísticas 
 - **Cadastro de Funcionarios**: Registrar todos os funcionarios da fabrica  
@@ -27,6 +27,8 @@ Clone o repositório:
 ```bash
 git clone https://github.com/usuario/sig-hammock.git
 cd sig-hammock
+make
+make run
 ```
 
 --- 
