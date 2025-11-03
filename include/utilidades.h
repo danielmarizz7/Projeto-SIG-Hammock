@@ -11,3 +11,4 @@ int validar_valor(char*);
 int validar_nome(char*);
 int validar_telefone(char*);
 int validar_modelo_rede(char*);
+int validar_data(char*);

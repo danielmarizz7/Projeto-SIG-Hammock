@@ -87,7 +87,6 @@ void cadastrar_produto(){
     getchar();
 }
 
-
 void exibir_produto(void){
     int id_procurar = 0;
     Produto* prod;
@@ -175,7 +174,6 @@ void listar_produto(void) {
     }
     
 }
-
 
 void alterar_produto(void){
     int id_procurar = 0;

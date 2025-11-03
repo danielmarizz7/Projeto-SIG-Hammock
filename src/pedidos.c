@@ -9,7 +9,6 @@
 #include "../include/funcionarios.h"
 #include <time.h>
 #include <locale.h>
-// #include <windows.h>
 
 FILE * arquivo_pedido; //Apontador do arquivo
 
@@ -38,8 +37,6 @@ void modulo_pedidos(void){
     } while (opcao != '0');
 }
 
-
-
 char tela_de_pedidos(void){
 
     char op_pedido;
@@ -63,73 +60,24 @@ char tela_de_pedidos(void){
     return op_pedido;
 }
 
-
-
 void cadastrar_pedidos(void){
     if (verificar_criacao_pedidos() == 1) {
         limpar_buffer();
         Pedido* pedido;
         pedido = (Pedido*) malloc(sizeof(Pedido));
-        char id[20];
 
         system("clear || cls");
         printf("╔═════════════════════════════════════════════════╗\n");
         printf("║               Cadastrar Pedidos                 ║\n");
         printf("╚═════════════════════════════════════════════════╝\n");
-
-        do {
-            printf("Digite o ID do cliente que fez o pedido: ");
-            scanf("%[^\n]", id);
-            limpar_buffer();
-        }
-        while (verificar_id_cliente(id) == 0);
-        pedido->id_cliente = atoi(id);
-
-        do {
-            printf("Digite o ID do produto que fez o pedido: ");
-            scanf("%[^\n]", id);
-            limpar_buffer();
-        }
-        while (verificar_id_produto(id) == 0);
-        pedido->id_produto = atoi(id);
-        
-        pedido->preco = verificar_valor_produto(atoi(id));
-
-        do {
-            printf("Digite o ID do funcionario que fez o pedido: ");
-            scanf("%[^\n]", id);
-            limpar_buffer();
-        }
-        while (verificar_id_funcionario(id) == 0);
-        pedido->id_funcionario = atoi(id); 
-
-        time_t agora;
-        struct tm *info_data;
-        time(&agora);
-        info_data = localtime(&agora);
-        strftime(pedido->data, sizeof(pedido->data), "%d/%m/%Y", info_data);
-
-
-        arquivo_pedido = fopen("pedidos.dat", "rb");
-
-        if (arquivo_pedido == NULL) {
-            arquivo_pedido = fopen("pedidos.dat", "wb");
-            fclose(arquivo_pedido);
-            arquivo_pedido = fopen("pedidos.dat", "rb");
-        }
-
-        pedido->id_pedido = gerar_id(arquivo_pedido, 4);
-
-        fclose(arquivo_pedido);
-        pedido->status = True;
+        receber_dados_pedido(pedido);
         
         arquivo_pedido = fopen("pedidos.dat", "ab"); //Cria o arquivo
         if (arquivo_pedido == NULL) {
             printf("\nO arquivo nao foi criado.");
             getchar();
         }
-        else
-        {
+        else{
             //Escreve o novo pedido no arquivo
             fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
             fclose(arquivo_pedido);
@@ -140,7 +88,6 @@ void cadastrar_pedidos(void){
         getchar();
     }
 }
-
 
 void exibir_pedidos(void){
     int id_procurar = 0;
@@ -232,7 +179,6 @@ void listar_pedidos(void) {
     
 }
 
-
 void alterar_pedido(void){
     int id_procurar = 0;
     char opc_alterar;
@@ -248,16 +194,6 @@ void alterar_pedido(void){
     printf("Digite o ID do pedido que deseja alterar: ");
     scanf(" %d", &id_procurar);
     limpar_buffer();
-    // esta tela ainda vai receber atualizações ao longo do projeto
-
-    printf("\nO que deseja alterar desse pedido? ");
-    printf("\n1 - ID_cliente");
-    printf("\n2 - ID_produto");
-    printf("\n3 - ID_funcionario");
-    printf("\n4 - Preco");    
-    printf("\n5 - Data\n");
-    scanf("%c", &opc_alterar);
-    limpar_buffer();
 
     arquivo_pedido = fopen("pedidos.dat", "r+b");
 
@@ -270,55 +206,9 @@ void alterar_pedido(void){
 
     while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido) && pedido_alterado == False){
         if (pedido->id_pedido == id_procurar && pedido->status == True){
-            switch (opc_alterar)
-                        {
-                        case '1':
-                            printf("\nDigite o novo ID do cliente: ");
-                            scanf("%d", &pedido->id_cliente);
-                            limpar_buffer();
-                            break;
-                        case  '2':
-                            printf("\nDigite o novo ID do produto: ");
-                            scanf("%d", &pedido->id_produto);
-                            limpar_buffer();
-                            break;
-                        case  '3':
-                            printf("\nDigite o novo ID do funcionario: ");
-                            scanf("%d", &pedido->id_funcionario);
-                            limpar_buffer();
-                            break;
-                        case  '4':
-                            printf("\nDigite o novo preco: ");
-                            scanf("%f", &pedido->preco);
-                            limpar_buffer();
-                            break;
-                        case '5':
-                            printf("\nDigite a nova data: ");
-                            scanf("%[^\n]", pedido->data);
-                            limpar_buffer();
-                            break;                            
-                        default:
-                            break;
-            }
-            system("clear || cls");
-            printf("\nPedido com o ID %d alterado com sucesso!", id_procurar);
-            printf("\n\n------------------------ Pedido Alterado ------------------------");
-            printf("\nID do pedido: %d", pedido->id_pedido);
-            printf("\nID do cliente: %d", pedido->id_cliente);
-            printf("\nID do produto: %d", pedido->id_produto);
-            printf("\nID do funcionario: %d", pedido->id_funcionario);
-            printf("\nPreco do pedido: %f", pedido->preco);
-            printf("\nData do pedido: %s", pedido->data);
-            getchar();
-
-            printf("\nDeseja alterar algum outro campo? (s/n)\n");
-            scanf("%c", &opc_confirmar);
-            limpar_buffer();
-            fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);
-            fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
-            if (opc_confirmar == 's' || opc_confirmar == 'S'){
+            do {
                 system("clear || cls");
-                printf("\nO que deseja alterar desse pedido? ");
+                printf("\nO que deseja alterar desse pedido? (Digite 1,2,3,4 OU 5)");
                 printf("\n1 - ID_cliente");
                 printf("\n2 - ID_produto");
                 printf("\n3 - ID_funcionario");
@@ -326,6 +216,17 @@ void alterar_pedido(void){
                 printf("\n5 - Data\n");
                 scanf("%c", &opc_alterar);
                 limpar_buffer();
+            } while(opc_alterar != '1' && opc_alterar != '2' && opc_alterar != '3' && opc_alterar != '4' && opc_alterar != '5');
+
+            alterar_campo_pedido(pedido, opc_alterar);
+
+            printf("\nDeseja alterar algum outro campo? (s/n)\n");
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+            fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);
+            fwrite(pedido, sizeof(Pedido), 1, arquivo_pedido);
+
+            if (opc_confirmar == 's' || opc_confirmar == 'S'){
                 fseek(arquivo_pedido, (-1)*sizeof(Pedido), SEEK_CUR);     
             } else {
                 pedido_alterado = True;
@@ -622,4 +523,116 @@ int verificar_criacao_pedidos(void) {
 
     return 1;
 
+}
+
+void receber_dados_pedido(Pedido* pedido) {
+    char id[20];
+
+    do {
+        printf("Digite o ID do cliente que fez o pedido: ");
+        scanf("%[^\n]", id);
+        limpar_buffer();
+    }
+    while (verificar_id_cliente(id) == 0);
+    pedido->id_cliente = atoi(id);
+
+    do {
+        printf("Digite o ID do produto que fez o pedido: ");
+        scanf("%[^\n]", id);
+        limpar_buffer();
+    }
+    while (verificar_id_produto(id) == 0);
+    pedido->id_produto = atoi(id);
+
+    do {
+        printf("Digite o ID do funcionario que fez o pedido: ");
+        scanf("%[^\n]", id);
+        limpar_buffer();
+    }
+    while (verificar_id_funcionario(id) == 0);
+    pedido->id_funcionario = atoi(id); 
+
+    pedido->preco = verificar_valor_produto(atoi(id));
+
+    time_t agora;
+    struct tm *info_data;
+    time(&agora);
+    info_data = localtime(&agora);
+    strftime(pedido->data, sizeof(pedido->data), "%d/%m/%Y", info_data);
+
+    arquivo_pedido = fopen("pedidos.dat", "rb");
+
+    if (arquivo_pedido == NULL) {
+        arquivo_pedido = fopen("pedidos.dat", "wb");
+        fclose(arquivo_pedido);
+        arquivo_pedido = fopen("pedidos.dat", "rb");
+    }
+
+    pedido->id_pedido = gerar_id(arquivo_pedido, 4);
+
+    fclose(arquivo_pedido);
+    pedido->status = True;
+}
+
+void alterar_campo_pedido(Pedido *pedido, char opc_alterar) {
+    char id[20] = "";
+    char data[26] = "";
+    char valor[20];
+    switch (opc_alterar){
+        case '1':
+            do {
+                printf("Digite o ID do cliente que fez o pedido: ");
+                scanf("%[^\n]", id);
+                limpar_buffer();
+            }
+            while (verificar_id_cliente(id) == 0);
+            pedido->id_cliente = atoi(id);
+            break;
+        case  '2':
+            do {
+                printf("Digite o ID do produto que fez o pedido: ");
+                scanf("%[^\n]", id);
+                limpar_buffer();
+            }
+            while (verificar_id_produto(id) == 0);
+            pedido->id_produto = atoi(id);
+            break;
+        case  '3':
+            do {
+                printf("Digite o ID do funcionario que fez o pedido: ");
+                scanf("%[^\n]", id);
+                limpar_buffer();
+            }
+            while (verificar_id_funcionario(id) == 0);
+            pedido->id_funcionario = atoi(id);
+            break;
+        case  '4':
+            do {
+                printf("Digite o novo valor do pedido: ");
+                scanf("%[^\n]", valor);
+                limpar_buffer();
+            } while(validar_valor(valor) == 0);
+            pedido->preco = atof(valor);
+            break;
+        case '5':
+            do {
+                printf("\nDigite a nova data: ");
+                scanf("%[^\n]", data);
+                limpar_buffer();
+            } while (validar_data(data) == 0);
+            memcpy(pedido->data, data, sizeof(pedido->data));
+            break;                            
+        default:
+            break;
+    }
+    system("clear || cls");
+    printf("\nPedido com o ID %d alterado com sucesso!", pedido->id_pedido);
+    printf("\n\n------------------------ Pedido Alterado ------------------------");
+    printf("\nID do pedido: %d", pedido->id_pedido);
+    printf("\nID do cliente: %d", pedido->id_cliente);
+    printf("\nID do produto: %d", pedido->id_produto);
+    printf("\nID do funcionario: %d", pedido->id_funcionario);
+    printf("\nPreco do pedido: %f", pedido->preco);
+    printf("\nData do pedido: %s", pedido->data);
+    getchar();
 }

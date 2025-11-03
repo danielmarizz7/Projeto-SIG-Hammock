@@ -311,3 +311,61 @@ int validar_email(char *email) {
 
     return 1;
 }
+
+int validar_data(char *data) {
+    int dia, mes;
+
+    // Verifica tamanho esperado
+    if (strlen(data) != 10) {
+        printf("\nA data deve ter 10 caracteres. A data deve estar no formato(dd/mm/aaaa).");
+        getchar();
+        return 0;
+    }
+
+    // Verifica posições dos separadores '/'
+    if (data[2] != '/' || data[5] != '/') {
+        printf("\nOs '/' nao estao na posicao correta. A data deve estar no formato(dd/mm/aaaa).");
+        getchar();
+        return 0;
+    }
+
+    // Verifica se os outros caracteres são dígitos
+    for (int i = 0; i < 10; i++) {
+        if (i != 2 && i != 5) {
+            if (!isdigit(data[i])) {
+                printf("\nUm caractere que nao e um digito foi digitado fora de posicao. A data deve estar no formato(dd/mm/aaaa).");
+                getchar();
+                return 0;
+            }
+        }
+    }
+
+    // Extrai os valores
+    dia = atoi(&data[0]);
+    mes = atoi(&data[3]);
+
+    // Verifica faixa básica de valores
+    if (mes < 1 || mes > 12) {
+        printf("\nO mes digitado deve estar entre 12 e 1. O que foi digitado foi %d", mes);
+        getchar();
+        return 0;
+    }
+
+    if (dia < 1) {
+        printf("\nO dia digitado deve ser maior que 1. O que foi digitado foi %d", dia);
+        getchar();
+        return 0;
+    }
+
+    // Dias máximos de cada mês
+    int dias_mes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    // Verifica o dia máximo
+    if (dia > dias_mes[mes - 1]) {
+        printf("\nO mes %d nao possui o dia %d. O maior dia desse mes e %d", mes, dia, dias_mes[mes - 1]);
+        getchar();
+        return 0;
+    }
+
+    return 1;
+}
