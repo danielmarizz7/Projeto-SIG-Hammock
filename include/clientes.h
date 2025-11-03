@@ -19,3 +19,4 @@ void restaurar_cliente(void);
 void perma_excluir_cliente(void);
 void modulo_clientes(void);
 int verificar_id_cliente(char*);
+void receber_dados_cliente(Cliente*);

@@ -62,10 +62,6 @@ char tela_de_clientes(void){
 
 void cadastrar_clientes(void){
     Cliente* cli;
-    char cpf[30];
-    char email[51];
-    char nome[51];
-    char telefone[12];
     cli = (Cliente*) malloc(sizeof(Cliente));
     limpar_buffer();
 
@@ -73,57 +69,14 @@ void cadastrar_clientes(void){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║               Cadastrar Clientes                ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    do {
-        printf("Digite o nome do cliente: ");
-        scanf("%[^\n]", nome);
-        limpar_buffer();
-    } while (validar_nome(nome) == 0);
-    memcpy(cli->nome, nome, sizeof(cli->nome));
-
-    do {
-        printf("Digite o CPF do cliente: ");
-        scanf("%[^\n]", cpf);
-        limpar_buffer();   
-    }
-    while (validar_cpf(cpf) == 0);
-    memcpy(cli->cpf, cpf, sizeof(cli->cpf));
-
-    do {
-        printf("Digite o email do cliente: ");
-        scanf("%[^\n]", email);
-        limpar_buffer();
-    }
-    while (validar_email(email) == 0);
-    memcpy(cli->email, email, sizeof(cli->email));
-
-    do {
-        printf("Digite o telefone do cliente: ");
-        scanf("%[^\n]", telefone);
-        limpar_buffer();
-    } while(validar_telefone(telefone) == 0);
-    memcpy(cli->telefone, telefone, sizeof(cli->telefone));
-
-    arquivo_cliente = fopen("clientes.dat", "rb");
-
-    //testa se o arquivo existe, se não existe, cria o arquivo
-    if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("clientes.dat", "wb");
-        fclose(arquivo_cliente);
-        arquivo_cliente = fopen("clientes.dat", "rb");
-    }
-
-    cli->id = gerar_id(arquivo_cliente, 1);
-
-    fclose(arquivo_cliente);
-    cli->status = True;
+    receber_dados_cliente(cli);
     
     arquivo_cliente = fopen("clientes.dat", "ab"); //Cria o arquivo
     if (arquivo_cliente == NULL) {
         printf("\nO arquivo nao foi criado.");
         getchar();
     }
-    else
-    {
+    else{
         //Escreve o novo cliente no arquivo
         fwrite(cli, sizeof(Cliente), 1, arquivo_cliente);
         fclose(arquivo_cliente);
@@ -594,4 +547,55 @@ int verificar_id_cliente(char *valor) {
     printf("\nUm cliente com o ID %d não existe", id);
     getchar();
     return 0;
+}
+
+void receber_dados_cliente(Cliente* cli) {
+    char cpf[30];
+    char email[51];
+    char nome[51];
+    char telefone[12];
+
+    do {
+        printf("Digite o nome do cliente: ");
+        scanf("%[^\n]", nome);
+        limpar_buffer();
+    } while (validar_nome(nome) == 0);
+    memcpy(cli->nome, nome, sizeof(cli->nome));
+
+    do {
+        printf("Digite o CPF do cliente: ");
+        scanf("%[^\n]", cpf);
+        limpar_buffer();   
+    }
+    while (validar_cpf(cpf) == 0);
+    memcpy(cli->cpf, cpf, sizeof(cli->cpf));
+
+    do {
+        printf("Digite o email do cliente: ");
+        scanf("%[^\n]", email);
+        limpar_buffer();
+    }
+    while (validar_email(email) == 0);
+    memcpy(cli->email, email, sizeof(cli->email));
+
+    do {
+        printf("Digite o telefone do cliente: ");
+        scanf("%[^\n]", telefone);
+        limpar_buffer();
+    } while(validar_telefone(telefone) == 0);
+    memcpy(cli->telefone, telefone, sizeof(cli->telefone));
+
+    arquivo_cliente = fopen("clientes.dat", "rb");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_cliente == NULL) {
+        arquivo_cliente = fopen("clientes.dat", "wb");
+        fclose(arquivo_cliente);
+        arquivo_cliente = fopen("clientes.dat", "rb");
+    }
+
+    cli->id = gerar_id(arquivo_cliente, 1);
+
+    fclose(arquivo_cliente);
+    cli->status = True;
 }
