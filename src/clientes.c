@@ -197,13 +197,16 @@ void alterar_cliente(void){
 
     while (fread(cli, sizeof(Cliente), 1, arquivo_cliente) && cli_alterado == False){
         if (cli->id == id_procurar && cli->status == True) {
-            printf("\nO que deseja alterar desse cliente? ");
-            printf("\n1 - nome");
-            printf("\n2 - cpf");
-            printf("\n3 - email");
-            printf("\n4 - telefone\n");
-            scanf("%c", &opc_alterar);
-            limpar_buffer();
+            do {
+                system("clear || cls");
+                printf("\nO que deseja alterar desse cliente (Digite 1,2,3 OU 4)? ");
+                printf("\n1 - nome");
+                printf("\n2 - cpf");
+                printf("\n3 - email");
+                printf("\n4 - telefone\n");
+                scanf("%c", &opc_alterar);
+                limpar_buffer();
+            } while(opc_alterar != '1' && opc_alterar != '2' && opc_alterar != '3' && opc_alterar != '4' && opc_alterar != '5');
 
             alterar_campo_cliente(cli, opc_alterar);
 
@@ -573,7 +576,6 @@ void alterar_campo_cliente(Cliente* cli, char opc_alterar) {
         default:
             break;
     }
-
     system("clear || cls");
     printf("\nCliente com o ID %d alterado com sucesso!", cli->id);
     printf("\n\n------------------------ Cliente Alterado ------------------------");

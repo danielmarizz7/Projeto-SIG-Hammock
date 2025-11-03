@@ -59,10 +59,6 @@ char tela_de_funcionarios(void){
 
 void cadastrar_funcionarios(void){
     Funcionarios* func;
-    char cpf[30];
-    char email[51];
-    char nome[51];
-    char telefone[12];
     func = (Funcionarios*) malloc(sizeof(Funcionarios));
     limpar_buffer();
 
@@ -70,58 +66,14 @@ void cadastrar_funcionarios(void){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║              Cadastrar Funcionários             ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
-    do {
-        printf("Digite o nome do funcionario: ");
-        scanf("%[^\n]", nome);
-        limpar_buffer();
-    } while(validar_nome(nome) == 0);
-    memcpy(func->nome, nome, sizeof(func->nome));
-
-    do {
-        printf("Digite o CPF do funcionario: ");
-        scanf("%[^\n]", cpf);
-        limpar_buffer();
-    }
-    while (validar_cpf(cpf) == 0);
-    memcpy(func->cpf, cpf, sizeof(func->cpf));
-
-    do {
-        printf("Digite o email do funcionario: ");
-        scanf("%[^\n]", email);
-        limpar_buffer();
-    }
-    while (validar_email(email) == 0);
-    memcpy(func->email, email, sizeof(func->email));
-
-    do {
-        printf("Digite o telefone do funcionario: ");
-        scanf("%[^\n]", telefone);
-        limpar_buffer();
-    } while (validar_telefone(telefone) == 0);
-    memcpy(func->telefone, telefone, sizeof(func->telefone));
-    
-    arquivo_funcionario = fopen("funcionarios.dat", "rb");
-    
-    //testa se o arquivo existe, se não existe, cria o arquivo
-    if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("funcionarios.dat", "wb");
-        fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("funcionarios.dat", "rb");
-    }
-
-
-    func->id = gerar_id(arquivo_funcionario, 3);
-
-    fclose(arquivo_funcionario);
-    func->status = True;
+    receber_dados_funcionario(func);
 
     arquivo_funcionario = fopen("funcionarios.dat", "ab"); //Cria o arquivo
     if (arquivo_funcionario == NULL){
         printf("\nO arquivo não foi criado.");
         getchar();
     }
-    else
-    {
+    else{
         //escreve o novo funcionário no arquivo
         fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
         fclose(arquivo_funcionario);
@@ -229,10 +181,6 @@ void alterar_funcionarios(void){
     int func_alterado = False;
     Funcionarios* func;
     func = (Funcionarios*) malloc(sizeof(Funcionarios));
-    char cpf[30];
-    char email[51];
-    char nome[51];
-    char telefone[12];
 
     system("clear || cls");
     printf("╔═════════════════════════════════════════════════╗\n");
@@ -242,16 +190,7 @@ void alterar_funcionarios(void){
     scanf(" %d", &id_procurar);
     limpar_buffer();
 
-    printf("\nO que deseja alterar desse Funcionário ?");
-    printf("\n1 - nome");
-    printf("\n2 - cpf");
-    printf("\n3 - email");
-    printf("\n4 - telefone\n");
-    scanf("%c", &opc_alterar);
-    limpar_buffer();
-
     arquivo_funcionario = fopen("funcionarios.dat", "r+b");
-
 
     if (arquivo_funcionario == NULL) {
         arquivo_funcionario = fopen("funcionarios.dat", "wb");
@@ -262,69 +201,26 @@ void alterar_funcionarios(void){
     while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario) && func_alterado == False){
 
         if (func->id == id_procurar && func->status == True){
-            switch (opc_alterar)
-                        {
-                        case '1':
-                            do {
-                                printf("Digite o nome do funcionario: ");
-                                scanf("%[^\n]", nome);
-                                limpar_buffer();
-                            } while(validar_nome(nome) == 0);
-                            memcpy(func->nome, nome, sizeof(func->nome));
-                            break;
-                        case  '2':
-                            do {
-                                printf("Digite o CPF do funcionario: ");
-                                scanf("%[^\n]", cpf);
-                                limpar_buffer();
-                            }
-                            while (validar_cpf(cpf) == 0);
-                            memcpy(func->cpf, cpf, sizeof(func->cpf));
-                            break;
-                        case  '3':
-                            do {
-                                printf("Digite o email do funcionario: ");
-                                scanf("%[^\n]", email);
-                                limpar_buffer();
-                            }
-                            while (validar_email(email) == 0);
-                            memcpy(func->email, email, sizeof(func->email));
-                            break;
-                        case  '4':
-                            do {
-                                printf("Digite o telefone do funcionario: ");
-                                scanf("%[^\n]", telefone);
-                                limpar_buffer();
-                            } while (validar_telefone(telefone) == 0);
-                            memcpy(func->telefone, telefone, sizeof(func->telefone));
-                            break;
-                        default:
-                            break;
-            }
-            system("clear || cls");
-            printf("\nFuncionário com o ID %d alterado com sucesso!", id_procurar);
-            printf("\n\n------------------------ Funcionário Alterado ------------------------");
-            printf("\nID do Funcionário: %d", func->id);
-            printf("\nNome do Funcionário: %s", func->nome);
-            printf("\nCPF do Funcionário: %s", func->cpf);
-            printf("\nEmail do Funcionário: %s", func->email);
-            printf("\nTelefone do Funcionário: %s", func->telefone);
-            getchar();
-
-            printf("\nDeseja alterar algum outro campo? (s/n)\n");
-            scanf("%c", &opc_confirmar);
-            limpar_buffer();
-            fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);
-            fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
-            if (opc_confirmar == 's' || opc_confirmar == 'S'){
+            do {
                 system("clear || cls");
-                printf("\nO que deseja alterar desse Funcionário ?");
+                printf("\nO que deseja alterar desse Funcionário (Digite 1,2,3 OU 4)?");
                 printf("\n1 - nome");
                 printf("\n2 - cpf");
                 printf("\n3 - email");
                 printf("\n4 - telefone\n");
                 scanf("%c", &opc_alterar);
                 limpar_buffer();
+            } while (opc_alterar != '1' && opc_alterar != '2' && opc_alterar != '3' && opc_alterar != '4' && opc_alterar != '5');
+
+            alterar_campo_funcionario(func, opc_alterar);
+
+            printf("\nDeseja alterar algum outro campo? (s/n)\n");
+            scanf("%c", &opc_confirmar);
+            limpar_buffer();
+            fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);
+            fwrite(func, sizeof(Funcionarios), 1, arquivo_funcionario);
+
+            if (opc_confirmar == 's' || opc_confirmar == 'S'){
                 fseek(arquivo_funcionario, (-1)*sizeof(Funcionarios), SEEK_CUR);     
             } else {
                 func_alterado = True;
@@ -585,4 +481,109 @@ int verificar_id_funcionario(char *valor) {
     printf("\nUm funcionario com o ID %d não existe", id);
     getchar();
     return 0;
+}
+
+void receber_dados_funcionario(Funcionarios *func) {
+    char cpf[30];
+    char email[51];
+    char nome[51];
+    char telefone[12];
+
+    do {
+        printf("Digite o nome do funcionario: ");
+        scanf("%[^\n]", nome);
+        limpar_buffer();
+    } while(validar_nome(nome) == 0);
+    memcpy(func->nome, nome, sizeof(func->nome));
+
+    do {
+        printf("Digite o CPF do funcionario: ");
+        scanf("%[^\n]", cpf);
+        limpar_buffer();
+    }
+    while (validar_cpf(cpf) == 0);
+    memcpy(func->cpf, cpf, sizeof(func->cpf));
+
+    do {
+        printf("Digite o email do funcionario: ");
+        scanf("%[^\n]", email);
+        limpar_buffer();
+    }
+    while (validar_email(email) == 0);
+    memcpy(func->email, email, sizeof(func->email));
+
+    do {
+        printf("Digite o telefone do funcionario: ");
+        scanf("%[^\n]", telefone);
+        limpar_buffer();
+    } while (validar_telefone(telefone) == 0);
+    memcpy(func->telefone, telefone, sizeof(func->telefone));
+    
+    arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo_funcionario == NULL) {
+        arquivo_funcionario = fopen("funcionarios.dat", "wb");
+        fclose(arquivo_funcionario);
+        arquivo_funcionario = fopen("funcionarios.dat", "rb");
+    }
+
+    func->id = gerar_id(arquivo_funcionario, 3);
+    fclose(arquivo_funcionario);
+    func->status = True;
+}
+
+void alterar_campo_funcionario(Funcionarios *func, char opc_alterar) {
+    char cpf[30];
+    char email[51];
+    char nome[51];
+    char telefone[12];
+
+    switch (opc_alterar){
+            case '1':
+                do {
+                    printf("Digite o nome do funcionario: ");
+                    scanf("%[^\n]", nome);
+                    limpar_buffer();
+                } while(validar_nome(nome) == 0);
+                memcpy(func->nome, nome, sizeof(func->nome));
+                break;
+            case  '2':
+                do {
+                    printf("Digite o CPF do funcionario: ");
+                    scanf("%[^\n]", cpf);
+                    limpar_buffer();
+                }
+                while (validar_cpf(cpf) == 0);
+                memcpy(func->cpf, cpf, sizeof(func->cpf));
+                break;
+            case  '3':
+                do {
+                    printf("Digite o email do funcionario: ");
+                    scanf("%[^\n]", email);
+                    limpar_buffer();
+                }
+                while (validar_email(email) == 0);
+                memcpy(func->email, email, sizeof(func->email));
+                break;
+            case  '4':
+                do {
+                    printf("Digite o telefone do funcionario: ");
+                    scanf("%[^\n]", telefone);
+                    limpar_buffer();
+                } while (validar_telefone(telefone) == 0);
+                memcpy(func->telefone, telefone, sizeof(func->telefone));
+                break;
+            default:
+                break;
+    }
+    system("clear || cls");
+    printf("\nFuncionário com o ID %d alterado com sucesso!", func->id);
+    printf("\n\n------------------------ Funcionário Alterado ------------------------");
+    printf("\nID do Funcionário: %d", func->id);
+    printf("\nNome do Funcionário: %s", func->nome);
+    printf("\nCPF do Funcionário: %s", func->cpf);
+    printf("\nEmail do Funcionário: %s", func->email);
+    printf("\nTelefone do Funcionário: %s", func->telefone);
+    getchar();
 }
