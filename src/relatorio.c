@@ -29,11 +29,12 @@ char tela_relatorio(void){
     printf("╔═════════════════════════════════════════════════╗\n");
     printf("║                  Relatorio Geral                ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
-    printf("║ 1 - Relatório geral de clientes                 ║\n");
+    printf("║ 1 - Relatório geral de Clientes                 ║\n");
     printf("║ 2 - Relatório geral de Funcionários             ║\n");
     printf("║ 3 - Relatório geral de Produtos                 ║\n");
-    printf("║ 4 - Relatório geral de Estoque                  ║\n");
+    printf("║ 4 - Relatório geral de Pedidos                  ║\n");
     printf("║                                                 ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 0 - Voltar                                      ║\n");
     printf("╚═════════════════════════════════════════════════╝\n");
     printf("\n");
