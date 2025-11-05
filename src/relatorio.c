@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include "../include/relatorio.h"
 #include "../include/utilidades.h"
+#include "../include/clientes.h"
+#include "../include/funcionarios.h"
+#include "../include/produto.h"
+#include "../include/pedidos.h"
 
-char tela_relatorio(void);
-
-
+FILE * arquivo;
 
 void modulo_relatorio(void) {
     char opcao;
@@ -36,8 +38,7 @@ void navegacao_relatorios_clientes(void) {
         opcao = tela_relatorio_clientes();
         switch(opcao) {
             case '1':   
-                printf("Listagem de clientes ativos\n");
-                getchar();
+                listar_clientes();
                 break;
             case '2':   
                 printf("Listagem de clientes inativos\n");
@@ -87,4 +88,44 @@ char tela_relatorio_clientes(void){
     scanf(" %c", &op_cliente);
     limpar_buffer();
     return op_cliente;
+}
+
+void listar_clientes(void) {
+    Cliente* cli;
+    cli = (Cliente*) malloc(sizeof(Cliente));
+    int arquivo_vazio = True;
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Listar Clientes                   ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    arquivo = fopen("database/clientes.dat", "rb");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo == NULL) {
+        arquivo = fopen("database/clientes.dat", "wb");
+        fclose(arquivo);
+        arquivo = fopen("database/clientes.dat", "rb");
+    }
+
+    while (fread(cli, sizeof(Cliente), 1, arquivo)){
+        if (cli->status == True){
+            printf("\n\n-------------------- Cliente %d --------------------", cli->id);
+            printf("\nID do Cliente: %d", cli->id);
+            printf("\nNome do Cliente: %s", cli->nome);
+            printf("\nCPF do Cliente: %s", cli->cpf);
+            printf("\nEmail do Cliente: %s", cli->email);
+            printf("\nTelefone do Cliente: %s", cli->telefone);
+            getchar();
+            arquivo_vazio = False;
+        }
+    }
+    fclose(arquivo);
+    free(cli);
+        
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum cliente cadastrado...");
+        getchar();
+    }
+
 }

@@ -19,15 +19,13 @@ void modulo_clientes(void){
                         break;
             case '2':   exibir_clientes();
                         break;
-            case '3':   listar_clientes();
+            case '3':   alterar_cliente();
                         break;
-            case '4':   alterar_cliente();
+            case '4':   excluir_cliente();
                         break;
-            case '5':   excluir_cliente();
+            case '5':   perma_excluir_cliente();
                         break;
-            case '6':   perma_excluir_cliente();
-                        break;
-            case '7':   restaurar_cliente();
+            case '6':   restaurar_cliente();
                         break;
 
         }
@@ -44,11 +42,10 @@ char tela_de_clientes(void){
     printf("║                                                 ║\n");
     printf("║ 1 - Cadastrar Cliente                           ║\n");
     printf("║ 2 - Exibir Clientes                             ║\n");
-    printf("║ 3 - Listar Cliente                              ║\n");
-    printf("║ 4 - Editar Cliente                              ║\n");
-    printf("║ 5 - Excluir Cliente                             ║\n");
-    printf("║ 6 - Excluir Permanentemente Cliente             ║\n");
-    printf("║ 7 - Restaurar Cliente                           ║\n");
+    printf("║ 3 - Editar Cliente                              ║\n");
+    printf("║ 4 - Excluir Cliente                             ║\n");
+    printf("║ 5 - Excluir Permanentemente Cliente             ║\n");
+    printf("║ 6 - Restaurar Cliente                           ║\n");
     printf("║                                                 ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 0 - Voltar                                      ║\n");
@@ -129,47 +126,6 @@ void exibir_clientes(void){
     limpar_buffer();
     printf("\nNenhum cliente com esse id foi encontrado.");
     getchar();
-}
-
-void listar_clientes(void) {
-    Cliente* cli;
-    cli = (Cliente*) malloc(sizeof(Cliente));
-    int arquivo_vazio = True;
-
-    system("clear || cls");
-    limpar_buffer();
-    printf("╔═════════════════════════════════════════════════╗\n");
-    printf("║               Listar Clientes                   ║\n");
-    printf("╚═════════════════════════════════════════════════╝\n");
-    arquivo_cliente = fopen("database/clientes.dat", "rb");
-
-    //testa se o arquivo existe, se não existe, cria o arquivo
-    if (arquivo_cliente == NULL) {
-        arquivo_cliente = fopen("database/clientes.dat", "wb");
-        fclose(arquivo_cliente);
-        arquivo_cliente = fopen("database/clientes.dat", "rb");
-    }
-
-    while (fread(cli, sizeof(Cliente), 1, arquivo_cliente)){
-        if (cli->status == True){
-            printf("\n\n------------------------ Cliente %d ------------------------", cli->id);
-            printf("\nID do Cliente: %d", cli->id);
-            printf("\nNome do Cliente: %s", cli->nome);
-            printf("\nCPF do Cliente: %s", cli->cpf);
-            printf("\nEmail do Cliente: %s", cli->email);
-            printf("\nTelefone do Cliente: %s", cli->telefone);
-            getchar();
-            arquivo_vazio = False;
-        }
-    }
-    fclose(arquivo_cliente);
-    free(cli);
-        
-    if (arquivo_vazio == True) {
-        printf("Não tem nenhum cliente cadastrado...");
-        getchar();
-    }
-
 }
 
 void alterar_cliente(void){
