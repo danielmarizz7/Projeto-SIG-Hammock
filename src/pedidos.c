@@ -22,15 +22,13 @@ void modulo_pedidos(void){
                         break;
             case '2':   exibir_pedidos();
                         break;
-            case '3':   listar_pedidos();
+            case '3':   alterar_pedido();
                         break;
-            case '4':   alterar_pedido();
+            case '4':   excluir_pedido();
                         break;
-            case '5':   excluir_pedido();
+            case '5':   perma_excluir_pedido();
                         break;
-            case '6':   perma_excluir_pedido();
-                        break;
-            case '7':   restaurar_pedido();
+            case '6':   restaurar_pedido();
                         break;
 
         }
@@ -47,11 +45,10 @@ char tela_de_pedidos(void){
     printf("║                                                 ║\n");
     printf("║ 1 - Cadastrar Pedido                            ║\n");
     printf("║ 2 - Exibir Pedido                               ║\n");
-    printf("║ 3 - Listar Pedido                               ║\n");
-    printf("║ 4 - Editar Pedido                               ║\n");
-    printf("║ 5 - Excluir Pedido                              ║\n");
-    printf("║ 6 - Excluir permanentemente Pedido              ║\n");
-    printf("║ 7 - Restaurar Pedido                            ║\n");
+    printf("║ 3 - Editar Pedido                               ║\n");
+    printf("║ 4 - Excluir Pedido                              ║\n");
+    printf("║ 5 - Excluir permanentemente Pedido              ║\n");
+    printf("║ 6 - Restaurar Pedido                            ║\n");
     printf("║                                                 ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 0 - Voltar                                      ║\n");
@@ -136,49 +133,6 @@ void exibir_pedidos(void){
     limpar_buffer();
     printf("\nNenhum pedido com o ID %d foi encontrado.", id_procurar);
     getchar();
-}
-
-void listar_pedidos(void) {
-    Pedido* pedido;
-    pedido = (Pedido*) malloc(sizeof(Pedido));
-    int arquivo_vazio = True;
-
-    system("clear || cls");
-    limpar_buffer();
-    printf("╔═════════════════════════════════════════════════╗\n");
-    printf("║               Listar Pedidos                    ║\n");
-    printf("╚═════════════════════════════════════════════════╝\n");
-    arquivo_pedido = fopen("database/pedidos.dat", "rb");
-
-    //testa se o arquivo existe, se não existe, cria o arquivo
-    if (arquivo_pedido == NULL) {
-        arquivo_pedido = fopen("database/pedidos.dat", "wb");
-        fclose(arquivo_pedido);
-        arquivo_pedido = fopen("database/pedidos.dat", "rb");
-    }
-
-    while (fread(pedido, sizeof(Pedido), 1, arquivo_pedido)){
-        if (pedido->status == True)
-        {
-            printf("\n\n------------------------ Pedido %d ------------------------", pedido->id_pedido);
-            printf("\nID do Pedido: %d", pedido->id_pedido);
-            printf("\nID do Cliente: %d", pedido->id_cliente);
-            printf("\nID do Produto: %d", pedido->id_produto);
-            printf("\nID do Funcionario: %d", pedido->id_funcionario);
-            printf("\nPreco do Pedido: %f", pedido->preco);
-            printf("\nData do Pedido: %s", pedido->data);
-            getchar();
-            arquivo_vazio = False;
-        }
-    }
-    fclose(arquivo_pedido);
-    free(pedido);
-            
-    if (arquivo_vazio == True) {
-        printf("Não tem nenhum pedido cadastrado...");
-        getchar();
-    }
-    
 }
 
 void alterar_pedido(void){

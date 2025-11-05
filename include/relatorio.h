@@ -11,3 +11,4 @@ char tela_relatorio_pedidos(void);
 void listar_clientes(void);
 void listar_funcionarios(void);
 void listar_produto(void);
+void listar_pedidos(void);

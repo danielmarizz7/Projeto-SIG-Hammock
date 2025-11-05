@@ -89,8 +89,7 @@ void navegacao_relatorios_pedidos(void) {
         opcao = tela_relatorio_pedidos();
         switch(opcao) {
             case '1':   
-                printf("Listagem de pedidos ativos\n");
-                getchar();
+                listar_pedidos();
                 break;
             case '2':   
                 printf("Listagem de pedidos inativos\n");
@@ -216,7 +215,6 @@ void listar_clientes(void) {
     printf("╚═════════════════════════════════════════════════╝\n");
     arquivo = fopen("database/clientes.dat", "rb");
 
-    //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo == NULL) {
         arquivo = fopen("database/clientes.dat", "wb");
         fclose(arquivo);
@@ -256,7 +254,6 @@ void listar_funcionarios(void) {
     printf("╚═════════════════════════════════════════════════╝\n");
     arquivo = fopen("database/funcionarios.dat", "rb");
 
-    //testa se o arquivo existe, se não existe, cria o arquivo
     if (arquivo == NULL) {
         arquivo = fopen("database/funcionarios.dat", "wb");
         fclose(arquivo);
@@ -319,6 +316,47 @@ void listar_produto(void) {
             
     if (arquivo_vazio == True) {
         printf("Não tem nenhum produto cadastrado...");
+        getchar();
+    }
+    
+}
+
+void listar_pedidos(void) {
+    Pedido* pedido;
+    pedido = (Pedido*) malloc(sizeof(Pedido));
+    int arquivo_vazio = True;
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Listar Pedidos                    ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    arquivo = fopen("database/pedidos.dat", "rb");
+
+    if (arquivo == NULL) {
+        arquivo = fopen("database/pedidos.dat", "wb");
+        fclose(arquivo);
+        arquivo = fopen("database/pedidos.dat", "rb");
+    }
+
+    while (fread(pedido, sizeof(Pedido), 1, arquivo)){
+        if (pedido->status == True)
+        {
+            printf("\n\n------------------------ Pedido %d ------------------------", pedido->id_pedido);
+            printf("\nID do Pedido: %d", pedido->id_pedido);
+            printf("\nID do Cliente: %d", pedido->id_cliente);
+            printf("\nID do Produto: %d", pedido->id_produto);
+            printf("\nID do Funcionario: %d", pedido->id_funcionario);
+            printf("\nPreco do Pedido: %f", pedido->preco);
+            printf("\nData do Pedido: %s", pedido->data);
+            getchar();
+            arquivo_vazio = False;
+        }
+    }
+    fclose(arquivo);
+    free(pedido);
+            
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum pedido cadastrado...");
         getchar();
     }
     
