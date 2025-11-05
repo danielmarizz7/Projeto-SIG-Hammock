@@ -72,8 +72,7 @@ void navegacao_relatorios_produtos(void) {
         opcao = tela_relatorio_produtos();
         switch(opcao) {
             case '1':   
-                printf("Listagem de produtos ativos\n");
-                getchar();
+                listar_produto();
                 break;
             case '2':   
                 printf("Listagem de produtos inativos\n");
@@ -242,6 +241,45 @@ void listar_funcionarios(void) {
   
     if (arquivo_vazio == True) {
         printf("Não tem nenhum funcionário cadastrado...");
+        getchar();
+    }
+    
+}
+
+void listar_produto(void) {
+    Produto* prod;
+    prod = (Produto*) malloc(sizeof(Produto));
+    int arquivo_vazio = True;
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Listar Produtos                   ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    arquivo = fopen("database/produtos.dat", "rb");
+
+    if (arquivo == NULL) {
+        arquivo = fopen("database/produtos.dat", "wb");
+        fclose(arquivo);
+        arquivo = fopen("database/produtos.dat", "rb");
+    }
+
+    while (fread(prod, sizeof(Produto), 1, arquivo)){
+        if (prod->status == True){
+            printf("\n\n------------------------ Produto %d ------------------------", prod->id);
+            printf("\nID do Produto: %d", prod->id);
+            printf("\nModelo do Produto: %s", prod->modelo_rede);
+            printf("\nValor do Produto: %f", prod->valor_rede);
+            printf("\nTipo do Produto: %s", prod->tipo_rede);
+            printf("\nCor do Produto: %s", prod->cor_rede);
+            getchar();
+            arquivo_vazio = False;
+        }
+    }
+    fclose(arquivo);
+    free(prod);
+            
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum produto cadastrado...");
         getchar();
     }
     

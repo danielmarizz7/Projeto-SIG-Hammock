@@ -20,15 +20,13 @@ void modulo_produto(void){
                         break;
             case '2':   exibir_produto();
                         break;
-            case '3':   listar_produto();
+            case '3':   alterar_produto();
                         break;
-            case '4':   alterar_produto();
+            case '4':   excluir_produto();
                         break;
-            case '5':   excluir_produto();
+            case '5':   perma_excluir_produto();
                         break;
-            case '6':   perma_excluir_produto();
-                        break;
-            case '7':   restaurar_produto();
+            case '6':   restaurar_produto();
                         break;
 
         }
@@ -46,11 +44,10 @@ char tela_de_produto(void){
     printf("║                                                 ║\n");
     printf("║ 1 - Cadastrar Produto                           ║\n");
     printf("║ 2 - Exibir Produto                              ║\n");
-    printf("║ 3 - Listar Produto                              ║\n");
-    printf("║ 4 - Editar Produto                              ║\n");
-    printf("║ 5 - Excluir Produto                             ║\n");
-    printf("║ 6 - Excluir Permanentemente Produto             ║\n");
-    printf("║ 7 - Restaurar Produto                           ║\n");
+    printf("║ 3 - Editar Produto                              ║\n");
+    printf("║ 4 - Excluir Produto                             ║\n");
+    printf("║ 5 - Excluir Permanentemente Produto             ║\n");
+    printf("║ 6 - Restaurar Produto                           ║\n");
     printf("║                                                 ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 0 - Para voltar à tela inicial                  ║\n");
@@ -133,47 +130,6 @@ void exibir_produto(void){
     limpar_buffer();
     printf("\nNenhuma rede com esse id foi encontrado.");
     getchar();
-    
-}
-
-void listar_produto(void) {
-    Produto* prod;
-    prod = (Produto*) malloc(sizeof(Produto));
-    int arquivo_vazio = True;
-
-    system("clear || cls");
-    limpar_buffer();
-    printf("╔═════════════════════════════════════════════════╗\n");
-    printf("║               Listar Produtos                   ║\n");
-    printf("╚═════════════════════════════════════════════════╝\n");
-    arquivo_produto = fopen("database/produtos.dat", "rb");
-
-    //testa se o arquivo existe, se não existe, cria o arquivo
-    if (arquivo_produto == NULL) {
-        arquivo_produto = fopen("database/produtos.dat", "wb");
-        fclose(arquivo_produto);
-        arquivo_produto = fopen("database/produtos.dat", "rb");
-    }
-
-    while (fread(prod, sizeof(Produto), 1, arquivo_produto)){
-        if (prod->status == True){
-            printf("\n\n------------------------ Produto %d ------------------------", prod->id);
-            printf("\nID do Produto: %d", prod->id);
-            printf("\nModelo do Produto: %s", prod->modelo_rede);
-            printf("\nValor do Produto: %f", prod->valor_rede);
-            printf("\nTipo do Produto: %s", prod->tipo_rede);
-            printf("\nCor do Produto: %s", prod->cor_rede);
-            getchar();
-            arquivo_vazio = False;
-        }
-    }
-    fclose(arquivo_produto);
-    free(prod);
-            
-    if (arquivo_vazio == True) {
-        printf("Não tem nenhum produto cadastrado...");
-        getchar();
-    }
     
 }
 

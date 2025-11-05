@@ -15,7 +15,6 @@ struct produto{
 char tela_de_produto(void);
 void cadastrar_produto(void);
 void exibir_produto(void);
-void listar_produto(void);
 void alterar_produto(void);
 void excluir_produto(void);
 void restaurar_produto(void);

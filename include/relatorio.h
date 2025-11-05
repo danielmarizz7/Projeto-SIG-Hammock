@@ -8,3 +8,4 @@ char tela_relatorio_funcionarios(void);
 char tela_relatorio_produtos(void);
 void listar_clientes(void);
 void listar_funcionarios(void);
+void listar_produto(void);
