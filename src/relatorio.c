@@ -22,7 +22,7 @@ void modulo_relatorio(void) {
                 navegacao_relatorios_funcionarios();
                 break;
             case '3':   
-                printf("Relatorio Produtos\n");
+                navegacao_relatorios_produtos();
                 break;
             case '4':   
                 printf("Relatorio Pedidos\n");
@@ -59,6 +59,24 @@ void navegacao_relatorios_funcionarios(void) {
                 break;
             case '2':   
                 printf("Listagem de funcionarios inativos\n");
+                getchar();
+                break;           
+        }
+    } while (opcao != '0');
+}
+
+void navegacao_relatorios_produtos(void) {
+    char opcao;
+
+    do {
+        opcao = tela_relatorio_produtos();
+        switch(opcao) {
+            case '1':   
+                printf("Listagem de produtos ativos\n");
+                getchar();
+                break;
+            case '2':   
+                printf("Listagem de produtos inativos\n");
                 getchar();
                 break;           
         }
@@ -126,6 +144,27 @@ char tela_relatorio_funcionarios(void){
     scanf(" %c", &op_func);
     limpar_buffer();
     return op_func;
+}
+
+char tela_relatorio_produtos(void){
+
+    char op_produto;
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║            Relatório De Produtos                ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║                                                 ║\n");
+    printf("║ 1 - Listar produtos ativos                      ║\n");
+    printf("║ 2 - Listar produtos inativos                    ║\n");
+    printf("║                                                 ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║ 0 - Voltar                                      ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("Escolha uma opção: ");
+    scanf(" %c", &op_produto);
+    limpar_buffer();
+    return op_produto;
 }
 
 void listar_clientes(void) {
