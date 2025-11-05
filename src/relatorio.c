@@ -25,7 +25,7 @@ void modulo_relatorio(void) {
                 navegacao_relatorios_produtos();
                 break;
             case '4':   
-                printf("Relatorio Pedidos\n");
+                navegacao_relatorios_pedidos();
                 break;              
         }
     } while (opcao != '0');
@@ -76,6 +76,24 @@ void navegacao_relatorios_produtos(void) {
                 break;
             case '2':   
                 printf("Listagem de produtos inativos\n");
+                getchar();
+                break;           
+        }
+    } while (opcao != '0');
+}
+
+void navegacao_relatorios_pedidos(void) {
+    char opcao;
+
+    do {
+        opcao = tela_relatorio_pedidos();
+        switch(opcao) {
+            case '1':   
+                printf("Listagem de pedidos ativos\n");
+                getchar();
+                break;
+            case '2':   
+                printf("Listagem de pedidos inativos\n");
                 getchar();
                 break;           
         }
@@ -164,6 +182,27 @@ char tela_relatorio_produtos(void){
     scanf(" %c", &op_produto);
     limpar_buffer();
     return op_produto;
+}
+
+char tela_relatorio_pedidos(void){
+
+    char op_pedido;
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║            Relatório De Pedidos                 ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║                                                 ║\n");
+    printf("║ 1 - Listar pedidos ativos                       ║\n");
+    printf("║ 2 - Listar pedidos inativos                     ║\n");
+    printf("║                                                 ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║ 0 - Voltar                                      ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("Escolha uma opção: ");
+    scanf(" %c", &op_pedido);
+    limpar_buffer();
+    return op_pedido;
 }
 
 void listar_clientes(void) {
