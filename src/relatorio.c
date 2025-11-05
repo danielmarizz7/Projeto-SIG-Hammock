@@ -19,7 +19,7 @@ void modulo_relatorio(void) {
                 navegacao_relatorios_clientes();
                 break;
             case '2':   
-                printf("Relatorio Funcionarios\n");
+                navegacao_relatorios_funcionarios();
                 break;
             case '3':   
                 printf("Relatorio Produtos\n");
@@ -42,6 +42,23 @@ void navegacao_relatorios_clientes(void) {
                 break;
             case '2':   
                 printf("Listagem de clientes inativos\n");
+                getchar();
+                break;           
+        }
+    } while (opcao != '0');
+}
+
+void navegacao_relatorios_funcionarios(void) {
+    char opcao;
+
+    do {
+        opcao = tela_relatorio_funcionarios();
+        switch(opcao) {
+            case '1':   
+                listar_funcionarios();
+                break;
+            case '2':   
+                printf("Listagem de funcionarios inativos\n");
                 getchar();
                 break;           
         }
@@ -90,6 +107,27 @@ char tela_relatorio_clientes(void){
     return op_cliente;
 }
 
+char tela_relatorio_funcionarios(void){
+
+    char op_func;
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║            Relatório De Funcionários            ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║                                                 ║\n");
+    printf("║ 1 - Listar funcionários ativos                  ║\n");
+    printf("║ 2 - Listar funcionários inativos                ║\n");
+    printf("║                                                 ║\n");
+    printf("╠═════════════════════════════════════════════════╣\n");
+    printf("║ 0 - Voltar                                      ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    printf("\n");
+    printf("Escolha uma opção: ");
+    scanf(" %c", &op_func);
+    limpar_buffer();
+    return op_func;
+}
+
 void listar_clientes(void) {
     Cliente* cli;
     cli = (Cliente*) malloc(sizeof(Cliente));
@@ -128,4 +166,44 @@ void listar_clientes(void) {
         getchar();
     }
 
+}
+
+void listar_funcionarios(void) {
+    Funcionarios* func;
+    func = (Funcionarios*) malloc(sizeof(Funcionarios));
+    int arquivo_vazio = True;
+
+    system("clear || cls");
+    printf("╔═════════════════════════════════════════════════╗\n");
+    printf("║               Listar Funcionários               ║\n");
+    printf("╚═════════════════════════════════════════════════╝\n");
+    arquivo = fopen("database/funcionarios.dat", "rb");
+
+    //testa se o arquivo existe, se não existe, cria o arquivo
+    if (arquivo == NULL) {
+        arquivo = fopen("database/funcionarios.dat", "wb");
+        fclose(arquivo);
+        arquivo = fopen("database/funcionarios.dat", "rb");
+    }
+
+    while (fread(func, sizeof(Funcionarios), 1, arquivo)){
+        if (func->status == True){
+            printf("\n\n------------------ Funcionário %d ------------------", func->id);
+            printf("\nID do Funcionário: %d", func->id);
+            printf("\nNome do Funcionário: %s", func->nome);
+            printf("\nCPF do Funcionário: %s", func->cpf);
+            printf("\nEmail do Funcionário: %s", func->email);
+            printf("\nTelefone do Funcionário: %s", func->telefone);
+            getchar();
+            arquivo_vazio = False;
+        }
+    }
+    fclose(arquivo);
+    free(func);
+  
+    if (arquivo_vazio == True) {
+        printf("Não tem nenhum funcionário cadastrado...");
+        getchar();
+    }
+    
 }

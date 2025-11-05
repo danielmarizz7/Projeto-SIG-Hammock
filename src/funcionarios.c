@@ -20,15 +20,13 @@ void modulo_funcionarios(void) {
                         break;
             case '2': 	exibir_funcionarios();
                         break;
-            case '3': 	listar_funcionarios();
+            case '3': 	alterar_funcionarios();
                         break;
-            case '4': 	alterar_funcionarios();
+            case '4': 	excluir_funcionarios();
                         break;
-            case '5': 	excluir_funcionarios();
+            case '5': 	perma_excluir_funcionario();
                         break;
-            case '6': 	perma_excluir_funcionario();
-                        break;
-            case '7': 	restaurar_funcionarios();
+            case '6': 	restaurar_funcionarios();
                         break;
         } 		
     } while (opcao != '0');
@@ -44,11 +42,10 @@ char tela_de_funcionarios(void){
     printf("║                                                 ║\n");
     printf("║ 1 - Cadastrar Funcionario                       ║\n");
     printf("║ 2 - Exibir Funcionario                          ║\n");
-    printf("║ 3 - Listar Funcionarios                         ║\n");
-    printf("║ 4 - Editar Funcionario                          ║\n");
-    printf("║ 5 - Excluir Funcionario                         ║\n");
-    printf("║ 6 - Excluir Permanentemente Funcionario         ║\n");
-    printf("║ 7 - Restaurar Funcionario                       ║\n");
+    printf("║ 3 - Editar Funcionario                          ║\n");
+    printf("║ 4 - Excluir Funcionario                         ║\n");
+    printf("║ 5 - Excluir Permanentemente Funcionario         ║\n");
+    printf("║ 6 - Restaurar Funcionario                       ║\n");
     printf("║                                                 ║\n");
     printf("╠═════════════════════════════════════════════════╣\n");
     printf("║ 0 - Voltar                                      ║\n");
@@ -130,48 +127,6 @@ void exibir_funcionarios(void){
     limpar_buffer();
     printf("\nNenhum funcionário com esse id foi encontrado.");
     getchar();
-    
-}
-
-void listar_funcionarios(void) {
-    Funcionarios* func;
-    func = (Funcionarios*) malloc(sizeof(Funcionarios));
-    int arquivo_vazio = True;
-
-    system("clear || cls");
-    limpar_buffer();
-    printf("╔═════════════════════════════════════════════════╗\n");
-    printf("║               Listar Funcionários               ║\n");
-    printf("╚═════════════════════════════════════════════════╝\n");
-    arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
-
-    //testa se o arquivo existe, se não existe, cria o arquivo
-    if (arquivo_funcionario == NULL) {
-        arquivo_funcionario = fopen("database/funcionarios.dat", "wb");
-        fclose(arquivo_funcionario);
-        arquivo_funcionario = fopen("database/funcionarios.dat", "rb");
-    }
-
-    while (fread(func, sizeof(Funcionarios), 1, arquivo_funcionario)){
-        if (func->status == True){
-            printf("\n\n------------------------ Funcionário %d ------------------------", func->id);
-            printf("\nID do Funcionário: %d", func->id);
-            printf("\nNome do Funcionário: %s", func->nome);
-            printf("\nCPF do Funcionário: %s", func->cpf);
-            printf("\nEmail do Funcionário: %s", func->email);
-            printf("\nTelefone do Funcionário: %s", func->telefone);
-            getchar();
-            arquivo_vazio = False;
-        }
-    }
-    fclose(arquivo_funcionario);
-    free(func);
-
-            
-    if (arquivo_vazio == True) {
-        printf("Não tem nenhum funcionário cadastrado...");
-        getchar();
-    }
     
 }
 
